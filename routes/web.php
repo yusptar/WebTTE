@@ -12,21 +12,17 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
 
-
-
-
-Auth::routes([
-    'register' => false, // Registration Routes...
+Auth::routes([ // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
 
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
 // add login middleware
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-
     Route::get('/upload-tte', [App\Http\Controllers\TTEController::class, 'index'])->name('tte');
     Route::post('/store', [App\Http\Controllers\TTEController::class, 'store'])->name('store');
 });

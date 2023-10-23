@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "realrashid/sweet-alert": "^7.1",
         "soarecostin/file-vault": "^1.2",
         "tinymce/tinymce": "^6.3"
     },

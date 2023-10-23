@@ -10,47 +10,39 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    protected $table = 'pegawai';
-    // protected $allowedFields = ['fullname', 'username', 'password', 'id_rs'];
-    protected $primaryKey = 'id';
-    protected $useTimestamps = true;
-    protected $dateFormat = 'datetime';
+    use HasApiTokens, HasFactory, Notifiable;
 
-    // public function getData($nik = false)
-    // {
-    //     if ($nik == false) {
-    //         return $this->findAll();
-    //     }
-    //     return $this->where(['nik' => $nik])->first();
-    // }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
 
-    // public function getJabatan($nip)
-    // {
-    //     $_sql = "SELECT LEFT(nm_jbtn,12) AS jns, nm_jbtn FROM jabatan WHERE kd_jbtn = (SELECT kd_jbtn FROM petugas WHERE nip = '$nip')  AND nm_jbtn LIKE 'Perawat%'";
-    //     $query = $this->db->query($_sql)->getResult();
-    //     // dd($query);
-    //     return $query;
-    // }
+    protected $table = 'users_tte';
 
-    // public function getDataUserRS()
-    // {
-    //     $query =  $this->db->table('users')
-    //         ->select('users.id')
-    //         ->select('users.username')
-    //         ->select('users.fullname')
-    //         ->select('users.id_rs')
-    //         ->select('users.password')
-    //         ->select('rumahsakit.nama')
-    //         ->select('rumahsakit.kota')
-    //         ->join('rumahsakit', 'users.id_rs = rumahsakit.id')
-    //         ->get();
-    //     return $query;
-    // }
+    protected $username = 'username';
 
-    // public function checkLogin($uname, $pwd)
-    // {
-    //     $_sql = $uname == "rst" ? "select * from admin where usere=AES_ENCRYPT('$uname','nur') and passworde=AES_ENCRYPT('$pwd','windi')" : "select * from user where id_user=AES_ENCRYPT('$uname','nur') and password=AES_ENCRYPT('$pwd','windi')";
-    //     $query = $this->db->query($_sql)->getResult();
-    //     return $query;
-    // }
+    protected $fillable = [
+        'username',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

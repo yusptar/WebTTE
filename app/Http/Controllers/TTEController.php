@@ -61,5 +61,10 @@ class TTEController extends Controller
         return response()->json(['success' => 'Berhasil menambahkan data', 'data' => $parkir], 200);
     }
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     
 }
