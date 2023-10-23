@@ -25,20 +25,33 @@ class TTEController extends Controller
         }
         
         try{
-            $tarif = 0;
+            $tte = ManajemenTTE::create([
+                'no_rawat' => $request->no_rawat,
+                'jenis_rm' => $request->jenis_rm,
+                'tanggal_upload' => Carbon::now()->format('Y/m/d H:i:s'),
+                'jam_upload' => Carbon::now()->format('H:i:s'),
+                'path' => $pdf,
+            ]);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        return response()->json(['success' => 'Berhasil menambahkan data', 'data' => $parkir], 200);
+    }
 
-            if($request->jns_kendaraan === 'Sepeda Motor') {
-                $tarif = 3000; 
-            } else {
-                $tarif = 5000; 
-            }
-            
-            $parkir = Parkir::create([
-                'no_plat' => $request->no_plat,
-                'jns_kendaraan' => $request->jns_kendaraan,
-                'tarif' => $tarif,    
-                'jam_masuk' => Carbon::now()->format('Y/m/d H:i:s'),
-                'jam_keluar' => $request->jam_keluar,
+    public function update(Request $request)
+    {    
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+        
+        try{
+            $tte = ManajemenTTE::create([
+                'no_rawat' => $request->no_rawat,
+                'jenis_rm' => $request->jenis_rm,
+                'tanggal_upload' => Carbon::now()->format('Y/m/d H:i:s'),
+                'jam_upload' => Carbon::now()->format('H:i:s'),
+                'path' => $pdf,
             ]);
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);

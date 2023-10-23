@@ -23,7 +23,9 @@
                 <form id="form-pembubuhan-tte-pdf">
                     @csrf
                     <div class="card-body">
-                        <input type="text" class="form-control" name="tgl_upload" id="tgl_upload" hidden>
+                        <input type="text" class="form-control" name="tanggal_upload" hidden>
+                        <input type="text" class="form-control" name="jam_upload" id="jam_upload" hidden>
+                        <input type="text" class="form-control" name="signed_status" hidden>
                         <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                         <div class="form-group">
                             <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
@@ -61,7 +63,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title">Tabel RM</h3>
+                            <h3 class="card-title" style="font-weight:600">Tabel RM</h3>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-hover" id="table-rm">
@@ -70,6 +72,7 @@
                                         <th>No Rawat</th>
                                         <th>Jenis RM</th>
                                         <th>Tgl Upload</th>
+                                        <th>Tgl Signed</th>
                                         <th>Path</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -81,7 +84,9 @@
                                         <td>{{ $mt->no_rawat}}</td>
                                         <td>{{ $mt->jenis_rm}}</td>
                                         <td>{{ $mt->tanggal_upload}}</td>
-                                        <td>{{ $mt->pathj}}</td>
+                                        <td>{{ $mt->tanggal_signed}}</td>
+                                        <td><a href="https://rssoepraoen.com/webapps/berkasrawat/{{ $mt->path }}">{{ $mt->path }}
+                                        </td>
                                         @if($mt->signed_status == 'BELUM')
                                         <td>
                                             <span class="badge rounded-pill bg-secondary">Belum TTE</span>
@@ -95,6 +100,11 @@
                                             @if($mt->signed_status == 'BELUM')
                                             <form id="">
                                                 @csrf
+                                                <input type="text" class="form-control" name="tanggal_signed"
+                                                    value="{{ $mt->tanggal_signed }}" hidden>
+                                                <input type="text" class="form-control" value="{{ $mt->jam_signed }}"
+                                                    name="jam_signed" id="jam_upload" value="{{ $mt->signed_status }}"
+                                                    hidden>
                                                 <input type="hidden" name="signed_status"
                                                     value="{{ $mt->signed_status }}">
                                                 <div>
