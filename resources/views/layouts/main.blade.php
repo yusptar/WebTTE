@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BIOS Web Service</title>
+    <title>TTE</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('auth/images/logo-nagara.png') }}">
 
     <!-- Google Font: Source Sans Pro -->

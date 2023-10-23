@@ -150,7 +150,7 @@ $('#btn-submit').click(function() {
         formData.append('alos', $('input[name=alos]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "",
+            url: "{{ route('store') }}",
             type: "POST",
             data: formData,
             contentType: false,
