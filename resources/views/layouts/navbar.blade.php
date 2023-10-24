@@ -16,7 +16,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                 <i class="fas fa-search"></i>
             </a>
@@ -41,11 +41,9 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
-        </li>
+        </li> -->
         <li class="nav-item">
-            <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                <i class="fas fa-th-large"></i>
-            </a>
+
         </li>
     </ul>
 </nav>

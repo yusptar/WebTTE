@@ -51,6 +51,9 @@
                             <div class="w-50 text-md-right">
                                 <a href="#" style="color: #fff">Forgot Password</a>
                             </div>
+                            <!-- <div class="w-50 text-md-right">
+                                <a href="{{ route('register') }}" style="color: #fff">Register</a>
+                            </div> -->
                         </div>
                     </form>
                 </div>
