@@ -3,7 +3,8 @@
     <!-- Brand Logo -->
     <a href="{{ route('dashboard') }}" class="brand-link">
         <div class="text-center">
-            <img src="{{ asset('auth/images/logo-nagara.png') }}" alt="" width="60%" height="60%">
+            {{-- <img src="{{ asset('auth/images/logo-nagara.png') }}" alt="" width="60%" height="60%"> --}}
+            <img src="{{ asset('img/logorst.png') }}" alt="" height="50%">
         </div>
     </a>
 
@@ -30,8 +31,8 @@
                with font-awesome or any other icon font library -->
 
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('tte')) ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ (request()->routeIs('tte')) ? 'active' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Form TTE
@@ -39,6 +40,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('tte') }}"
                                 class="nav-link {{ (request()->routeIs('tte')) ? 'active' : '' }}">

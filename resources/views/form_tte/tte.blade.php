@@ -24,7 +24,7 @@
                     @csrf
                     <div class="card-body">
                         <input type="text" class="form-control" name="tanggal_upload" hidden>
-                        <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
+                        {{-- <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" /> --}}
                         <div class="form-group">
                             <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_rawat"
@@ -119,7 +119,8 @@
                             </table>
                             <!-- Modal Example Start-->
                             <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
-                                <form id="form-send-tte">
+                                <form id="form-send-tte" autocomplete="off">
+                                    @csrf
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -130,10 +131,11 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
+                                                    <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
                                                     <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
                                                     <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
-                                                    <input type="text" class="form-control" name="passphrase" autocomplete="false" required>
+                                                    <input type="password" class="form-control" name="passphrase" autocomplete="new-password" required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -169,7 +171,7 @@ $(document).ready(function() {
 });
 
 $('#btn-submit').click(function() {
-    if ($('#form-dokter-spesialis')[0].checkValidity()) {
+    if ($('#form-pembubuhan-tte-pdf')[0].checkValidity()) {
         var formData = new FormData();
         formData.append('tgl_transaksi', $('input[name=tgl_transaksi]').val());
         formData.append('alos', $('input[name=alos]').val());
@@ -181,26 +183,26 @@ $('#btn-submit').click(function() {
             contentType: false,
             processData: false,
             success: function(data) {
-                console.log(data.data);
                 Swal.fire({
                     title: "Berhasil!",
                     text: "Data Berhasil ditambahkan",
                     icon: "success",
                     buttons: false,
-                    timer: 2000,
+                    timer: 3000,
                 }).then(function() {
                     window.location.href = "{{ route('tte') }}"
                 });
             },
             error: function(data) {
-                console.log(data);
                 Swal.fire({
                     title: "Gagal!",
                     text: "Data gagal ditambahkan",
                     icon: "error",
                     buttons: false,
-                    timer: 2000,
-                })
+                    timer: 3000,
+                }).then(function() {
+                    window.location.href = "{{ route('tte') }}"
+                });
             }
         });
     } else {
@@ -212,78 +214,79 @@ $('#btn-submit').click(function() {
 $('#btn-send').click(function() {
     if ($('#form-send-tte')[0].checkValidity()) {
         var formData = new FormData();
-        formData.append('tgl_transaksi', $('input[name=tgl_transaksi]').val());
-        formData.append('alos', $('input[name=alos]').val());
+        formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
+        formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
+        formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
+        formData.append('passphrase', $('input[name=passphrase]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "{{ route('store') }}",
+            url: "{{ route('kirimTTE') }}",
             type: "POST",
             data: formData,
             contentType: false,
             processData: false,
             success: function(data) {
-                console.log(data.data);
+                
                 Swal.fire({
                     title: "Berhasil!",
-                    text: "Data Berhasil ditambahkan",
+                    text: data.msg,
                     icon: "success",
                     buttons: false,
-                    timer: 2000,
+                    timer: 3000,
                 }).then(function() {
                     window.location.href = "{{ route('tte') }}"
                 });
             },
             error: function(data) {
-                console.log(data);
+                // alert(data.responseJSON.msg);
                 Swal.fire({
                     title: "Gagal!",
-                    text: "Data gagal ditambahkan",
+                    text: data.responseJSON.msg,
                     icon: "error",
                     buttons: false,
-                    timer: 2000,
-                })
+                    timer: 3000,
+                }).then(function() {
+                    // window.location.href = "{{ route('tte') }}"
+                });
             }
         });
     } else {
-        $('#form-pembubuhan-tte-pdf')[0].reportValidity();
+        $('#form-send-tte')[0].reportValidity();
     }
 });
 
 $(document).ready(function() {
-  /**
-   * for showing edit item popup
-   */
-  
-  $(document).on('click', "#open-modal", function() {
-    $(this).addClass('open-modal-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
-    var options = {
-      'backdrop': 'static'
-    };
-    $('#demoModal').modal(options)
-  })
+    $(document).on('click', "#open-modal", function() {
+        $(this).addClass('open-modal-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
-  // on modal show
-  $('#demoModal').on('show.bs.modal', function() {
-    var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-    var row = el.closest(".data-row");
+        var options = {
+        'backdrop': 'static'
+        };
+        $('#demoModal').modal(options)
+    })
 
-    // get the data
-    var no_rawat = row.children(".no_rawat").text();
-    var jenis_rm = row.children(".jenis_rm").text();
-    var tanggal_upload = row.children(".tanggal_upload").text();
+    // on modal show
+    $('#demoModal').on('show.bs.modal', function() {
+        var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
+        var row = el.closest(".data-row");
 
-    // fill the data in the input fields
-    $("#modal_no_rawat").val(no_rawat);
-    $("#modal_jenis_rm").val(jenis_rm);
-    $("#modal_tanggal_upload").val(tanggal_upload);
-  })
+        // get the data
+        var no_rawat = row.children(".no_rawat").text();
+        var jenis_rm = row.children(".jenis_rm").text();
+        var tanggal_upload = row.children(".tanggal_upload").text();
 
-  // on modal hide
-  $('#demoModal').on('hide.bs.modal', function() {
-    $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
-    $("#demoModal").trigger("reset");
-  })
+        // fill the data in the input fields
+        $("#modal_no_rawat").val(no_rawat);
+        $("#modal_jenis_rm").val(jenis_rm);
+        $("#modal_tanggal_upload").val(tanggal_upload);
+    })
+
+    // on modal hide
+    $('#demoModal').on('hide.bs.modal', function() {
+        $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
+        $("#demoModal").trigger("reset");
+    })
 });
 </script>
 @endsection
