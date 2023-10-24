@@ -6,54 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
+use App\Models\Pegawai; 
 use Alert;
 use Illuminate\Http\Request;
 
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-
-    public function login(Request $request){
-        $input = $request->all();
-        $this->validate($request,[
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        if(auth()->attempt(array('username'=>$input['username'], 'password'=>$input['password']))){
+    public function login(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+        // Authenticate the user
+        if (auth()->attempt($credentials)) {
+            $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK
+            $ses_data = [
+                'id' => $user_data->nik, // Assuming 'nik' is the user ID
+                'username' => $user_data->nama, // Assuming 'nama' is the username
+            ];
+            Session::put($ses_data);
+            Alert::success('Login Berhasil!', 'Selamat Datang');
             return redirect()->route('dashboard');
-            Alert::success('Selamat Datang', 'Login Berhasil');
-        }else{
-            return redirect()->route('login');
-            Alert::error('Oops...', 'Login Gagal');
-        }
+        } else {
+            Alert::error('Oops! Login Gagal.', 'Terdapat Kesalahan!');
+            return redirect()->back();
+        }             
     }
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
+    
     public function __construct()
     {
         $this->middleware('guest')->except('logout');

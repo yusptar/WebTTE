@@ -19,9 +19,8 @@
                         @csrf
                         <div class="form-group">
                             <input id="username" type="text"
-                                class="form-control @error('username') is-invalid @enderror" name="username"
-                                value="{{ old('username') }}" required autocomplete="username" autofocus
-                                placeholder="Username">
+                                class="form-control @error('username') is-invalid @enderror" name="username" required
+                                autofocus placeholder="Username">
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -31,7 +30,7 @@
                         <div class="form-group">
                             <input id="password-field" type="password"
                                 class="form-control @error('password') is-invalid @enderror" name="password" required
-                                autocomplete="password" placeholder="Password">
+                                placeholder="Password">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

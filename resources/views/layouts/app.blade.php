@@ -17,14 +17,13 @@
 <body class="img js-fullheight" style="background-image: url(auth/images/background.jpg);">
 
 
-
     @yield('content')
-
-
     <script src="{{ asset('auth/js/jquery.min.js') }}"></script>
     <script src="{{ asset('auth/js/popper.js') }}"></script>
     <script src="{{ asset('auth/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('auth/js/main.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @include('sweetalert::alert')
 </body>
 
 </html>

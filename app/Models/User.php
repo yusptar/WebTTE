@@ -19,7 +19,6 @@ class User extends Authenticatable
      */
 
     protected $table = 'users_tte';
-
     protected $username = 'username';
 
     protected $fillable = [
@@ -45,4 +44,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'id');
+    }
 }
