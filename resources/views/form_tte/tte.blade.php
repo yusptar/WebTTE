@@ -24,8 +24,6 @@
                     @csrf
                     <div class="card-body">
                         <input type="text" class="form-control" name="tanggal_upload" hidden>
-                        <input type="text" class="form-control" name="jam_upload" id="jam_upload" hidden>
-                        <input type="text" class="form-control" name="signed_status" hidden>
                         <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                         <div class="form-group">
                             <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
@@ -80,11 +78,11 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($manj_tte as $mt)
-                                    <tr>
-                                        <td>{{ $mt->no_rawat}}</td>
-                                        <td>{{ $mt->jenis_rm}}</td>
-                                        <td>{{ $mt->tanggal_upload}}</td>
-                                        <td>{{ $mt->tanggal_signed}}</td>
+                                    <tr class="data-row">
+                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
+                                        <td class="jenis_rm">{{ $mt->jenis_rm}}</td>
+                                        <td class="tanggal_upload">{{ $mt->tanggal_upload}}</td>
+                                        <td class="tanggal_signed">{{ $mt->tanggal_signed}}</td>
                                         <td><a href="https://rssoepraoen.com/webapps/berkasrawat/{{ $mt->path }}">{{ $mt->path }}
                                         </td>
                                         @if($mt->signed_status == 'BELUM')
@@ -108,8 +106,7 @@
                                                 <input type="hidden" name="signed_status"
                                                     value="{{ $mt->signed_status }}">
                                                 <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn"
-                                                        type="button">Kirim</button>
+                                                    <button class="btn btn-primary btn-sm cetak-btn"  id="open-modal" type="button">Kirim</button>
                                                 </div>
                                             </form>
                                             @else
@@ -120,6 +117,34 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <!-- Modal Example Start-->
+                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
+                                <form id="form-send-tte">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="demoModalLabel">Masukkan passphrase..!!</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
+                                                    <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
+                                                    <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
+                                                    <input type="text" class="form-control" name="passphrase" autocomplete="false" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" id="btn-send" class="btn btn-primary">Send</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Modal Example End-->
                         </div>
                         <div class="card-footer text-right">
                             <nav class="d-inline-block">
@@ -181,6 +206,84 @@ $('#btn-submit').click(function() {
     } else {
         $('#form-pembubuhan-tte-pdf')[0].reportValidity();
     }
+});
+
+
+$('#btn-send').click(function() {
+    if ($('#form-send-tte')[0].checkValidity()) {
+        var formData = new FormData();
+        formData.append('tgl_transaksi', $('input[name=tgl_transaksi]').val());
+        formData.append('alos', $('input[name=alos]').val());
+        formData.append('_token', $('input[name=_token]').val());
+        $.ajax({
+            url: "{{ route('store') }}",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                console.log(data.data);
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Data Berhasil ditambahkan",
+                    icon: "success",
+                    buttons: false,
+                    timer: 2000,
+                }).then(function() {
+                    window.location.href = "{{ route('tte') }}"
+                });
+            },
+            error: function(data) {
+                console.log(data);
+                Swal.fire({
+                    title: "Gagal!",
+                    text: "Data gagal ditambahkan",
+                    icon: "error",
+                    buttons: false,
+                    timer: 2000,
+                })
+            }
+        });
+    } else {
+        $('#form-pembubuhan-tte-pdf')[0].reportValidity();
+    }
+});
+
+$(document).ready(function() {
+  /**
+   * for showing edit item popup
+   */
+  
+  $(document).on('click', "#open-modal", function() {
+    $(this).addClass('open-modal-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+
+    var options = {
+      'backdrop': 'static'
+    };
+    $('#demoModal').modal(options)
+  })
+
+  // on modal show
+  $('#demoModal').on('show.bs.modal', function() {
+    var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
+    var row = el.closest(".data-row");
+
+    // get the data
+    var no_rawat = row.children(".no_rawat").text();
+    var jenis_rm = row.children(".jenis_rm").text();
+    var tanggal_upload = row.children(".tanggal_upload").text();
+
+    // fill the data in the input fields
+    $("#modal_no_rawat").val(no_rawat);
+    $("#modal_jenis_rm").val(jenis_rm);
+    $("#modal_tanggal_upload").val(tanggal_upload);
+  })
+
+  // on modal hide
+  $('#demoModal').on('hide.bs.modal', function() {
+    $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
+    $("#demoModal").trigger("reset");
+  })
 });
 </script>
 @endsection
