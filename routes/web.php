@@ -32,4 +32,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Lainnya
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
     Route::post('/users-store', [App\Http\Controllers\UserController::class, 'store'])->name('users-store');
+    Route::post('/users-update', [App\Http\Controllers\UserController::class, 'store'])->name('users-update');
+    Route::get('/users-delete', [App\Http\Controllers\UserController::class, 'store'])->name('users-delete');
 });

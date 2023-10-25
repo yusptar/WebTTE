@@ -46,18 +46,37 @@ class UserController extends Controller
         return response()->json(['success' => 'Berhasil menambahkan data', 'data' => $user], 200);
     }
 
-    public function edit($id)
+    public function update(Request $request)
     {
-        $users = User::find($id);
-        return response()->json($users);
+        $user_id = $request->user_id;
+
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
+        try{
+            $user = User::find($user_id);
+            $user->password = Hash::make($request->password);
+            $user->update();      
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        return response()->json(['success' => 'Berhasil update data'], 200);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        User::find($id)->delete();   
-        return response()->json(['success'=>'User deleted successfully.']);
-    }
+        $id = $request->id;
+        $query = User::find($id);
+        $query->delete();
 
+        if (!$query) {
+            return response()->json(['code' => 0, 'msg' => 'Something went wrong']);
+        } else {
+            return response()->json(['code' => 1, 'msg' => 'User has been deleted']);
+        }
+    }
 
     public function __construct()
     {
