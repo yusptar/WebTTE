@@ -9,12 +9,13 @@ use App\Models\Pegawai;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $user = User::with('pegawai');
+        $user = User::all();
         $pegawai = Pegawai::all();
         return view('settings.users', compact('user'));
     }
@@ -35,8 +36,7 @@ class UserController extends Controller
         }
         
         try{
-            $user = User::updateOrCreate(['id' => $request->user_id],
-            [
+            $user = User::create([
                 'username' => $request->username, 
                 'password' => Hash::make($request->password),
             ]);        

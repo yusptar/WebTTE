@@ -18,12 +18,12 @@
         <div class="container-fluid">
             <div class="card card-default">
                 <div class="card-header">
-                    <h3 class="card-title" style="font-weight:600">Input Form</h3>
+                    <h3 class="card-title" style="font-weight:600">Tambah User</h3>
                 </div>
                 <form id="form-users">
                     @csrf
                     <div class="card-body">
-                        {{-- <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" /> --}}
+                        <input type="hidden" name="_token" value="" />
                         <div class="form-group">
                             <label>NIP/NRP</label>
                             <input id="username" type="text"
@@ -32,9 +32,14 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input id="password" type="password"
+                            <input id="password-confirm" type="password"
                                 class="form-control @error('password') is-invalid @enderror" name="password" required
                                 autocomplete="new-password">
+                        </div>
+                        <div class="form-group">
+                            <label>Konfirmasi Password</label>
+                            <input id="password-confirm" type="password" class="form-control"
+                                name="password_confirmation" required autocomplete="new-password">
                         </div>
                     </div>
                     <div class=" card-footer">
@@ -57,16 +62,16 @@
                             <table class="table table-bordered table-hover" id="table-users">
                                 <thead>
                                     <tr>
-                                        <th>Username</th>
+                                        <th>NIP/NRP</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($user as $usr)
                                     <tr class="data-row">
-                                        <td class="username">{{ $usr->username}}</td>
+                                        <td class="username">{{ $usr->username }}</td>
                                         <td>
-                                            Tes
+
                                         </td>
                                     </tr>
                                     @endforeach
@@ -102,6 +107,7 @@ $('#btn-submit').click(function() {
         var formData = new FormData();
         formData.append('username', $('input[name=username]').val());
         formData.append('password', $('input[name=password]').val());
+        formData.append('password_confirmation', $('input[name=password_confirmation]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
             url: "{{ route('users-store') }}",
@@ -121,15 +127,14 @@ $('#btn-submit').click(function() {
                 });
             },
             error: function(data) {
+                console.log(data);
                 Swal.fire({
                     title: "Gagal!",
                     text: "Data gagal ditambahkan",
                     icon: "error",
                     buttons: false,
                     timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('users') }}"
-                });
+                })
             }
         });
     } else {
