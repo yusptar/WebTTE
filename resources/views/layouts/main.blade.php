@@ -36,8 +36,8 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ asset('auth/images/logo-nagara.png') }}" alt="BIOS Webservice"
-                height="200" width="200">
+            <img class="animation__shake" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice"
+                height="200" width="600">
             <br>
         </div>
         <!-- include navbar -->

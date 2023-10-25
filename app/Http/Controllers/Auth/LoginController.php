@@ -42,7 +42,7 @@ class LoginController extends Controller
             Session::put($ses_data);
             Alert::success('Login Berhasil!', 'Selamat Datang! ' .$user_data->nama);
             // session()->flash('user_name', $user_data->nama);
-            return view('dashboard.index');
+            return redirect()->route('dashboard')->with(['user_data' => $user_data]);
         } else {
             Alert::error('Oops! Login Gagal.', 'Terdapat Kesalahan!');
             return redirect()->back();

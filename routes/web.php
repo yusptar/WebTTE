@@ -23,8 +23,13 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 
 // add login middleware
 Route::group(['middleware' => ['auth']], function () {
+    // Pra Integrasi TTE
     Route::get('/upload-rm', [App\Http\Controllers\TTEController::class, 'index'])->name('upload-rm');
     Route::get('/upload-tte', [App\Http\Controllers\TTEController::class, 'index'])->name('tte');
     Route::post('/store', [App\Http\Controllers\TTEController::class, 'store'])->name('store');
     Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
+
+    // Lainnya
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::post('/users-store', [App\Http\Controllers\UserController::class, 'store'])->name('users-store');
 });

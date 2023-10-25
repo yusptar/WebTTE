@@ -43,7 +43,7 @@
             </a>
         </li> -->
         <li class="nav-item">
-
+            <h5 style="font-weight:bold;">Selamat datang, {{ Auth::user()->username }}</h5>
         </li>
     </ul>
 </nav>

@@ -31,8 +31,10 @@
                with font-awesome or any other icon font library -->
 
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                <li
+                    class="nav-item {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Form TTE
@@ -50,6 +52,24 @@
                             <a href="{{ route('tte') }}"
                                 class="nav-link {{ (request()->routeIs('tte')) ? 'active' : '' }}">
                                 <p>Pembubuhan TTE PDF</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header">Lainnya</li>
+                <li class="nav-item {{ (request()->routeIs('users')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('users'))  ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Settings
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('users') }}"
+                                class="nav-link {{ (request()->routeIs('users')) ? 'active' : '' }}">
+                                <p>Users</p>
                             </a>
                         </li>
                     </ul>
