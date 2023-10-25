@@ -71,7 +71,11 @@
                                     <tr class="data-row">
                                         <td class="username">{{ $usr->username }}</td>
                                         <td>
-
+                                            <button id="edit_btn" type="button" class="btn btn-outline-primary"
+                                                data-id=""><i class="fas fa-edit"></i>
+                                            </button>
+                                            <button id="delete_btn" type="button" class="btn btn-outline-danger"
+                                                data-id=""><i class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                     @endforeach
