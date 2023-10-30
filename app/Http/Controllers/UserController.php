@@ -37,7 +37,7 @@ class UserController extends Controller
 
     public function user_list()
     {
-        $users = User::all();
+        $users = User::with('pegawai');
         return DataTables::of($users)
             ->addColumn('actions', function ($row) {
                 return

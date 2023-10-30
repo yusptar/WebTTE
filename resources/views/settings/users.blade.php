@@ -58,7 +58,8 @@
                             <table id="users_table" class="table table-striped jambo_table">
                                 <thead>
                                     <tr class="headings">
-                                        <th class="column-title">Username</th>
+                                        <th class="column-title">NIP/NRP</th>
+                                        <th class="column-title">Nama</th>
                                         <th class="column-title">Action</th>
                                     </tr>
                                 </thead>
@@ -168,6 +169,10 @@ $('#users_table').DataTable({
     columns: [{
             data: "username",
             name: "username"
+        },
+        {
+            data: "pegawai.nama",
+            name: "pegawai.nama"
         },
         {
             data: "actions",

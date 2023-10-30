@@ -43,7 +43,7 @@
             </a>
         </li> -->
         <li class="nav-item">
-            <h5 style="font-weight:bold; margin-right:20px">Selamat datang, {{ Auth::user()->username }}</h5>
+            <h5 style="font-weight:bold; margin-right:20px">{{ Auth::user()->pegawai->nama }}</h5>
         </li>
     </ul>
 </nav>

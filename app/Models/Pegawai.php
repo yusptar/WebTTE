@@ -48,8 +48,8 @@ class Pegawai extends Model implements Authenticatable
         return 'remember_token'; // Replace with the actual remember token column name
     }
 
-    // public function usertte()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
