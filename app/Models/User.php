@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Yajra\DataTables\Facades\DataTables;
 
 class User extends Authenticatable
 {
@@ -19,7 +20,9 @@ class User extends Authenticatable
      */
 
     protected $table = 'users_tte';
-    protected $username = 'username';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+    
 
     protected $fillable = [
         'username',
@@ -46,8 +49,4 @@ class User extends Authenticatable
     ];
 
     
-    public function pegawai()
-    {
-        return $this->belongsTo(Pegawai::class, 'id');
-    }
 }

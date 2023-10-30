@@ -23,18 +23,14 @@
                 <form id="form-users">
                     @csrf
                     <div class="card-body">
-                        <input type="hidden" name="_token" value="" />
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>NIP/NRP</label>
-                            <input id="username" type="text"
-                                class="form-control @error('username') is-invalid @enderror" name="username"
-                                value="{{ old('username') }}" required autocomplete="username" autofocus>
+                            <input id="username" type="text" class="form-control" name="username" required>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input id="password-confirm" type="password"
-                                class="form-control @error('password') is-invalid @enderror" name="password" required
-                                autocomplete="new-password">
+                            <input id="password-confirm" type="password" class="form-control" name="password" required>
                         </div>
                         <div class="form-group">
                             <label>Konfirmasi Password</label>
@@ -59,26 +55,14 @@
                             <h3 class="card-title" style="font-weight:600">Tabel Users</h3>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-hover" id="table-users">
+                            <table id="users_table" class="table table-striped jambo_table">
                                 <thead>
-                                    <tr>
-                                        <th>NIP/NRP</th>
-                                        <th>Action</th>
+                                    <tr class="headings">
+                                        <th class="column-title">Username</th>
+                                        <th class="column-title">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user as $usr)
-                                    <tr class="data-row">
-                                        <td class="username">{{ $usr->username }}</td>
-                                        <td>
-                                            <button id="edit_btn" type="button" class="btn btn-outline-primary"
-                                                data-id=""><i class="fas fa-edit"></i>
-                                            </button>
-                                            <button id="delete_btn" type="button" class="btn btn-outline-danger"
-                                                data-id=""><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -93,19 +77,50 @@
     </section>
 </div>
 
+<!-- The modal -->
+<div class="modal fade user_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalLabel">Ubah Password</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
+            </div>
+            <div class="modal-body">
+                <form id="update_user" action="{{ route('user-update') }}" method="POST"
+                    class="form-label-left input_mask">
+                    @csrf
+                    <input type="hidden" name="id">
+                    <div class="col-md-12  form-group has-feedback">
+                        <label for="username">NIP/NRP</label>
+                        <input type="text" name="username" class="form-control has-feedback-left" placeholder="NIP/NRP"
+                            disabled>
+                    </div>
+                    <div class="col-md-12  form-group has-feedback">
+                        <label for="name">Password</label>
+                        <input id="password-confirm" type="password" class="form-control has-feedback-left"
+                            name="password">
+                    </div>
+                    <div class="col-md-12  form-group has-feedback">
+                        <label>Konfirmasi Password</label>
+                        <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="reset">Reset</button>
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
 <script>
-$(document).ready(function() {
-    $("#table-users").DataTable({
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": true,
-    })
-});
-
 $('#btn-submit').click(function() {
     if ($('#form-users')[0].checkValidity()) {
         var formData = new FormData();
@@ -114,7 +129,7 @@ $('#btn-submit').click(function() {
         formData.append('password_confirmation', $('input[name=password_confirmation]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "{{ route('users-store') }}",
+            url: "{{ route('user-store') }}",
             type: "POST",
             data: formData,
             contentType: false,
@@ -144,6 +159,128 @@ $('#btn-submit').click(function() {
     } else {
         $('#form-users')[0].reportValidity();
     }
+});
+
+$('#users_table').DataTable({
+    processing: true,
+    info: true,
+    ajax: "{{ route('user-list') }}",
+    columns: [{
+            data: "username",
+            name: "username"
+        },
+        {
+            data: "actions",
+            name: "actions"
+        },
+    ]
+});
+
+
+$(document).on('click', '#edit_user_btn', function() {
+    const id = $(this).data('id');
+    const url = "{{ route('user.detail') }}";
+    $('.user_modal').find('form')[0].reset();
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            id: id,
+        },
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+        },
+        dataType: 'json',
+        success: function(data) {
+            $('.user_modal').find('input[name="id"]').val(data.details.id);
+            $('.user_modal').find('input[name="username"]').val(data.details.username);
+            $('.user_modal').find('input[name="password"]').val(data.details.password);
+            $('.user_modal').find('input[name="password_confirmation"]').val(data.details.password);
+            $('.user_modal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.log('Error: ' + error);
+        }
+    });
+});
+
+$('#update_user').on('submit', function(e) {
+    e.preventDefault();
+    var form = this;
+    $.ajax({
+        url: $(form).attr('action'),
+        method: $(form).attr('method'),
+        data: new FormData(form),
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        beforeSend: function() {
+            $(this).find('span.error-text').text('');
+        },
+        success: function(data) {
+            if (data.code == 0) {
+                $.each(data.error, function(prefix, val) {
+                    $(form).find('span.' + prefix + '_error').text(val[0]);
+                });
+            } else {
+                $(form)[0].reset();
+                $('#users_table').DataTable().ajax.reload(null, false);
+                $('.user_modal').modal('hide');
+                Swal.fire(
+                    'Updated!',
+                    'Password telah diperbarui!',
+                    'success'
+                )
+            }
+        }
+    });
+});
+
+
+$(document).on('click', '#delete_user_btn', function(e) {
+    e.preventDefault();
+    let id = $(this).data('id');
+    Swal.fire({
+        title: 'Apakah anda yakin untuk menghapus data ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: "{{ route('user-delete') }}",
+                method: "POST",
+                data: {
+                    id: id,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.code == 0) {
+                        Swal.fire(
+                            'Oops!',
+                            'Something went wrong!.',
+                            'error'
+                        )
+                    } else {
+                        $('#users_table').DataTable().ajax.reload(null,
+                            false);
+                        Swal.fire(
+                            'Deleted!',
+                            'User data has been deleted.',
+                            'success'
+                        )
+                    }
+                }
+            });
+        }
+    })
 });
 </script>
 @endsection

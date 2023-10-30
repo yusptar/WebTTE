@@ -106,7 +106,8 @@
                                                 <input type="hidden" name="signed_status"
                                                     value="{{ $mt->signed_status }}">
                                                 <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn"  id="open-modal" type="button">Kirim</button>
+                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal"
+                                                        type="button">Kirim</button>
                                                 </div>
                                             </form>
                                             @else
@@ -118,33 +119,40 @@
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
-                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
-                                <form id="form-send-tte" autocomplete="off">
-                                    @csrf
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="demoModalLabel">Masukkan passphrase..!!</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
+                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog"
+                                aria-labelledby="demoModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="demoModalLabel">Masukkan passphrase..!!</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="form-send-tte" autocomplete="off">
+                                                @csrf
                                                 <div class="form-group">
-                                                    <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
-                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
-                                                    <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
-                                                    <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
-                                                    <input type="password" class="form-control" name="passphrase" autocomplete="new-password" required>
+                                                    <input type="hidden" name="_token"
+                                                        value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
+                                                    <input type="text" class="form-control" name="modal_no_rawat"
+                                                        id="modal_no_rawat" hidden>
+                                                    <input type="text" class="form-control" name="modal_jenis_rm"
+                                                        id="modal_jenis_rm" hidden>
+                                                    <input type="text" class="form-control" name="modal_tanggal_upload"
+                                                        id="modal_tanggal_upload" hidden>
+                                                    <input type="password" class="form-control" name="passphrase"
+                                                        autocomplete="new-password" required>
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="button" id="btn-send" class="btn btn-primary">Send</button>
-                                            </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="button" id="btn-send" class="btn btn-primary">Send</button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <!-- Modal Example End-->
                         </div>
@@ -226,7 +234,7 @@ $('#btn-send').click(function() {
             contentType: false,
             processData: false,
             success: function(data) {
-                
+
                 Swal.fire({
                     title: "Berhasil!",
                     text: data.msg,
@@ -258,10 +266,12 @@ $('#btn-send').click(function() {
 $(document).ready(function() {
 
     $(document).on('click', "#open-modal", function() {
-        $(this).addClass('open-modal-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+        $(this).addClass(
+            'open-modal-trigger-clicked'
+        ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
         var options = {
-        'backdrop': 'static'
+            'backdrop': 'static'
         };
         $('#demoModal').modal(options)
     })
