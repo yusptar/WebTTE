@@ -26,7 +26,7 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 Route::group(['middleware' => ['auth']], function () {
     // Pra Integrasi TTE
     Route::get('/upload-rm', [App\Http\Controllers\TTEController::class, 'index'])->name('upload-rm');
-    Route::get('/upload-tte', [App\Http\Controllers\TTEController::class, 'index'])->name('tte');
+    Route::get('/pembubuhan-tte', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte'])->name('pembubuhan-tte');
     Route::post('/store', [App\Http\Controllers\TTEController::class, 'store'])->name('store');
     Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
 

@@ -87,18 +87,17 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <div class="modal-body">
                 <form id="update_user" action="{{ route('user-update') }}" method="POST"
                     class="form-label-left input_mask">
                     @csrf
                     <input type="hidden" name="id">
-                    <div class="col-md-12  form-group has-feedback">
+                    <!-- <div class="col-md-12  form-group has-feedback">
                         <label for="username">NIP/NRP</label>
                         <input type="text" name="username" class="form-control has-feedback-left" placeholder="NIP/NRP"
                             disabled>
-                    </div>
+                    </div> -->
                     <div class="col-md-12  form-group has-feedback">
                         <label for="name">Password</label>
                         <input id="password-confirm" type="password" class="form-control has-feedback-left"
@@ -114,7 +113,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
@@ -199,7 +197,7 @@ $(document).on('click', '#edit_user_btn', function() {
         dataType: 'json',
         success: function(data) {
             $('.user_modal').find('input[name="id"]').val(data.details.id);
-            $('.user_modal').find('input[name="username"]').val(data.details.username);
+            // $('.user_modal').find('input[name="username"]').val(data.details.username);
             $('.user_modal').find('input[name="password"]').val(data.details.password);
             $('.user_modal').find('input[name="password_confirmation"]').val(data.details.password);
             $('.user_modal').modal('show');
@@ -252,7 +250,8 @@ $(document).on('click', '#delete_user_btn', function(e) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus!'
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Tidak',
     }).then((result) => {
         if (result.isConfirmed) {
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -278,7 +277,7 @@ $(document).on('click', '#delete_user_btn', function(e) {
                             false);
                         Swal.fire(
                             'Deleted!',
-                            'User data has been deleted.',
+                            'Data berhasil dihapus!.',
                             'success'
                         )
                     }

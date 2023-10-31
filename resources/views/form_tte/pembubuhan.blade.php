@@ -13,47 +13,6 @@
     </div>
     <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="card card-default">
-                <div class="card-header">
-                    <h3 class="card-title" style="font-weight:600">Input Form</h3>
-                </div>
-                <form id="form-pembubuhan-tte-pdf">
-                    @csrf
-                    <div class="card-body">
-                        <input type="text" class="form-control" name="tanggal_upload" hidden>
-                        {{-- <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" /> --}}
-                        <div class="form-group">
-                            <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
-                            <input type="text" class="form-control" name="no_rawat"
-                                placeholder="Masukkan Nomer Rekam Medis" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Jenis RM (Rekam Medis) <span style="color:red;">*</span></label>
-                            <select class="form-control" aria-label="Default select example">
-                                <option disabled selected>-- Pilih Jenis RM --</option>
-                                @foreach ($mstr_berkas as $mb)
-                                <option value="{{ $mb->kode }}">{{ $mb->kode }} - {{ $mb->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>File PDF <span style="color:red;">*</span></label>
-                            <br>
-                            <input name="path" type="file" accept="application/pdf" required>
-                        </div>
-                    </div>
-                    <div class=" card-footer">
-                        <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <!-- End Main content -->
-
     <!-- List Data -->
     <section class="content">
         <div class="container-fluid">
@@ -178,47 +137,6 @@ $(document).ready(function() {
     })
 });
 
-$('#btn-submit').click(function() {
-    if ($('#form-pembubuhan-tte-pdf')[0].checkValidity()) {
-        var formData = new FormData();
-        formData.append('tgl_transaksi', $('input[name=tgl_transaksi]').val());
-        formData.append('alos', $('input[name=alos]').val());
-        formData.append('_token', $('input[name=_token]').val());
-        $.ajax({
-            url: "{{ route('store') }}",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                Swal.fire({
-                    title: "Berhasil!",
-                    text: "Data Berhasil ditambahkan",
-                    icon: "success",
-                    buttons: false,
-                    timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('tte') }}"
-                });
-            },
-            error: function(data) {
-                Swal.fire({
-                    title: "Gagal!",
-                    text: "Data gagal ditambahkan",
-                    icon: "error",
-                    buttons: false,
-                    timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('tte') }}"
-                });
-            }
-        });
-    } else {
-        $('#form-pembubuhan-tte-pdf')[0].reportValidity();
-    }
-});
-
-
 $('#btn-send').click(function() {
     if ($('#form-send-tte')[0].checkValidity()) {
         var formData = new FormData();
@@ -242,7 +160,7 @@ $('#btn-send').click(function() {
                     buttons: false,
                     timer: 3000,
                 }).then(function() {
-                    window.location.href = "{{ route('tte') }}"
+                    window.location.href = "{{ route('pembubuhan-tte') }}"
                 });
             },
             error: function(data) {
@@ -254,7 +172,7 @@ $('#btn-send').click(function() {
                     buttons: false,
                     timer: 3000,
                 }).then(function() {
-                    // window.location.href = "{{ route('tte') }}"
+                    // window.location.href = "{{ route('pembubuhan-tte') }}"
                 });
             }
         });

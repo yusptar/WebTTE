@@ -15,7 +15,15 @@ class TTEController extends Controller
         $mstr_berkas = MasterBerkas::all();
         $brks_digital = BerkasDigital::get();
         $manj_tte = ManajemenTTE::get();
-        return view('form_tte.tte', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+        return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+    }
+
+    public function index_pembubuhan_tte()
+    {
+        $mstr_berkas = MasterBerkas::all();
+        $brks_digital = BerkasDigital::get();
+        $manj_tte = ManajemenTTE::get();
+        return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
     public function store(Request $request)
