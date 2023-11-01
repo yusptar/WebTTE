@@ -20,11 +20,11 @@
                 <div class="card-header">
                     <h3 class="card-title" style="font-weight:600">Input Form</h3>
                 </div>
-                <form id="form-pembubuhan-tte-pdf">
+                <form id="form-upload-rm" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <input type="text" class="form-control" name="tanggal_upload" hidden>
-                        {{-- <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" /> --}}
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_rawat"
@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group">
                             <label>Jenis RM (Rekam Medis) <span style="color:red;">*</span></label>
-                            <select class="form-control" aria-label="Default select example">
+                            <select class="form-control" name="jenis_rm" aria-label="Default select example">
                                 <option disabled selected>-- Pilih Jenis RM --</option>
                                 @foreach ($mstr_berkas as $mb)
                                 <option value="{{ $mb->kode }}">{{ $mb->kode }} - {{ $mb->nama }}</option>
@@ -67,13 +67,14 @@ $(document).ready(function() {
 });
 
 $('#btn-submit').click(function() {
-    if ($('#form-pembubuhan-tte-pdf')[0].checkValidity()) {
+    if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
-        formData.append('tgl_transaksi', $('input[name=tgl_transaksi]').val());
-        formData.append('alos', $('input[name=alos]').val());
+        formData.append('no_rawat', $('input[name=no_rawat]').val());
+        formData.append('jenis_rm', $('select[name=jenis_rm]').val());
+        formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "{{ route('store') }}",
+            url: "{{ route('store-rm') }}",
             type: "POST",
             data: formData,
             contentType: false,
@@ -90,19 +91,21 @@ $('#btn-submit').click(function() {
                 });
             },
             error: function(data) {
+                console.log(data);
                 Swal.fire({
                     title: "Gagal!",
                     text: "Data gagal ditambahkan",
                     icon: "error",
                     buttons: false,
                     timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('upload-rm') }}"
-                });
+                })
+                // }).then(function() {
+                //     // window.location.href = "{{ route('upload-rm') }}"
+                // });
             }
         });
     } else {
-        $('#form-pembubuhan-tte-pdf')[0].reportValidity();
+        $('#form-upload-rm')[0].reportValidity();
     }
 });
 </script>

@@ -146,7 +146,7 @@ $('#btn-send').click(function() {
         formData.append('passphrase', $('input[name=passphrase]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "{{ route('kirimTTE') }}",
+            url: "",
             type: "POST",
             data: formData,
             contentType: false,
@@ -181,40 +181,40 @@ $('#btn-send').click(function() {
     }
 });
 
-$(document).ready(function() {
+// $(document).ready(function() {
 
-    $(document).on('click', "#open-modal", function() {
-        $(this).addClass(
-            'open-modal-trigger-clicked'
-        ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+//     $(document).on('click', "#open-modal", function() {
+//         $(this).addClass(
+//             'open-modal-trigger-clicked'
+//         ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
-        var options = {
-            'backdrop': 'static'
-        };
-        $('#demoModal').modal(options)
-    })
+//         var options = {
+//             'backdrop': 'static'
+//         };
+//         $('#demoModal').modal(options)
+//     })
 
-    // on modal show
-    $('#demoModal').on('show.bs.modal', function() {
-        var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-        var row = el.closest(".data-row");
+//     // on modal show
+//     $('#demoModal').on('show.bs.modal', function() {
+//         var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
+//         var row = el.closest(".data-row");
 
-        // get the data
-        var no_rawat = row.children(".no_rawat").text();
-        var jenis_rm = row.children(".jenis_rm").text();
-        var tanggal_upload = row.children(".tanggal_upload").text();
+//         // get the data
+//         var no_rawat = row.children(".no_rawat").text();
+//         var jenis_rm = row.children(".jenis_rm").text();
+//         var tanggal_upload = row.children(".tanggal_upload").text();
 
-        // fill the data in the input fields
-        $("#modal_no_rawat").val(no_rawat);
-        $("#modal_jenis_rm").val(jenis_rm);
-        $("#modal_tanggal_upload").val(tanggal_upload);
-    })
+//         // fill the data in the input fields
+//         $("#modal_no_rawat").val(no_rawat);
+//         $("#modal_jenis_rm").val(jenis_rm);
+//         $("#modal_tanggal_upload").val(tanggal_upload);
+//     })
 
-    // on modal hide
-    $('#demoModal').on('hide.bs.modal', function() {
-        $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
-        $("#demoModal").trigger("reset");
-    })
-});
+//     // on modal hide
+//     $('#demoModal').on('hide.bs.modal', function() {
+//         $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
+//         $("#demoModal").trigger("reset");
+//     })
+// });
 </script>
 @endsection
