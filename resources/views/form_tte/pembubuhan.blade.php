@@ -30,7 +30,7 @@
                                         <th>Jenis RM</th>
                                         <th>Tgl Upload</th>
                                         <th>Tgl Signed</th>
-                                        <th>Path</th>
+                                        <th>Nama File</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -55,18 +55,13 @@
                                         @endif
                                         <td>
                                             @if($mt->signed_status == 'BELUM')
-                                            <form id="">
+                                            <form id="formKirim">
                                                 @csrf
-                                                <input type="text" class="form-control" name="tanggal_signed"
-                                                    value="{{ $mt->tanggal_signed }}" hidden>
-                                                <input type="text" class="form-control" value="{{ $mt->jam_signed }}"
-                                                    name="jam_signed" id="jam_upload" value="{{ $mt->signed_status }}"
-                                                    hidden>
-                                                <input type="hidden" name="signed_status"
-                                                    value="{{ $mt->signed_status }}">
+                                                <input type="text" class="form-control" name="no_rawat" id="no_rawat" value="{{ $mt->no_rawat }}" hidden>
+                                                <input type="text" class="form-control" name="tanggal_upload" id="tanggal_upload" value="{{ $mt->tanggal_upload }}" hidden>
+                                                <input type="text" class="form-control" name="nama_file" id="nama_file" value="{{ $mt->path }}" hidden>
                                                 <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal"
-                                                        type="button">Kirim</button>
+                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Kirim</button>
                                                 </div>
                                             </form>
                                             @else
@@ -89,19 +84,15 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="form-send-tte" autocomplete="off">
+                                            <form id="form-send-tte">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <input type="hidden" name="_token"
-                                                        value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
-                                                    <input type="text" class="form-control" name="modal_no_rawat"
-                                                        id="modal_no_rawat" hidden>
-                                                    <input type="text" class="form-control" name="modal_jenis_rm"
-                                                        id="modal_jenis_rm" hidden>
-                                                    <input type="text" class="form-control" name="modal_tanggal_upload"
-                                                        id="modal_tanggal_upload" hidden>
-                                                    <input type="password" class="form-control" name="passphrase"
-                                                        autocomplete="new-password" required>
+                                                    <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
+                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
+                                                    {{-- <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden> --}}
+                                                    <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
+                                                    <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
+                                                    <input type="text" class="form-control" name="passphrase" autocomplete="off" required>
                                                 </div>
                                             </form>
                                         </div>
@@ -141,12 +132,13 @@ $('#btn-send').click(function() {
     if ($('#form-send-tte')[0].checkValidity()) {
         var formData = new FormData();
         formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
-        formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
+        // formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
+        formData.append('nama_file', $('input[name=modal_nama_file]').val());
         formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
         formData.append('passphrase', $('input[name=passphrase]').val());
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "",
+            url: "{{ route('signInvisibleTTE') }}",
             type: "POST",
             data: formData,
             contentType: false,
@@ -181,40 +173,44 @@ $('#btn-send').click(function() {
     }
 });
 
-// $(document).ready(function() {
+$(document).ready(function() {
 
-//     $(document).on('click', "#open-modal", function() {
-//         $(this).addClass(
-//             'open-modal-trigger-clicked'
-//         ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+    $(document).on('click', "#open-modal", function() {
+        $(this).addClass(
+            'open-modal-trigger-clicked'
+        ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
-//         var options = {
-//             'backdrop': 'static'
-//         };
-//         $('#demoModal').modal(options)
-//     })
+        var options = {
+            'backdrop': 'static'
+        };
+        $('#demoModal').modal(options)
+    })
 
-//     // on modal show
-//     $('#demoModal').on('show.bs.modal', function() {
-//         var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-//         var row = el.closest(".data-row");
+    // on modal show
+    $('#demoModal').on('show.bs.modal', function() {
+        var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
+        var row = el.closest(".data-row");
 
-//         // get the data
-//         var no_rawat = row.children(".no_rawat").text();
-//         var jenis_rm = row.children(".jenis_rm").text();
-//         var tanggal_upload = row.children(".tanggal_upload").text();
+        // get the data
+        // var no_rawat = row.children(".no_rawat").text();
+        // var jenis_rm = row.children(".jenis_rm").text();
+        // var tanggal_upload = row.children(".tanggal_upload").text();
+        var no_rawat = $('#formKirim').find('input[name="no_rawat"]').val();
+        var tanggal_upload = $('#formKirim').find('input[name="jenis_rm"]').val();
+        var nama_file = $('#formKirim').find('input[name="nama_file"]').val();
 
-//         // fill the data in the input fields
-//         $("#modal_no_rawat").val(no_rawat);
-//         $("#modal_jenis_rm").val(jenis_rm);
-//         $("#modal_tanggal_upload").val(tanggal_upload);
-//     })
+        // fill the data in the input fields
+        $("#modal_no_rawat").val(no_rawat);
+        // $("#modal_jenis_rm").val(jenis_rm);
+        $("#modal_nama_file").val(nama_file);
+        $("#modal_tanggal_upload").val(tanggal_upload);
+    })
 
-//     // on modal hide
-//     $('#demoModal').on('hide.bs.modal', function() {
-//         $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
-//         $("#demoModal").trigger("reset");
-//     })
-// });
+    // on modal hide
+    $('#demoModal').on('hide.bs.modal', function() {
+        $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
+        $("#demoModal").trigger("reset");
+    })
+});
 </script>
 @endsection
