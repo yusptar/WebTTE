@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
 
 class TTEController extends Controller
 {
@@ -22,6 +23,7 @@ class TTEController extends Controller
         ]);
     }
 
+    // VIEW UPLOAD RM
     public function index()
     {
         $mstr_berkas = MasterBerkas::all();
@@ -30,6 +32,7 @@ class TTEController extends Controller
         return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
+    // VIEW PEMBUBUHAN TTE
     public function index_pembubuhan_tte()
     {
         $mstr_berkas = MasterBerkas::all();
@@ -38,14 +41,11 @@ class TTEController extends Controller
         return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
+    // MENGIRIM PDF KE STORAGE LARAVEL
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'no_rawat' => 'required|string',
-            'jenis_rm' => 'required|string',
-            'path' => 'required|mimes:pdf',
-        ]);
-            
+    {  
+        $pdf_upload = false;
+
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
@@ -53,62 +53,103 @@ class TTEController extends Controller
 
         $js_rm = $request->jenis_rm; 
         $no_rawat = $request->no_rawat; 
-        $pdf_name = 'RM' . $js_rm . '_' . $no_rawat . '.pdf'; // Format nama file PDF (contoh: RM07_20231012000005.pdf)
+        $f_no_rawat = str_replace('/', '', $no_rawat);
+        $pdf_name = 'RM' . $js_rm . '_' . $f_no_rawat . '.pdf';
 
-        $pdf = $request->file('path');
-        // $rm_path = '/pages/upload/' . $pdf_name;
-        // file_put_contents('https://rssoepraoen.com/webapps/berkasrawat' . $rm_path, file_get_contents($pdf));
-
-        $client = new Client();
-        $response = $client->request('POST', 'https://rssoepraoen.com/webapps/berkasrawat/pages/upload', [
-            'multipart' => [
-                [
-                    'name'     => 'file', // Nama field untuk file pada server
-                    'contents' => fopen($pdf->getPathname(), 'r'), // Baca file PDF
-                    'filename' => $pdf_name, // Nama file yang akan disimpan
-                ],
-            ],
-        ]);
-
-        if ($response->getStatusCode() === 200) {
-            try{
-                $tte = ManajemenTTE::create([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
-                    'tanggal_upload' => Carbon::now()->format('Y/m/d H:i:s'),
-                    'path' => '/pages/upload/' . $pdf_name,
-                    'signed_status' => 'BELUM',
-                ]);
-            }catch(Exception $e){
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
-            return response()->json(['success' => 'Berhasil menambahkan data', 'data' => $parkir], 200);
-        } else {
-            return response()->json(['error' => 'Gagal mengunggah file PDF'], $response->getStatusCode());
-        }
-    }
-
-    public function update(Request $request)
-    {
-        $no_rawat = $request->no_rawat;
-        $jenis_rm = $request->jenis_rm;
-        $tgl_upload = $request->tanggal_upload;
-
-        $validator = $this->validator($request->all());
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-        
         try{
-            $tte = ManajemenTTE::select('no_rawat', 'jenis_rm', 'tgl_upload')->find($no_rawat);
-            $tte->tanggal_signed = Carbon::now()->format('Y/m/d H:i:s');
-            $tte->signed_status = 'SUDAH';
-            $tte->save();
-        } catch(Exception $e){
-            return response()->json(['code' => 0, 'msg' => $e->getMessage()], 500);
+            if ($request->hasFile('path')) {
+                $pdf_upload = $request->file('path')->storeAs('public/rekam-medis', $pdf_name);
+            } else {
+                $pdf_upload = true;
+            }
+
+            $tte = ManajemenTTE::create([
+                'no_rawat' => $request->no_rawat,
+                'jenis_rm' => $request->jenis_rm,
+                'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                'tanggal_signed' => '0000-00-00 00:00:00',
+                'path' => $pdf_name,
+                'signed_status' => 'BELUM',
+            ]);
+        } catch (Exception $e){
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-        return response()->json(['code' => 1, 'msg' => 'Kirim TTE Berhasil'], 200);
+        return response()->json(['success' => 'Berhasil menambahkan data'], 200);
     }
+
+    // public function update(Request $request)
+    // {
+    //     $no_rawat = $request->no_rawat;
+    //     $jenis_rm = $request->jenis_rm;
+    //     $tgl_upload = $request->tanggal_upload;
+
+    //     $validator = $this->validator($request->all());
+    //     if ($validator->fails()) {
+    //         return response()->json(['error' => $validator->errors()], 400);
+    //     }
+        
+    //     try{
+    //         $tte = ManajemenTTE::select('no_rawat', 'jenis_rm', 'tgl_upload')->find($no_rawat);
+    //         $tte->tanggal_signed = Carbon::now()->format('Y/m/d H:i:s');
+    //         $tte->signed_status = 'SUDAH';
+    //         $tte->save();
+    //     } catch(Exception $e){
+    //         return response()->json(['code' => 0, 'msg' => $e->getMessage()], 500);
+    //     }
+    //     return response()->json(['code' => 1, 'msg' => 'Kirim TTE Berhasil'], 200);
+    // }
+
+    // MENGIRIM PDF KE EKSTERNAL URL
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'no_rawat' => 'required|string',
+    //         'jenis_rm' => 'required|string',
+    //         'path' => 'required|mimes:pdf',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['error' => $validator->errors()], 400);
+    //     }
+
+    //     $js_rm = $request->jenis_rm;
+    //     $no_rawat = $request->no_rawat;
+    //     $f_no_rawat = str_replace('/', '', $no_rawat);
+    //     $pdf_name = 'RM' . $js_rm . '_' . $f_no_rawat . '.pdf';
+
+    //     $pdf = $request->file('path');
+
+    //     try {
+    //         $client = new Client();
+    //         // Mengirim file PDF ke URL eksternal
+    //         $response = $client->request('POST', env('UPL_URL'), [
+    //             'multipart' => [
+    //                 [
+    //                     'name' => 'pdf', // Nama field yang digunakan di server eksternal
+    //                     'contents' => fopen($pdf->getPathname(), 'r'), // Baca file PDF
+    //                     'filename' => $pdf_name, // Nama file yang akan disimpan
+    //                 ],
+    //             ],
+    //         ]);
+
+    //         if ($response->getStatusCode() === 200) {
+    //             $tte = ManajemenTTE::create([
+    //                 'no_rawat' => $request->no_rawat,
+    //                 'jenis_rm' => $request->jenis_rm,
+    //                 'tanggal_upload' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                 'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                 'path' => 'pages/upload/' . $pdf_name, // Ubah path sesuai kebutuhan
+    //                 'signed_status' => 'BELUM',
+    //             ]);
+    //         } else {
+    //             return response()->json(['error' => 'Gagal mengunggah file PDF'], $response->getStatusCode());
+    //         }
+    //     } catch (Exception $e) {
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+
+    //     return response()->json(['success' => 'Berhasil menambahkan data'], 200);
+    // }
 
     public function __construct()
     {

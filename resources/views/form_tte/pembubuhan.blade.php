@@ -42,7 +42,7 @@
                                         <td class="jenis_rm">{{ $mt->jenis_rm}}</td>
                                         <td class="tanggal_upload">{{ $mt->tanggal_upload}}</td>
                                         <td class="tanggal_signed">{{ $mt->tanggal_signed}}</td>
-                                        <td><a href="https://rssoepraoen.com/webapps/berkasrawat/{{ $mt->path }}">{{ $mt->path }}
+                                        <td><a target="_blank" href="{{ url('storage/rekam-medis/'.$mt->path) }}">{{ $mt->path }}
                                         </td>
                                         @if($mt->signed_status == 'BELUM')
                                         <td>

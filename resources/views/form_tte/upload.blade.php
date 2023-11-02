@@ -23,7 +23,6 @@
                 <form id="form-upload-rm" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
-                        <input type="text" class="form-control" name="tanggal_upload" hidden>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
