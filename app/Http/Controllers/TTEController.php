@@ -58,7 +58,7 @@ class TTEController extends Controller
 
         try{
             if ($request->hasFile('path')) {
-                $pdf_upload = $request->file('path')->storeAs('public/rekam-medis', $pdf_name);
+                $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
             } else {
                 $pdf_upload = true;
             }

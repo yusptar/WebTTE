@@ -42,3 +42,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/status-user-tte', [App\Http\Controllers\APITTEController::class, 'getStatusUser'])->name('getStatusUserTTE');
     Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
 // });
+
+// Route::group(['middleware' => ['auth']], function () {
+    // Route::get('/view-rm', [App\Http\Controllers\API\UploadRMController::class, 'index']);
+    Route::post('/api-store-pdf', [App\Http\Controllers\API\UploadRMController::class, 'store']);
+// });  

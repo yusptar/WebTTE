@@ -4,11 +4,10 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center mb-5">
-                <!-- <img src="{{ asset('auth/images/logo-nagara.png') }}" class="mr-4" alt="">
-                <img src="{{ asset('auth/images/logo-blu.png') }}" alt="">
-                <br><br> -->
-                <h3 class="mb-4 text-center"><strong>TTE</strong></h3>
+            <div class="col-md-12 text-center mb-5">
+                <img src="{{ asset('img/logorst-panjang.png') }}" class="mr-4" alt="" height="70%" width="70%">
+                <br><br>
+                <h3 class="mb-4 text-center" style="font-weight:bold;">Tanda Tangan Elektronik (TTE)</h3>
             </div>
         </div>
         <div class="row justify-content-center">
