@@ -40,5 +40,5 @@ use Illuminate\Support\Facades\Route;
 // add login middleware
 // Route::group(['middleware' => ['auth']], function () {
     Route::get('/status-user-tte', [App\Http\Controllers\APITTEController::class, 'getStatusUser'])->name('getStatusUserTTE');
-    Route::get('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
+    Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
 // });

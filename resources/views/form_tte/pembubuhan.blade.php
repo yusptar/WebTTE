@@ -42,39 +42,25 @@
                                         <td class="jenis_rm">{{ $mt->jenis_rm}}</td>
                                         <td class="tanggal_upload">{{ $mt->tanggal_upload}}</td>
                                         <td class="tanggal_signed">{{ $mt->tanggal_signed}}</td>
-                                        <td><a target="_blank" href="{{ url('storage/rekam-medis/'.$mt->path) }}">{{ $mt->path }}
+                                        <td class="nama_file"><a target="_blank" href="">{{ $mt->path }}</td>
+                                        <td class="signed_status">
+                                            <span class="badge rounded-pill {{ $mt->signed_status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->signed_status}}</span>
                                         </td>
-                                        @if($mt->signed_status == 'BELUM')
                                         <td>
-                                            <span class="badge rounded-pill bg-secondary">Belum TTE</span>
-                                        </td>
-                                        @elseif($mt->signed_status == 'SUDAH')
-                                        <td>
-                                            <span class="badge rounded-pill bg-success">Sudah TTE</span>
-                                        </td>
-                                        @endif
-                                        <td>
-                                            @if($mt->signed_status == 'BELUM')
-                                            <form id="formKirim">
-                                                @csrf
-                                                <input type="text" class="form-control" name="no_rawat" id="no_rawat" value="{{ $mt->no_rawat }}" hidden>
-                                                <input type="text" class="form-control" name="tanggal_upload" id="tanggal_upload" value="{{ $mt->tanggal_upload }}" hidden>
-                                                <input type="text" class="form-control" name="nama_file" id="nama_file" value="{{ $mt->path }}" hidden>
+                                            {{-- @if($mt->signed_status == 'BELUM') --}}
                                                 <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Kirim</button>
+                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>
                                                 </div>
-                                            </form>
-                                            @else
-                                            No Action
-                                            @endif
+                                            {{-- @else
+                                                No Action
+                                            @endif --}}
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
-                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog"
-                                aria-labelledby="demoModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -89,17 +75,15 @@
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
-                                                    {{-- <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden> --}}
                                                     <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
-                                                    <input type="text" class="form-control" name="passphrase" autocomplete="off" required>
+                                                    <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Close</button>
-                                            <button type="button" id="btn-send" class="btn btn-primary">Send</button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" id="btn-send" class="btn btn-primary input_passphrase">Sign Now</button>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +128,6 @@ $('#btn-send').click(function() {
             contentType: false,
             processData: false,
             success: function(data) {
-
                 Swal.fire({
                     title: "Berhasil!",
                     text: data.msg,
@@ -156,7 +139,6 @@ $('#btn-send').click(function() {
                 });
             },
             error: function(data) {
-                // alert(data.responseJSON.msg);
                 Swal.fire({
                     title: "Gagal!",
                     text: data.responseJSON.msg,
@@ -164,7 +146,7 @@ $('#btn-send').click(function() {
                     buttons: false,
                     timer: 3000,
                 }).then(function() {
-                    // window.location.href = "{{ route('pembubuhan-tte') }}"
+                    window.location.href = "{{ route('pembubuhan-tte') }}"
                 });
             }
         });
@@ -192,22 +174,22 @@ $(document).ready(function() {
         var row = el.closest(".data-row");
 
         // get the data
-        // var no_rawat = row.children(".no_rawat").text();
-        // var jenis_rm = row.children(".jenis_rm").text();
-        // var tanggal_upload = row.children(".tanggal_upload").text();
-        var no_rawat = $('#formKirim').find('input[name="no_rawat"]').val();
-        var tanggal_upload = $('#formKirim').find('input[name="jenis_rm"]').val();
-        var nama_file = $('#formKirim').find('input[name="nama_file"]').val();
+        var no_rawat = row.children(".no_rawat").text();
+        var tanggal_upload = row.children(".tanggal_upload").text();
+        // var tanggal_signed = row.children(".tanggal_signed").text();
+        var nama_file = row.children(".nama_file").text();
 
         // fill the data in the input fields
         $("#modal_no_rawat").val(no_rawat);
         // $("#modal_jenis_rm").val(jenis_rm);
         $("#modal_nama_file").val(nama_file);
         $("#modal_tanggal_upload").val(tanggal_upload);
+
     })
 
     // on modal hide
     $('#demoModal').on('hide.bs.modal', function() {
+        $("#passphrase").val('');
         $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
         $("#demoModal").trigger("reset");
     })

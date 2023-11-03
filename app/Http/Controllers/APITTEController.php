@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ManajemenTTE;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
@@ -9,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Config;
+use Exception;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -55,25 +58,20 @@ class APITTEController extends Controller
 
     public function signInvisible(Request $request)
     {
-        
-        
-    //     // $rules = [
-    //     //     'passphrase' => 'required',
-    //     // ];
-    
-    //     // $customMessages = [
-    //     //     'required' => 'Passphrase is required'
-    //     // ];
-    
-    //     // $this->validate($request, $rules, $customMessages);
-    
-        // $nik = '0803202100007062';
-        $nik = Auth::user()->pegawai->no_ktp;
+        $nik = '0803202100007062';
+        // $nik = Auth::user()->pegawai->no_ktp;
         $passphrase =$request->passphrase;
         // $passphrase ='Hantek1234.!';
-        $location = '3';
-        $nama_file = 'contoh-file.pdf';
+        $location = '1';
+        $nama_file = $request->nama_file;
         $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_TTE.pdf';
+
+        /*
+        Check apakah file ada di dalam storage
+        */ 
+        if(!file_exists($this->storage_location . $nama_file)){
+            return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
+        }
 
         $url = $this->baseurl_api . '/tte/api/sign/pdf';
 
@@ -121,13 +119,27 @@ class APITTEController extends Controller
 
         // echo $response->getBody();
         if ($response->getStatusCode() == 200) {
-            return response()->json(['success' => 'hehehe', ], 200);
-                //perform your action with $response 
+            try{
+                $tte = ManajemenTTE::where([
+                    'no_rawat' => $request->no_rawat,
+                    'tanggal_upload' => $request->tanggal_upload,
+                    'path' => $nama_file,
+                    ])->update([
+                        'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
+                        'path' => $target_file,
+                        'signed_status' => 'SUDAH',
+                    ]);
+            }catch(Exception $e){
+                return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
+            }
+            unlink(storage_path('app/rekam-medis/' . $nama_file));
+            return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
         }else{
             unlink(storage_path('app/rekam-medis/' . $target_file));
-            $responseBody = json_decode($response->getBody());
-            return response()->json(['error' => $responseBody->message], 400);
+            return response()->json(['msg' => 'Proses TTE gagal..!!'], 400);
         }
+
+        
 
     }
 }
