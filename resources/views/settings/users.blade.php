@@ -25,17 +25,27 @@
                     <div class="card-body">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
-                            <label>NIP/NRP</label>
-                            <input id="username" type="text" class="form-control" name="username" required>
+                            <label>Pilih Role <span style="color:red;">*</span></label>
+                            <select name="role" id="role" class="form-control">
+                                <option disabled selected>-- Choose File --</option>
+                                <option value="perawat">Perawat</option>
+                                <option value="ppa">PPA</option>
+                                <option value="petugas">Petugas BPJS</option>
+                                <option value="admin">Admin</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input id="password-confirm" type="password" class="form-control" name="password" required>
+                            <label>NIP/NRP <span style="color:red;">*</span></label>
+                            <input id="username" type="text" class="form-control" name="username" required placeholder="Masukkan NIP/NRP">
                         </div>
                         <div class="form-group">
-                            <label>Konfirmasi Password</label>
+                            <label>Password <span style="color:red;">*</span></label>
+                            <input id="password-confirm" type="password" class="form-control" name="password" required placeholder="Masukkan Password">
+                        </div>
+                        <div class="form-group">
+                            <label>Konfirmasi Password <span style="color:red;">*</span></label>
                             <input id="password-confirm" type="password" class="form-control"
-                                name="password_confirmation" required autocomplete="new-password">
+                                name="password_confirmation" required autocomplete="new-password" placeholder="Masukkan Konfirmasi Password">
                         </div>
                     </div>
                     <div class=" card-footer">
@@ -59,7 +69,7 @@
                                 <thead>
                                     <tr class="headings">
                                         <th class="column-title">NIP/NRP</th>
-                                        <th class="column-title">Nama</th>
+                                        <!-- <th class="column-title">Nama</th> -->
                                         <th class="column-title">Action</th>
                                     </tr>
                                 </thead>
@@ -99,12 +109,12 @@
                             disabled>
                     </div> -->
                     <div class="col-md-12  form-group has-feedback">
-                        <label for="name">Password</label>
+                        <label for="name">Password Baru</label>
                         <input id="password-confirm" type="password" class="form-control has-feedback-left"
                             name="password">
                     </div>
                     <div class="col-md-12  form-group has-feedback">
-                        <label>Konfirmasi Password</label>
+                        <label>Konfirmasi Password Baru</label>
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                     </div>
                     <div class="modal-footer">
@@ -123,6 +133,7 @@
 $('#btn-submit').click(function() {
     if ($('#form-users')[0].checkValidity()) {
         var formData = new FormData();
+        formData.append('role', $('select[name=role]').val());
         formData.append('username', $('input[name=username]').val());
         formData.append('password', $('input[name=password]').val());
         formData.append('password_confirmation', $('input[name=password_confirmation]').val());
@@ -168,10 +179,11 @@ $('#users_table').DataTable({
             data: "username",
             name: "username"
         },
-        {
-            data: "pegawai.nama",
-            name: "pegawai.nama"
-        },
+        
+        // {
+        //     data: (pegawai.nama !== 'null') ? pegawai.nama : "pegawai.nama",
+        //     name: (pegawai.nama !== 'null') ? pegawai.nama : 'pegawai.nama"
+        // },
         {
             data: "actions",
             name: "actions"
