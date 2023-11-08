@@ -29,6 +29,8 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+                <!-- ADMIN ACCESS -->
                 @can('admin')
                 <li class="nav-header">Pra Integrasi TTE</li>
                 <li
@@ -42,22 +44,18 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @canany(['perawat', 'ppa', 'admin'])
                         <li class="nav-item">
                             <a href="{{ route('upload-rm') }}"
                                 class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
                                 <p>Upload Dokumen RM</p>
                             </a>
                         </li>
-                        @endcanany
-                        @canany(['petugas', 'ppa', 'admin'])
                         <li class="nav-item">
                             <a href="{{ route('pembubuhan-tte') }}"
                                 class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
                                 <p>Pembubuhan TTE PDF</p>
                             </a>
                         </li>
-                        @endcanany
                     </ul>
                 </li>
                 <li class="nav-header">Lainnya</li>
@@ -79,6 +77,85 @@
                     </ul>
                 </li>
                 @endcan
+                
+                <!-- PETUGAS ACCESS -->
+                @can('petugas')
+                <li class="nav-header">Pra Integrasi TTE</li>
+                <li
+                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Form TTE
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('pembubuhan-tte') }}"
+                                class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
+                                <p>Pembubuhan TTE PDF</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+                
+                <!-- PPA ACCESS -->
+                @can('ppa')
+                <li class="nav-header">Pra Integrasi TTE</li>
+                <li
+                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Form TTE
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('pembubuhan-tte') }}"
+                                class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
+                                <p>Pembubuhan TTE PDF</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+
+                <!-- PERAWAT ACCESS -->
+                @can('perawat')
+                <li class="nav-header">Pra Integrasi TTE</li>
+                <li
+                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Form TTE
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+
                 <li class="nav-header">LOG OUT</li>
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" onclick="event.preventDefault();
