@@ -173,21 +173,3 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-
-<script>
-// Mendapatkan semua elemen nav-link
-var navLinks = document.querySelectorAll('.nav-link');
-
-// Menambahkan event listener untuk setiap nav-link
-navLinks.forEach(function(link) {
-    link.addEventListener('click', function() {
-        // Menghapus kelas "active" dari semua nav-link
-        navLinks.forEach(function(navLink) {
-            navLink.classList.remove('active');
-        });
-
-        // Menandai nav-link yang sedang diklik sebagai "active"
-        link.classList.add('active');
-    });
-});
-</script>

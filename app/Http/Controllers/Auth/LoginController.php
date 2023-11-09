@@ -62,13 +62,7 @@ class LoginController extends Controller
                 Alert::success('Login Berhasil!', 'Selamat Datang! Perawat ');
                 return redirect()->route('dashboard');
             }else{
-                $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK
-                $ses_data = [
-                    'id' => $user_data->nik, // Assuming 'nik' is the user ID
-                    'username' => $user_data->nama, // Assuming 'nama' is the username
-                ];
-                Session::put($ses_data);
-                Alert::success('Login Berhasil!', 'Selamat Datang! Admin ');
+                Alert::success('Login Berhasil!', 'Selamat Datang!');
                 return redirect()->route('dashboard');
             }
         } else {

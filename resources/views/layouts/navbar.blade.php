@@ -42,9 +42,16 @@
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li> -->
+        @cannot('admin')
         <li class="nav-item">
             <h5 style="font-weight:bold; margin-right:20px">{{ Auth::user()->pegawai->nama }}</h5>
         </li>
+        @endcannot
+        @can('admin-it')
+        <li class="nav-item">
+            <h5 style="font-weight:bold; margin-right:20px">{{ Auth::user()->pegawai->nama }}</h5>
+        </li>
+        @endcan
     </ul>
 </nav>
 <!-- /.navbar -->

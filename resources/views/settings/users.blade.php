@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label>Pilih Role <span style="color:red;">*</span></label>
                             <select name="role" id="role" class="form-control">
-                                <option disabled selected>-- Choose File --</option>
+                                <option disabled selected>-- Pilih Role --</option>
                                 <option value="perawat">Perawat</option>
                                 <option value="ppa">PPA</option>
                                 <option value="petugas">Petugas BPJS</option>
