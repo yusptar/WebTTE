@@ -6,19 +6,27 @@ use \App\Models\BerkasDigital;
 use \App\Models\MasterBerkas;
 use \App\Models\ManajemenTTE;
 use \App\Models\TTELog;
+use Exception;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TTEController extends Controller
 {
+    protected $manajemenTTE;
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->manajemenTTE = new ManajemenTTE();
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
             'no_rawat' => ['required', 'string'],
-            'jenis_rm' => ['required', 'string'],
             'path' => ['required', 'file', 'mimes:pdf'],
         ]);
     }
@@ -37,7 +45,18 @@ class TTEController extends Controller
     {
         $mstr_berkas = MasterBerkas::all();
         $brks_digital = BerkasDigital::get();
-        $manj_tte = ManajemenTTE::get();
+        // $manj_tte = ManajemenTTE::get();
+        $manj_tte = $this->manajemenTTE->getStatusFileRM();
+        return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+    }
+
+    // VIEW LIST DOKUMEN RM
+    public function index_list_dokumen_rm()
+    {
+        $mstr_berkas = MasterBerkas::all();
+        $brks_digital = BerkasDigital::get();
+        // $manj_tte = ManajemenTTE::get();
+        $manj_tte = $this->manajemenTTE->getStatusFileRM();
         return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
@@ -51,10 +70,9 @@ class TTEController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $js_rm = $request->jenis_rm; 
         $no_rawat = $request->no_rawat; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
-        $pdf_name = 'RM' . $js_rm . '_' . $f_no_rawat . '.pdf';
+        $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
 
         try{
             if ($request->hasFile('path')) {
@@ -65,7 +83,6 @@ class TTEController extends Controller
 
             $tte = ManajemenTTE::create([
                 'no_rawat' => $request->no_rawat,
-                'jenis_rm' => $request->jenis_rm,
                 'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                 'tanggal_signed' => '0000-00-00 00:00:00',
                 'path' => $pdf_name,
@@ -151,10 +168,6 @@ class TTEController extends Controller
     //     return response()->json(['success' => 'Berhasil menambahkan data'], 200);
     // }
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
 
     // public function kirimTTE(Request $request){

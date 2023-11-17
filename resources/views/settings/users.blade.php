@@ -179,10 +179,9 @@ $('#users_table').DataTable({
             data: "username",
             name: "username"
         },
-        
         // {
         //     data: (pegawai.nama !== 'null') ? pegawai.nama : "pegawai.nama",
-        //     name: (pegawai.nama !== 'null') ? pegawai.nama : 'pegawai.nama"
+        //     name: (pegawai.nama !== 'null') ? pegawai.nama : "pegawai.nama"
         // },
         {
             data: "actions",

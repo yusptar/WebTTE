@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ManajemenTTE extends Model
 {
@@ -15,9 +17,18 @@ class ManajemenTTE extends Model
 
     protected $fillable = [
         'no_rawat',
-        'jenis_rm',
         'tanggal_upload',
         'path',
         'signed_status',
     ];
+
+    public function getStatusFileRM(){
+        $result = DB::table('manajemen_rm_tte')
+                    ->join('status_tte_ppa', function ($join) {
+                        $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
+                            ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik);
+                    })
+                    ->get();
+        return $result;
+    }
 }

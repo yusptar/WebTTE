@@ -30,15 +30,6 @@
                                 placeholder="Masukkan Nomer Rekam Medis" required>
                         </div>
                         <div class="form-group">
-                            <label>Jenis RM (Rekam Medis) <span style="color:red;">*</span></label>
-                            <select class="form-control" name="jenis_rm" aria-label="Default select example">
-                                <option disabled selected>-- Pilih Jenis RM --</option>
-                                @foreach ($mstr_berkas as $mb)
-                                <option value="{{ $mb->kode }}">{{ $mb->kode }} - {{ $mb->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>File PDF <span style="color:red;">*</span></label>
                             <br>
                             <input name="path" type="file" accept="application/pdf" required>
@@ -69,7 +60,6 @@ $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
         formData.append('no_rawat', $('input[name=no_rawat]').val());
-        formData.append('jenis_rm', $('select[name=jenis_rm]').val());
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Pra Integrasi TTE
     Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index'])->name('upload-rm');
     Route::get('pembubuhan-tte', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte'])->name('pembubuhan-tte');
+    Route::get('list-dokumen-rm', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rm'])->name('list-dokumen-rm');
     Route::post('store-rm', [App\Http\Controllers\TTEController::class, 'store'])->name('store-rm');
     Route::post('update-tte', [App\Http\Controllers\TTEController::class, 'update'])->name('update-tte');
     
@@ -39,4 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('users-store', [App\Http\Controllers\UserController::class, 'store'])->name('user-store');
     Route::post('users-update', [App\Http\Controllers\UserController::class, 'update'])->name('user-update');
     Route::post('users-delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('user-delete');
+
+    Route::get('/status-user-tte', [App\Http\Controllers\APITTEController::class, 'getStatusUser'])->name('getStatusUserTTE');
+    Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
 });
