@@ -58,6 +58,12 @@
                                 <p>Pembubuhan TTE PDF</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('list-dokumen-rm') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-rm')) ? 'active' : '' }}">
+                                <p>List Dokumen RM</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-header">Lainnya</li>
@@ -95,9 +101,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('pembubuhan-tte') }}"
-                                class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
-                                <p>Pembubuhan TTE PDF</p>
+                            <a href="{{ route('list-dokumen-rm') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-rm')) ? 'active' : '' }}">
+                                <p>List Dokumen RM</p>
                             </a>
                         </li>
                     </ul>
@@ -128,6 +134,12 @@
                             <a href="{{ route('pembubuhan-tte') }}"
                                 class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
                                 <p>Pembubuhan TTE PDF</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('list-dokumen-rm') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-rm')) ? 'active' : '' }}">
+                                <p>List Dokumen RM</p>
                             </a>
                         </li>
                     </ul>

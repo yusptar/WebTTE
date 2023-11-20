@@ -40,54 +40,19 @@
                                         <td class="no_rawat">{{ $mt->no_rawat}}</td>
                                         <td class="tanggal_upload">{{ $mt->tanggal_upload}}</td>
                                         <td class="tanggal_signed">{{ $mt->tanggal_signed}}</td>
-                                        <td class="nama_file"><a target="_blank" href="">{{ $mt->path }}</td>
+                                        <td class="nama_file">{{ $mt->path }}</td>
                                         <td class="signed_status">
-                                            <span class="badge rounded-pill {{ $mt->status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->status}}</span>
+                                            <span class="badge rounded-pill {{ $mt->signed_status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->signed_status}}</span>
                                         </td>
                                         <td>
-                                            @if($mt->status == 'BELUM')
-                                                <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>
-                                                </div>
-                                            @else
-                                                No Action
-                                            @endif
+                                            <div>
+                                                <button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            <!-- Modal Example Start-->
-                            <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="demoModalLabel">Masukkan passphrase..!!</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="form-send-tte">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
-                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
-                                                    <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
-                                                    <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
-                                                    <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" id="btn-send" class="btn btn-primary input_passphrase">Sign Now</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal Example End-->
-                        </div>
                         <div class="card-footer text-right">
                             <nav class="d-inline-block">
                             </nav>
@@ -107,88 +72,63 @@ $(document).ready(function() {
         "responsive": true,
         "lengthChange": true,
         "autoWidth": true,
-    })
-});
+    });
 
-$('#btn-send').click(function() {
-    if ($('#form-send-tte')[0].checkValidity()) {
-        var formData = new FormData();
-        formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
-        formData.append('nama_file', $('input[name=modal_nama_file]').val());
-        formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
-        formData.append('passphrase', $('input[name=passphrase]').val());
-        formData.append('_token', $('input[name=_token]').val());
+    $(document).on('click', "#download", function() {
+    
+        $(this).addClass(
+            'download-trigger-clicked'
+        ); 
+
+        var el = $(".download-trigger-clicked"); // See how its usefull right here? 
+        var row = el.closest(".data-row");
+
+        // get the data
+        var namaFile = row.children(".nama_file").text();
         $.ajax({
-            url: "{{ route('signInvisibleTTE') }}",
+            url: "{{ route('downloadRM') }}",
             type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
+            data: {
+                _token : "{{ csrf_token() }}",
+                namaFile : namaFile
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
             success: function(data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                a.href = url;
+                a.download = namaFile;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
                 Swal.fire({
                     title: "Berhasil!",
-                    text: data.msg,
+                    text: "Dokumen berhasil didownload..!",
                     icon: "success",
                     buttons: false,
                     timer: 3000,
                 }).then(function() {
-                    window.location.href = "{{ route('pembubuhan-tte') }}"
+                    // window.location.href = "{{ route('list-dokumen-rm') }}"
                 });
             },
             error: function(data) {
                 Swal.fire({
                     title: "Gagal!",
-                    text: data.responseJSON.msg,
+                    text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
                     icon: "error",
                     buttons: false,
                     timer: 3000,
                 }).then(function() {
-                    window.location.href = "{{ route('pembubuhan-tte') }}"
+                    // window.location.href = "{{ route('list-dokumen-rm') }}"
                 });
             }
         });
-    } else {
-        $('#form-send-tte')[0].reportValidity();
-    }
-});
-
-$(document).ready(function() {
-
-    $(document).on('click', "#open-modal", function() {
-        $(this).addClass(
-            'open-modal-trigger-clicked'
-        ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
-
-        var options = {
-            'backdrop': 'static'
-        };
-        $('#demoModal').modal(options)
-    })
-
-    // on modal show
-    $('#demoModal').on('show.bs.modal', function() {
-        var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-        var row = el.closest(".data-row");
-
-        // get the data
-        var no_rawat = row.children(".no_rawat").text();
-        var tanggal_upload = row.children(".tanggal_upload").text();
-        // var tanggal_signed = row.children(".tanggal_signed").text();
-        var nama_file = row.children(".nama_file").text();
-
-        // fill the data in the input fields
-        $("#modal_no_rawat").val(no_rawat);
-        $("#modal_nama_file").val(nama_file);
-        $("#modal_tanggal_upload").val(tanggal_upload);
-
-    })
-
-    // on modal hide
-    $('#demoModal').on('hide.bs.modal', function() {
-        $("#passphrase").val('');
-        $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
-        $("#demoModal").trigger("reset");
-    })
+        
+        $('.download-trigger-clicked').removeClass('download-trigger-clicked')
+    });
 });
 </script>
 @endsection

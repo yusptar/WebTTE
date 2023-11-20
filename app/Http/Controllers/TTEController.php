@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class TTEController extends Controller
@@ -53,11 +54,20 @@ class TTEController extends Controller
     // VIEW LIST DOKUMEN RM
     public function index_list_dokumen_rm()
     {
-        $mstr_berkas = MasterBerkas::all();
-        $brks_digital = BerkasDigital::get();
-        // $manj_tte = ManajemenTTE::get();
-        $manj_tte = $this->manajemenTTE->getStatusFileRM();
-        return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+        $manj_tte = ManajemenTTE::get();
+        // $manj_tte = $this->manajemenTTE->getStatusFileRM();
+        return view('form_tte.listdokumen', compact( 'manj_tte'));
+    }
+
+    public function download(Request $request)
+    {
+        $fileName = $request->namaFile;
+        //check apakah dokumen ada di storage
+        if (Storage::disk('myRM')->exists($fileName)) {
+            return Storage::disk('myRM')->download($fileName);
+        } else {
+            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!!'], 400);
+        }
     }
 
     // MENGIRIM PDF KE STORAGE LARAVEL
