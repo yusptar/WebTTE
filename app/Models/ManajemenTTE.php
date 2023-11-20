@@ -31,4 +31,22 @@ class ManajemenTTE extends Model
                     ->get();
         return $result;
     }
+
+    public function getDetailRM(){
+        $result = DB::table('manajemen_rm_tte')
+                    ->join('reg_periksa', function ($join) {
+                        $join->on('manajemen_rm_tte.no_rawat', '=', 'reg_periksa.no_rawat');
+                    })
+                    ->join('pasien', function ($join) {
+                        $join->on('reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis');
+                    })
+                    ->join('penjab', function ($join) {
+                        $join->on('reg_periksa.kd_pj', '=', 'penjab.kd_pj');
+                    })
+                    ->join('poliklinik', function ($join) {
+                        $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
+                    })
+                    ->get();
+        return $result;
+    }
 }

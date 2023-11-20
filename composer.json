@@ -16,7 +16,8 @@
         "realrashid/sweet-alert": "^7.1",
         "soarecostin/file-vault": "^1.2",
         "tinymce/tinymce": "^6.3",
-        "yajra/laravel-datatables": "^1.5"
+        "yajra/laravel-datatables": "^1.5",
+        "yajra/laravel-datatables-oracle": "^9.21"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

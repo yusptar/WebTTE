@@ -52,11 +52,32 @@ class TTEController extends Controller
     }
 
     // VIEW LIST DOKUMEN RM
-    public function index_list_dokumen_rm()
+    public function index_list_dokumen_rm(Request $request)
     {
-        $manj_tte = ManajemenTTE::get();
-        // $manj_tte = $this->manajemenTTE->getStatusFileRM();
-        return view('form_tte.listdokumen', compact( 'manj_tte'));
+        if ($request->ajax()) {
+            $data = $this->manajemenTTE->getDetailRM();
+  
+            if ($request->filled('from_date') && $request->filled('to_date')) {
+                $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
+            }
+  
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('status', function($row){
+                        return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                    })
+                    ->addColumn('action', function($row){
+                        return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
+                    })
+                    ->rawColumns(['status','action'])
+                    ->make(true);
+        }
+            
+        return view('form_tte.listdokumen');
+
+        // $manj_tte = ManajemenTTE::get();
+        // $manj_tte = $this->manajemenTTE->getDetailRM();
+        // return view('form_tte.listdokumen', compact('manj_tte'));
     }
 
     public function download(Request $request)

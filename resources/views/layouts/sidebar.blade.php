@@ -89,8 +89,7 @@
                 <!-- PETUGAS ACCESS -->
                 @can('petugas')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li
-                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('list-dokumen-rm')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -100,6 +99,12 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('list-dokumen-rm') }}"
                                 class="nav-link {{ (request()->routeIs('list-dokumen-rm')) ? 'active' : '' }}">
@@ -113,8 +118,7 @@
                 <!-- PPA ACCESS -->
                 @can('ppa')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li
-                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm') || request()->routeIs('list-dokumen-rm')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
@@ -150,9 +154,8 @@
                 @can('perawat')
                 <li class="nav-header">Pra Integrasi TTE</li>
                 <li
-                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                    class="nav-item {{ (request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Form TTE
