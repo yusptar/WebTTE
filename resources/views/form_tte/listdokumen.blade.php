@@ -95,7 +95,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('list-dokumen-rm') }}",
+                url: "{{ (request()->routeIs('list-dokumen-ri')) ? route('list-dokumen-ri') : route('list-dokumen-rj') }}",
                 data:function (d) {
                     d.from_date = $('input[name="daterange"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
                     d.to_date = $('input[name="daterange"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
@@ -157,7 +157,7 @@
                         buttons: false,
                         timer: 3000,
                     }).then(function() {
-                        // window.location.href = "{{ route('list-dokumen-rm') }}"
+                        // window.location.href = "{{ (request()->routeIs('list-dokumen-ri')) ? route('list-dokumen-ri') : route('list-dokumen-rj') }}"
                     });
                 },
                 error: function(data) {
@@ -168,7 +168,7 @@
                         buttons: false,
                         timer: 3000,
                     }).then(function() {
-                        // window.location.href = "{{ route('list-dokumen-rm') }}"
+                        // window.location.href = "{{ (request()->routeIs('list-dokumen-ri')) ? route('list-dokumen-ri') : route('list-dokumen-rj') }}"
                     });
                 }
             });
