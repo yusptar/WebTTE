@@ -36,9 +36,9 @@
                 @can('admin')
                 <li class="nav-header">Pra Integrasi TTE</li>
                 <li
-                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                    class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm') || request()->routeIs('list-dokumen-rm')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm') || request()->routeIs('list-dokumen-rm')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Form TTE

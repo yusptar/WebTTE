@@ -15,6 +15,12 @@ use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
+    protected $user;
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = new User();
+    }
     public function index()
     {
         return view('settings.users');
@@ -38,13 +44,14 @@ class UserController extends Controller
 
     public function user_list()
     {
-        $users = User::with('pegawai');
+        // $users = User::with('pegawai');
+        $users = $this->user->getUserSIMRS();
         return DataTables::of($users)
             ->addColumn('actions', function ($row) {
                 return
                     '<div class="btn-group" role="group">
-                <button id="edit_user_btn" type="button" class="btn btn-outline-primary" data-id="' . $row['id'] . '"><i class="fas fa-edit"></i></button>
-                <button id="delete_user_btn"  type="button" class="btn btn-outline-danger" data-id="' . $row['id'] . '"><i class="fas fa-trash"></i></button>
+                <button id="edit_user_btn" type="button" class="btn btn-outline-primary" data-id="' . $row->id . '"><i class="fas fa-edit"></i></button>
+                <button id="delete_user_btn"  type="button" class="btn btn-outline-danger" data-id="' . $row->id . '"><i class="fas fa-trash"></i></button>
               </div>';
             })
             ->rawColumns(['actions'])
@@ -101,11 +108,4 @@ class UserController extends Controller
             return response()->json(['code' => 1]);
         }
     }
-
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
 }

@@ -16,50 +16,47 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <div class="card card-default">
-                <div class="card-header">
-                    <h3 class="card-title" style="font-weight:600">Tambah User</h3>
-                </div>
-                <form id="form-users">
-                    @csrf
-                    <div class="card-body">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                        <div class="form-group">
-                            <label>Pilih Role <span style="color:red;">*</span></label>
-                            <select name="role" id="role" class="form-control">
-                                <option disabled selected>-- Pilih Role --</option>
-                                <option value="perawat">Perawat</option>
-                                <option value="ppa">PPA</option>
-                                <option value="petugas">Petugas BPJS</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>NIP/NRP <span style="color:red;">*</span></label>
-                            <input id="username" type="text" class="form-control" name="username" required placeholder="Masukkan NIP/NRP">
-                        </div>
-                        <div class="form-group">
-                            <label>Password <span style="color:red;">*</span></label>
-                            <input id="password-confirm" type="password" class="form-control" name="password" required placeholder="Masukkan Password">
-                        </div>
-                        <div class="form-group">
-                            <label>Konfirmasi Password <span style="color:red;">*</span></label>
-                            <input id="password-confirm" type="password" class="form-control"
-                                name="password_confirmation" required autocomplete="new-password" placeholder="Masukkan Konfirmasi Password">
-                        </div>
-                    </div>
-                    <div class=" card-footer">
-                        <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <!-- End Main content -->
-    <section class="content">
-        <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
+                <div class="col-3">
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-weight:600">Tambah User</h3>
+                        </div>
+                        <form id="form-users">
+                            @csrf
+                            <div class="card-body">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                <div class="form-group">
+                                    <label>Pilih Role <span style="color:red;">*</span></label>
+                                    <select name="role" id="role" class="form-control">
+                                        <option disabled selected>-- Pilih Role --</option>
+                                        <option value="perawat">Perawat</option>
+                                        <option value="ppa">PPA</option>
+                                        <option value="petugas">Petugas BPJS</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>NIP/NRP <span style="color:red;">*</span></label>
+                                    <input id="username" type="text" class="form-control" name="username" required placeholder="Masukkan NIP/NRP">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password <span style="color:red;">*</span></label>
+                                    <input id="password-confirm" type="password" class="form-control" name="password" required placeholder="Masukkan Password">
+                                </div>
+                                <div class="form-group">
+                                    <label>Konfirmasi Password <span style="color:red;">*</span></label>
+                                    <input id="password-confirm" type="password" class="form-control"
+                                        name="password_confirmation" required autocomplete="new-password" placeholder="Masukkan Konfirmasi Password">
+                                </div>
+                            </div>
+                            <div class=" card-footer">
+                                <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-9">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title" style="font-weight:600">Tabel Users</h3>
@@ -69,7 +66,9 @@
                                 <thead>
                                     <tr class="headings">
                                         <th class="column-title">NIP/NRP</th>
-                                        <!-- <th class="column-title">Nama</th> -->
+                                        <th class="column-title">Role</th>
+                                        <th class="column-title">Nama</th>
+                                        <th class="column-title">NIK</th>
                                         <th class="column-title">Action</th>
                                     </tr>
                                 </thead>
@@ -86,6 +85,39 @@
             </div>
         </div>
     </section>
+    <!-- End Main content -->
+    {{-- <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-weight:600">Tabel Users</h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="users_table" class="table table-striped jambo_table">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">NIP/NRP</th>
+                                        <th class="column-title">Role</th>
+                                        <th class="column-title">Nama</th>
+                                        <th class="column-title">NIK</th>
+                                        <th class="column-title">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer text-right">
+                            <nav class="d-inline-block">
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> --}}
 </div>
 
 <!-- The modal -->
@@ -179,10 +211,18 @@ $('#users_table').DataTable({
             data: "username",
             name: "username"
         },
-        // {
-        //     data: (pegawai.nama !== 'null') ? pegawai.nama : "pegawai.nama",
-        //     name: (pegawai.nama !== 'null') ? pegawai.nama : "pegawai.nama"
-        // },
+        {
+            data: "role",
+            name: "role"
+        },
+        {
+            data: "nama",
+            name: "nama"
+        },
+        {
+            data: "no_ktp",
+            name: "no_ktp"
+        },
         {
             data: "actions",
             name: "actions"
