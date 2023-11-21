@@ -206,7 +206,6 @@
             // fill the data in the input fields
             $("#modal_no_rawat").val(no_rawat);
             $("#modal_nama_file").val(nama_file);
-            $("#modal_tanggal_upload").val(tanggal_upload);
 
         })
 
