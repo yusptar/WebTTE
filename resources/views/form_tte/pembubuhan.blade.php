@@ -79,7 +79,6 @@
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
-                                                    <input type="text" class="form-control" name="modal_tanggal_upload" id="modal_tanggal_upload" hidden>
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
                                                     <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
                                                 </div>
@@ -142,7 +141,6 @@
             var formData = new FormData();
             formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
             formData.append('nama_file', $('input[name=modal_nama_file]').val());
-            formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
             formData.append('passphrase', $('input[name=passphrase]').val());
             formData.append('_token', $('input[name=_token]').val());
             $.ajax({
