@@ -145,7 +145,6 @@ class APITTEController extends Controller
                 }
                 $tte = ManajemenTTE::where([
                     'no_rawat' => $request->no_rawat,
-                    'tanggal_upload' => $request->tanggal_upload,
                     'path' => $nama_file,
                     ])->update([
                         'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
