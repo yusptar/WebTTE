@@ -23,23 +23,29 @@
                             <h3 class="card-title" style="font-weight:600">Tabel RM</h3>
                         </div>
                         <div class="card-body">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input toggleSwitch" id="toggleSwitch" name="toggleSwitch">
+                                <label class="custom-control-label" for="toggleSwitch">BELUM TTE</label>
+                            </div>
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
                                     <tr>
                                         <th>No Rawat</th>
-                                        <th>Tgl Upload</th>
-                                        <th>Tgl Signed</th>
+                                        <th>No RM</th>
+                                        <th>Nama Pasien</th>
+                                        <th>Jenis Bayar</th>
                                         <th>Nama File</th>
-                                        <th>Status</th>
+                                        <th>Status TTE</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($manj_tte as $mt)
+                                    {{-- @foreach ($manj_tte as $mt)
                                     <tr class="data-row">
                                         <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="tanggal_upload">{{ $mt->tanggal_upload}}</td>
-                                        <td class="tanggal_signed">{{ $mt->tanggal_signed}}</td>
+                                        <td class="tanggal_upload">{{ $mt->no_rkm_medis}}</td>
+                                        <td class="tanggal_signed">{{ $mt->nm_pasien}}</td>
+                                        <td class="tanggal_signed">{{ $mt->png_jawab}}</td>
                                         <td class="nama_file"><a target="_blank" href="">{{ $mt->path }}</td>
                                         <td class="signed_status">
                                             <span class="badge rounded-pill {{ $mt->status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->status}}</span>
@@ -54,7 +60,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
@@ -102,93 +108,114 @@
 
 @section('script')
 <script>
-$(document).ready(function() {
-    $("#table-rm").DataTable({
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": true,
-    })
-});
-
-$('#btn-send').click(function() {
-    if ($('#form-send-tte')[0].checkValidity()) {
-        var formData = new FormData();
-        formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
-        formData.append('nama_file', $('input[name=modal_nama_file]').val());
-        formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
-        formData.append('passphrase', $('input[name=passphrase]').val());
-        formData.append('_token', $('input[name=_token]').val());
-        $.ajax({
-            url: "{{ route('signInvisibleTTE') }}",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                Swal.fire({
-                    title: "Berhasil!",
-                    text: data.msg,
-                    icon: "success",
-                    buttons: false,
-                    timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('pembubuhan-tte') }}"
-                });
+    $(function () {
+            
+        var table = $('#table-rm').DataTable({
+            responsive: true,
+            lengthChange: true,
+            autoWidth: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('pembubuhan-tte') }}",
+                data:function (d) {
+                    d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
+                }
             },
-            error: function(data) {
-                Swal.fire({
-                    title: "Gagal!",
-                    text: data.responseJSON.msg,
-                    icon: "error",
-                    buttons: false,
-                    timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('pembubuhan-tte') }}"
-                });
-            }
+            columns: [
+                {data: 'no_rawat', name: 'no_rawat'},
+                {data: 'no_rkm_medis', name: 'no_rkm_medis'},
+                {data: 'nm_pasien', name: 'nm_pasien'},
+                {data: 'png_jawab', name: 'png_jawab'},
+                {data: 'path', name: 'path'},
+                {data: 'status', name: 'status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
         });
-    } else {
-        $('#form-send-tte')[0].reportValidity();
-    }
-});
+        $("#toggleSwitch").click(function(){
+            table.draw();
+        });
+    });
 
-$(document).ready(function() {
+    $('#btn-send').click(function() {
+        if ($('#form-send-tte')[0].checkValidity()) {
+            var formData = new FormData();
+            formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
+            formData.append('nama_file', $('input[name=modal_nama_file]').val());
+            formData.append('tanggal_upload', $('input[name=modal_tanggal_upload]').val());
+            formData.append('passphrase', $('input[name=passphrase]').val());
+            formData.append('_token', $('input[name=_token]').val());
+            $.ajax({
+                url: "{{ route('signInvisibleTTE') }}",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: data.msg,
+                        icon: "success",
+                        buttons: false,
+                        timer: 3000,
+                    }).then(function() {
+                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                    });
+                },
+                error: function(data) {
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: data.responseJSON.msg,
+                        icon: "error",
+                        buttons: false,
+                        timer: 3000,
+                    }).then(function() {
+                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                    });
+                }
+            });
+        } else {
+            $('#form-send-tte')[0].reportValidity();
+        }
+    });
 
-    $(document).on('click', "#open-modal", function() {
-        $(this).addClass(
-            'open-modal-trigger-clicked'
-        ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+    $(document).ready(function() {
 
-        var options = {
-            'backdrop': 'static'
-        };
-        $('#demoModal').modal(options)
-    })
+        $(document).on('click', "#open-modal", function() {
+            $(this).addClass(
+                'open-modal-trigger-clicked'
+            ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
 
-    // on modal show
-    $('#demoModal').on('show.bs.modal', function() {
-        var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-        var row = el.closest(".data-row");
+            var options = {
+                'backdrop': 'static'
+            };
+            $('#demoModal').modal(options)
+        })
 
-        // get the data
-        var no_rawat = row.children(".no_rawat").text();
-        var tanggal_upload = row.children(".tanggal_upload").text();
-        // var tanggal_signed = row.children(".tanggal_signed").text();
-        var nama_file = row.children(".nama_file").text();
+        // on modal show
+        $('#demoModal').on('show.bs.modal', function() {
+            var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
+            var row = el.closest(".data-row");
 
-        // fill the data in the input fields
-        $("#modal_no_rawat").val(no_rawat);
-        $("#modal_nama_file").val(nama_file);
-        $("#modal_tanggal_upload").val(tanggal_upload);
+            // get the data
+            var no_rawat = row.children(".no_rawat").text();
+            var tanggal_upload = row.children(".tanggal_upload").text();
+            // var tanggal_signed = row.children(".tanggal_signed").text();
+            var nama_file = row.children(".nama_file").text();
 
-    })
+            // fill the data in the input fields
+            $("#modal_no_rawat").val(no_rawat);
+            $("#modal_nama_file").val(nama_file);
+            $("#modal_tanggal_upload").val(tanggal_upload);
 
-    // on modal hide
-    $('#demoModal').on('hide.bs.modal', function() {
-        $("#passphrase").val('');
-        $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
-        $("#demoModal").trigger("reset");
-    })
-});
+        })
+
+        // on modal hide
+        $('#demoModal').on('hide.bs.modal', function() {
+            $("#passphrase").val('');
+            $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
+            $("#demoModal").trigger("reset");
+        })
+    });
 </script>
 @endsection

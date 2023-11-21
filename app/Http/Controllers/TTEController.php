@@ -42,13 +42,31 @@ class TTEController extends Controller
     }
 
     // VIEW PEMBUBUHAN TTE
-    public function index_pembubuhan_tte()
+    public function index_pembubuhan_tte(Request $request)
     {
-        $mstr_berkas = MasterBerkas::all();
-        $brks_digital = BerkasDigital::get();
+        if ($request->ajax()) {
+            $data = $this->manajemenTTE->getStatusFileRM();
+  
+            if ($request->filled('status')) {
+                $data = $data->where('status', $request->status);
+            }
+  
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('status', function($row){
+                        return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                    })
+                    ->addColumn('action', function($row){
+                        return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    })
+                    ->rawColumns(['status','action'])
+                    ->make(true);
+        }
+            
+        return view('form_tte.pembubuhan');
         // $manj_tte = ManajemenTTE::get();
-        $manj_tte = $this->manajemenTTE->getStatusFileRM();
-        return view('form_tte.pembubuhan', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+        // $manj_tte = $this->manajemenTTE->getStatusFileRM();
+        // return view('form_tte.pembubuhan', compact( 'manj_tte'));
     }
 
     // VIEW LIST DOKUMEN RM
