@@ -47,7 +47,7 @@ class TTEController extends Controller
         if ($request->ajax()) {
             $data = $this->manajemenTTE->getStatusFileRM();
   
-            if ($request->filled('status') == 'BELUM') {
+            if ($request->status == 'BELUM') {
                 $data = $data->where('status', $request->status);
             }
   

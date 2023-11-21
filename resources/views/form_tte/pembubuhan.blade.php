@@ -24,7 +24,7 @@
                         </div>
                         <div class="card-body">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input toggleSwitch" id="toggleSwitch" name="toggleSwitch">
+                                <input type="checkbox" class="custom-control-input toggleSwitch" id="toggleSwitch" name="toggleSwitch" checked>
                                 <label class="custom-control-label" for="toggleSwitch">BELUM TTE</label>
                             </div>
                             <table class="table table-bordered table-hover" id="table-rm">
@@ -193,7 +193,7 @@
         // on modal show
         $('#demoModal').on('show.bs.modal', function() {
             var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
-            var row = el.closest(".data-row");
+            var row = el.closest("tr");
 
             // get the data
             // var no_rawat = row.children(".no_rawat").text();

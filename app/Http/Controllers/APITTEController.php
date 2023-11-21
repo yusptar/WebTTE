@@ -28,7 +28,7 @@ class APITTEController extends Controller
     public function __construct()
     {
       $this->baseurl_api = config('app.baseurl_api');
-      $this->storage_location = '../storage/app/rekam-medis/';
+      $this->storage_location = storage_path('app/rekam-medis/');//'../storage/app/rekam-medis/';
       $this->client = new Client();
       $this->statusTTE = new StatusTTEPPA();
     }
