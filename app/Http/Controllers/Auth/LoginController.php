@@ -41,8 +41,10 @@ class LoginController extends Controller
                     'username' => $user_data->nama, // Assuming 'nama' is the username
                 ];
                 Session::put($ses_data);
-                Alert::success('Login Berhasil!', 'Selamat Datang! Petugas BPJS');
-                return redirect()->route('dashboard');
+                Alert::success('Login Berhasil!', 'Selamat Datang! ' .  $user_data->nama);
+                // return redirect()->route('dashboard');
+                return redirect()->route('list-dokumen-rj');
+                
             }else if(auth()->user()->role == 'ppa'){
                 $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK
                 $ses_data = [
@@ -50,8 +52,10 @@ class LoginController extends Controller
                     'username' => $user_data->nama, // Assuming 'nama' is the username
                 ];
                 Session::put($ses_data);
-                Alert::success('Login Berhasil!', 'Selamat Datang! Petugas PPA ');
-                return redirect()->route('dashboard');
+                Alert::success('Login Berhasil!', 'Selamat Datang! ' .  $user_data->nama);
+                // return redirect()->route('dashboard');
+                return redirect()->route('pembubuhan-tte');
+
             }else if(auth()->user()->role == 'perawat'){
                 $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK
                 $ses_data = [
@@ -59,8 +63,9 @@ class LoginController extends Controller
                     'username' => $user_data->nama, // Assuming 'nama' is the username
                 ];
                 Session::put($ses_data);
-                Alert::success('Login Berhasil!', 'Selamat Datang! Perawat ');
+                Alert::success('Login Berhasil!', 'Selamat Datang! ' .  $user_data->nama);
                 return redirect()->route('dashboard');
+
             }else{
                 Alert::success('Login Berhasil!', 'Selamat Datang!');
                 return redirect()->route('dashboard');

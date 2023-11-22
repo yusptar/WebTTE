@@ -157,7 +157,7 @@
                         buttons: false,
                         timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        // window.location.href = "{{ route('pembubuhan-tte') }}"
                     });
                 },
                 error: function(data) {
@@ -168,7 +168,7 @@
                         buttons: false,
                         timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        // window.location.href = "{{ route('pembubuhan-tte') }}"
                     });
                 }
             });
