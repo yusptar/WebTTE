@@ -10,9 +10,9 @@ class TTELog extends Model
     use HasFactory;
     protected $table = 'log_tte';
     protected $primaryKey = 'id';
-    public $timestamps = false;
 
     protected $fillable = [
+        'id',
         'user',
         'created_at',
         'message',
