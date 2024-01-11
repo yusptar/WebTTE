@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use \App\Models\BerkasDigital;
 use \App\Models\MasterBerkas;
 use \App\Models\ManajemenTTE;
+use \App\Models\StatusTTEPPA;
 use \App\Models\TTELog;
 use Exception;
 use Illuminate\Support\Carbon;

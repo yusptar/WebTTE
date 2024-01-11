@@ -26,7 +26,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>Pilih Pegawai <span style="color:red;">*</span></label>
-                            <select class="form-control col-sm-3" id="pegawai" name="nip">
+                            <select class="form-control col-sm-3" name="nip">
                                 <option selected disabled>--- Pilih Pegawai ---</option>
                                 <option value="11950014800171">Simpen Widayati,S.Kep Ners, M.Kes</option>
                                 <option value="20220294535">Rayandra Yala Pratama, S.Kom, M.MT</option>
