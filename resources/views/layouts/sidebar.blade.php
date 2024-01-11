@@ -79,6 +79,12 @@
                                 <p>Rawat Inap</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('list-dokumen-surat') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}">
+                                <p>Surat</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-header">Lainnya</li>

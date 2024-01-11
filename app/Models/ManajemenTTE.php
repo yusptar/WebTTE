@@ -89,4 +89,9 @@ class ManajemenTTE extends Model
                     ->get();
         return $result;
     }
+
+    public function getDetailRMSurat(){
+        $result = DB::table('manajemen_rm_tte')->get();
+        return $result;
+    }
 }

@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pembubuhan-tte', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte'])->name('pembubuhan-tte');
     Route::get('list-dokumen-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rj'])->name('list-dokumen-rj');
     Route::get('list-dokumen-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_ri'])->name('list-dokumen-ri');
+    Route::get('list-dokumen-surat', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_sur'])->name('list-dokumen-surat');
     Route::post('store-rm', [App\Http\Controllers\TTEController::class, 'store'])->name('store-rm');
     Route::post('update-tte', [App\Http\Controllers\TTEController::class, 'update'])->name('update-tte');
     
