@@ -174,9 +174,9 @@ class TTEController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $no_rawat = $request->no_surat; 
-        $f_no_rawat = str_replace('/', '', $no_rawat);
-        $pdf_name = 'SURAT_' . $f_no_rawat . '.pdf';
+        $no_surat = $request->no_surat; 
+        $f_no_surat = str_replace('/', '', $no_surat);
+        $pdf_name = 'SURAT_' . $f_no_surat . '.pdf';
 
         try{
             if ($request->hasFile('path')) {
