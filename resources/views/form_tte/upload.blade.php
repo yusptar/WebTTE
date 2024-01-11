@@ -67,7 +67,7 @@ $(document).ready(function() {
 $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
-        formData.append('nip', $('input[name=nip]').val());
+        formData.append('nip', $('select[name=nip]').val());
         formData.append('no_rawat', $('input[name=no_rawat]').val());
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());

@@ -40,27 +40,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($manj_tte as $mt)
-                                    <tr class="data-row">
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="tanggal_upload">{{ $mt->no_rkm_medis}}</td>
-                                        <td class="tanggal_signed">{{ $mt->nm_pasien}}</td>
-                                        <td class="tanggal_signed">{{ $mt->png_jawab}}</td>
-                                        <td class="nama_file"><a target="_blank" href="">{{ $mt->path }}</td>
-                                        <td class="signed_status">
-                                            <span class="badge rounded-pill {{ $mt->status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->status}}</span>
-                                        </td>
-                                        <td>
-                                            @if($mt->status == 'BELUM')
-                                                <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>
-                                                </div>
-                                            @else
-                                                No Action
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
@@ -108,7 +87,6 @@
 @section('script')
 <script>
     $(function () {
-            
         var table = $('#table-rm').DataTable({
             responsive: true,
             lengthChange: true,

@@ -94,4 +94,6 @@ class ManajemenTTE extends Model
         $result = DB::table('manajemen_rm_tte')->get();
         return $result;
     }
+
+    
 }
