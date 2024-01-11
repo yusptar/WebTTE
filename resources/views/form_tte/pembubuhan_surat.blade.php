@@ -107,7 +107,9 @@
             endDate: moment()
         });
 
-        $('#table-rm').DataTable();
+        $('#table-rm').DataTable({
+            responsive: true
+        });
     });
 
     // $(function () {
