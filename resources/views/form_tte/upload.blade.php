@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label>No Surat <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_surat"
-                                placeholder="Masukkan Nomer Surat" required>
+                                placeholder="Masukkan Nomer Surat">
                         </div>
                         <div class="form-group">
                             <label>File PDF <span style="color:red;">*</span></label>
