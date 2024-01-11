@@ -27,7 +27,7 @@ class TTEController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'no_rawat' => ['required', 'string'],
+            'no_rawat' => ['string'],
             'path' => ['required', 'file', 'mimes:pdf'],
         ]);
     }
@@ -176,7 +176,7 @@ class TTEController extends Controller
 
         $no_rawat = $request->no_surat; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
-        $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
+        $pdf_name = 'SURAT_' . $f_no_rawat . '.pdf';
 
         try{
             if ($request->hasFile('path')) {
