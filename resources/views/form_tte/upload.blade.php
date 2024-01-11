@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0" style="font-weight:bold">Upload Dokumen Rekam Medis</h1>
+                    <h1 class="m-0" style="font-weight:bold">Upload Dokumen</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -25,9 +25,17 @@
                     <div class="card-body">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
-                            <label>No RM (Rekam Medis) <span style="color:red;">*</span></label>
-                            <input type="text" class="form-control" name="no_rawat"
-                                placeholder="Masukkan Nomer Rekam Medis" required>
+                            <label>Pilih Pegawai <span style="color:red;">*</span></label>
+                            <select class="form-control col-sm-3" id="pegawai" name="nip">
+                                <option selected disabled>--- Pilih Pegawai ---</option>
+                                <option value="11950014800171">Simpen Widayati,S.Kep Ners, M.Kes</option>
+                                <option value="20220294535">Rayandra Yala Pratama, S.Kom, M.MT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>No Surat <span style="color:red;">*</span></label>
+                            <input type="text" class="form-control" name="no_surat"
+                                placeholder="Masukkan Nomer Surat" required>
                         </div>
                         <div class="form-group">
                             <label>File PDF <span style="color:red;">*</span></label>

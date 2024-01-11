@@ -146,7 +146,7 @@ class TTEController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $no_rawat = $request->no_rawat; 
+        $no_rawat = $request->no_surat; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
         $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
 
@@ -158,11 +158,17 @@ class TTEController extends Controller
             }
 
             $tte = ManajemenTTE::create([
-                'no_rawat' => $request->no_rawat,
+                'no_rawat' => $request->no_surat,
                 'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                 'tanggal_signed' => '0000-00-00 00:00:00',
                 'path' => $pdf_name,
                 'signed_status' => 'BELUM',
+            ]);
+
+            $status_tte_ppa = StatusTTEPPA::create([
+                'no_rawat' => $request->no_surat,
+                'nip' => $request->nip,
+                'status' => 'BELUM',
             ]);
         } catch (Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);

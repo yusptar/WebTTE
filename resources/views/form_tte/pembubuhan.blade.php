@@ -30,7 +30,7 @@
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
                                     <tr>
-                                        <th>No Rawat</th>
+                                        <th>No Surat</th>
                                         <th>No RM</th>
                                         <th>Nama Pasien</th>
                                         <th>Jenis Bayar</th>
