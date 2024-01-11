@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label>No Surat <span style="color:red;">*</span></label>
-                            <input type="text" class="form-control" name="no_surat"
+                            <input type="text" class="form-control" name="no_rawat"
                                 placeholder="Masukkan Nomer Surat">
                         </div>
                         <div class="form-group">
@@ -68,7 +68,7 @@ $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
         formData.append('nip', $('input[name=nip]').val());
-        formData.append('no_rawat', $('input[name=no_surat]').val());
+        formData.append('no_rawat', $('input[name=no_rawat]').val());
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
