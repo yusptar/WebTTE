@@ -73,6 +73,23 @@
 @section('script')
 <script>
 
+    $(document).ready(function() {
+        $('input[name="daterange"]').daterangepicker({
+            startDate: moment(),//.subtract(1, 'M'),
+            endDate: moment()
+        });
+
+        $('#table-rm').DataTable();
+    });
+
+    // $('#table-rm').DataTable({
+    //     responsive: true,
+    //     lengthChange: true,
+    //     autoWidth: true,
+    //     processing: true,
+    //     serverSide: true,
+    // })
+
     // $(function () {
     
     //     $('input[name="daterange"]').daterangepicker({

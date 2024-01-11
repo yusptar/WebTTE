@@ -95,5 +95,8 @@ class ManajemenTTE extends Model
         return $result;
     }
 
-    
+    public function statustteppa()
+    {
+        return $this->belongsTo(StatusTTEPPA::class, 'no_rawat', 'no_rawat');
+    }
 }

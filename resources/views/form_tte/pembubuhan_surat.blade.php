@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0" style="font-weight:bold">Pembubuhan TTE PDF</h1>
+                    <h1 class="m-0" style="font-weight:bold">Pembubuhan TTE Surat</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -31,21 +31,14 @@
                                 <thead>
                                     <tr>
                                         <th>No Surat</th>
-                                        <th>No RM</th>
-                                        <th>Nama Pasien</th>
-                                        <th>Jenis Bayar</th>
                                         <th>Nama File</th>
                                         <th>Status TTE</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($manj_tte as $mt)
+                                    @foreach ($manj_tte as $mt)
                                     <tr class="data-row">
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
                                         <td class="no_rawat">{{ $mt->no_rawat}}</td>
                                         <td class="nama_file">{{ $mt->path }}</td>
                                         <td class="signed_status">
@@ -61,7 +54,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
@@ -108,42 +101,42 @@
 
 @section('script')
 <script>
-    // $(document).ready(function() {
-    //     $('input[name="daterange"]').daterangepicker({
-    //         startDate: moment(),//.subtract(1, 'M'),
-    //         endDate: moment()
-    //     });
-
-    //     $('#table-rm').DataTable();
-    // });
-
-    $(function () {
-        var table = $('#table-rm').DataTable({
-            responsive: true,
-            lengthChange: true,
-            autoWidth: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ route('pembubuhan-tte') }}",
-                data:function (d) {
-                    d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
-                }
-            },
-            columns: [
-                {data: 'no_rawat', name: 'no_rawat'},
-                {data: 'no_rkm_medis', name: 'no_rkm_medis'},
-                {data: 'nm_pasien', name: 'nm_pasien'},
-                {data: 'png_jawab', name: 'png_jawab'},
-                {data: 'path', name: 'path'},
-                {data: 'status', name: 'status'},
-                {data: 'action', name: 'action', orderable: false, searchable: false},
-            ]
+    $(document).ready(function() {
+        $('input[name="daterange"]').daterangepicker({
+            startDate: moment(),//.subtract(1, 'M'),
+            endDate: moment()
         });
-        $("#toggleSwitch").click(function(){
-            table.draw();
-        });
+
+        $('#table-rm').DataTable();
     });
+
+    // $(function () {
+    //     var table = $('#table-rm').DataTable({
+    //         responsive: true,
+    //         lengthChange: true,
+    //         autoWidth: true,
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax: {
+    //             url: "{{ route('pembubuhan-tte') }}",
+    //             data:function (d) {
+    //                 d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
+    //             }
+    //         },
+    //         columns: [
+    //             {data: 'no_rawat', name: 'no_rawat'},
+    //             {data: 'no_rkm_medis', name: 'no_rkm_medis'},
+    //             {data: 'nm_pasien', name: 'nm_pasien'},
+    //             {data: 'png_jawab', name: 'png_jawab'},
+    //             {data: 'path', name: 'path'},
+    //             {data: 'status', name: 'status'},
+    //             {data: 'action', name: 'action', orderable: false, searchable: false},
+    //         ]
+    //     });
+    //     $("#toggleSwitch").click(function(){
+    //         table.draw();
+    //     });
+    // });
 
     $('#btn-send').click(function() {
         if ($('#form-send-tte')[0].checkValidity()) {

@@ -58,6 +58,12 @@
                                 <p>Pembubuhan TTE PDF</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('pembubuhan-tte-surat') }}"
+                                class="nav-link {{ (request()->routeIs('pembubuhan-tte-surat')) ? 'active' : '' }}">
+                                <p>Pembubuhan TTE Surat</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj')) ? 'menu-open' : '' }}">

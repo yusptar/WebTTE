@@ -24,4 +24,6 @@ class StatusTTEPPA extends Model
         
         return $result;
     }
+
+    
 }

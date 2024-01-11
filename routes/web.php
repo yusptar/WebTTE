@@ -27,6 +27,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Pra Integrasi TTE
     Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index'])->name('upload-rm');
     Route::get('pembubuhan-tte', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte'])->name('pembubuhan-tte');
+    Route::get('pembubuhan-tte-surat', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte_surat'])->name('pembubuhan-tte-surat');
     Route::get('list-dokumen-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rj'])->name('list-dokumen-rj');
     Route::get('list-dokumen-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_ri'])->name('list-dokumen-ri');
     Route::get('list-dokumen-surat', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_sur'])->name('list-dokumen-surat');
