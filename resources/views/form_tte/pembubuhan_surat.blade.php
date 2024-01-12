@@ -31,7 +31,7 @@
                                 <thead>
                                     <tr>
                                         <th>No Surat</th>
-                                        <th>NIP</th>
+                                        <!-- <th>NIP</th> -->
                                         <th>Nama File</th>
                                         <th>Status TTE</th>
                                         <th>Action</th>
@@ -112,14 +112,14 @@
             ajax: {
                 url: "{{ route('pembubuhan-tte-surat') }}",
                 data:function (d) {
-                    d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
+                    d.status = ($('#toggleSwitch').is(':checked'))?'SUDAH':'BELUM';
                 }
             },
             columns: [
                 {data: 'no_rawat', name: 'no_rawat'},
-                {data: 'statustteppa.nip', name: 'statustteppa.nip'},
+                // {data: 'statustteppa.nip', name: 'statustteppa.nip'},
                 {data: 'path', name: 'path'},
-                {data: 'status', name: 'status'},
+                {data: 'signed_status', name: 'signed_status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });

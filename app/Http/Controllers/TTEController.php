@@ -88,18 +88,22 @@ class TTEController extends Controller
 
         return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('status', function($row){
-                    return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                ->addColumn('signed_status', function($row){
+                    return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
-                    return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    return ($row->signed_status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
                 })
-                ->rawColumns(['status','action'])
+                ->rawColumns(['signed_status','action'])
                 ->make(true);
     }
     // END
 
-    // VIEW LIST DOKUMEN RM
+    // VIEW LIST DOKUMEN RANAP
+    public function view_dokumen_ranap(){
+
+    }
+
     public function index_list_dokumen_ri(Request $request)
     {
         if ($request->ajax()) {
@@ -123,6 +127,11 @@ class TTEController extends Controller
             
         return view('list_dokumen.listdokumen');
     }
+
+    public function view_dokumen_ralan(){
+        
+    }
+
     public function index_list_dokumen_rj(Request $request)
     {
         if ($request->ajax()) {
@@ -153,7 +162,7 @@ class TTEController extends Controller
 
     public function index_list_dokumen_sur(Request $request)
     {
-        // if ($request->ajax()) {
+    
         //     $data = $this->manajemenTTE->getDetailRMSurat();
   
         //     if ($request->filled('from_date') && $request->filled('to_date')) {
@@ -170,7 +179,6 @@ class TTEController extends Controller
         //             })
         //             ->rawColumns(['status','action'])
         //             ->make(true);
-        // }
 
         $userNIP = Auth::user()->pegawai->nik;
 
