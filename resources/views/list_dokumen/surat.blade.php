@@ -82,13 +82,6 @@
         $('#table-rm').DataTable();
     });
 
-    // $('#table-rm').DataTable({
-    //     responsive: true,
-    //     lengthChange: true,
-    //     autoWidth: true,
-    //     processing: true,
-    //     serverSide: true,
-    // })
 
     // $(function () {
     

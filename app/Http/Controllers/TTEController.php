@@ -42,82 +42,62 @@ class TTEController extends Controller
         return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
-    // VIEW PEMBUBUHAN TTE
-    public function index_pembubuhan_tte(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $this->manajemenTTE->getStatusFileRM();
-  
-            if ($request->status == 'BELUM') {
-                $data = $data->where('status', $request->status);
-            }
-  
-            return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('status', function($row){
-                        return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
-                    })
-                    ->addColumn('action', function($row){
-                        return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
-                    })
-                    ->rawColumns(['status','action'])
-                    ->make(true);
-
-           
-        }
-
-        // $userNIP = Auth::user()->pegawai->nik;
-
-        // // Fetch data based on the user's NIP
-        // $manj_tte = ManajemenTTE::with('statustteppa')
-        //     ->whereHas('statustteppa', function ($query) use ($userNIP) {
-        //         $query->where('nip', $userNIP);
-        //     })
-        //     ->get();
-
-
-        // return view('form_tte.pembubuhan', compact('manj_tte'));
-
+    // START IEW PEMBUBUHAN TTE PDF
+    public function view_pembubuhan_rm(){
         return view('form_tte.pembubuhan');
-    
     }
 
-    // VIEW PEMBUBUHAN TTE
-    public function index_pembubuhan_tte_surat(Request $request)
+    public function index_pembubuhan_tte(Request $request)
     {
-        // if ($request->ajax()) {
-        //     $data = $this->manajemenTTE->getStatusFileRM();
+        $data = $this->manajemenTTE->getStatusFileRM();
   
-        //     if ($request->status == 'BELUM') {
-        //         $data = $data->where('status', $request->status);
-        //     }
-  
-        //     return Datatables::of($data)
-        //             ->addIndexColumn()
-        //             ->addColumn('status', function($row){
-        //                 return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
-        //             })
-        //             ->addColumn('action', function($row){
-        //                 return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
-        //             })
-        //             ->rawColumns(['status','action'])
-        //             ->make(true);
-        // }
+        if ($request->status == 'BELUM') {
+            $data = $data->where('status', $request->status);
+        }
 
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('status', function($row){
+                    return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                })
+                ->addColumn('action', function($row){
+                    return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                })
+                ->rawColumns(['status','action'])
+                ->make(true);      
+    }
+    //END
+
+    // START VIEW PEMBUBUHAN TTE 
+    public function view_pembubuhan_surat(){
+        return view('form_tte.pembubuhan_surat');
+    }
+
+    public function pembubuhan_surat_list(Request $request)
+    {
         $userNIP = Auth::user()->pegawai->nik;
-
-        // Fetch data based on the user's NIP
-        $manj_tte = ManajemenTTE::with('statustteppa')
+        $data = ManajemenTTE::with('statustteppa')
             ->whereHas('statustteppa', function ($query) use ($userNIP) {
                 $query->where('nip', $userNIP);
             })
             ->get();
 
+        if ($request->status == 'BELUM') {
+            $data = $data->where('status', $request->status);
+        }
 
-        return view('form_tte.pembubuhan_surat', compact('manj_tte'));
-
-        // return view('form_tte.pembubuhan');
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('status', function($row){
+                    return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                })
+                ->addColumn('action', function($row){
+                    return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                })
+                ->rawColumns(['status','action'])
+                ->make(true);
     }
+    // END
 
     // VIEW LIST DOKUMEN RM
     public function index_list_dokumen_ri(Request $request)
@@ -142,10 +122,6 @@ class TTEController extends Controller
         }
             
         return view('list_dokumen.listdokumen');
-
-        // $manj_tte = ManajemenTTE::get();
-        // $manj_tte = $this->manajemenTTE->getDetailRM();
-        // return view('form_tte.listdokumen', compact('manj_tte'));
     }
     public function index_list_dokumen_rj(Request $request)
     {

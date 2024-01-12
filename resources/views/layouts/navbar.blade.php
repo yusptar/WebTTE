@@ -37,26 +37,15 @@
                 </form>
             </div>
         </li> -->
-        @cannot('admin')
         <li class="nav-item">
             <div class="user-panel pb-1 d-flex">
                 <div class="info">
-                    <a href="#" id="edit_user_btn" style="color:black; font-weight:bold; font-size:16px" data-id="{{ Auth::user()->id }}">{{ Auth::user()->pegawai->nama }} &nbsp;&nbsp;&nbsp;<img src="{{ asset('img/avatar/avatar-1.png') }}" class="img-circle elevation-2" alt="User Image"></a>
+                    <a href="#" id="edit_user_btn" style="color:black; font-weight:bold; font-size:16px" data-id="{{ Auth::user()->id }}">{{ Auth::user()->pegawai->nama }} &nbsp;&nbsp;&nbsp;</a>
+                    <!-- <img src="{{ asset('img/avatar/avatar-1.png') }}" class="img-circle elevation-2" alt="User Image"> -->
                 </div>
               
             </div>
         </li>
-        @endcannot
-        @can('admin-it')
-        <li class="nav-item">
-            <div class="user-panel pb-1 d-flex">
-                <div class="info">
-                    <a href="#" id="edit_user_btn" style="color:black; font-weight:bold; font-size:16px" data-id="{{ Auth::user()->id }}">{{ Auth::user()->pegawai->nama}} &nbsp;&nbsp;&nbsp;<img src="{{ asset('img/avatar/avatar-1.png') }}" class="img-circle elevation-2" alt="User Image"></a>
-                </div>
-               
-            </div>
-        </li>
-        @endcan
     </ul>
 </nav>
 <!-- /.navbar -->

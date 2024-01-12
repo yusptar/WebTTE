@@ -31,13 +31,14 @@
                                 <thead>
                                     <tr>
                                         <th>No Surat</th>
+                                        <th>NIP</th>
                                         <th>Nama File</th>
                                         <th>Status TTE</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($manj_tte as $mt)
+                                   {{-- @foreach ($manj_tte as $mt)
                                     <tr class="data-row">
                                         <td class="no_rawat">{{ $mt->no_rawat}}</td>
                                         <td class="nama_file">{{ $mt->path }}</td>
@@ -54,7 +55,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
@@ -100,45 +101,32 @@
 @endsection
 
 @section('script')
-<script>
-    $(document).ready(function() {
-        $('input[name="daterange"]').daterangepicker({
-            startDate: moment(),//.subtract(1, 'M'),
-            endDate: moment()
+<script>    
+    $(function () {
+        var table = $('#table-rm').DataTable({
+            responsive: true,
+            lengthChange: true,
+            autoWidth: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('pembubuhan-tte-surat') }}",
+                data:function (d) {
+                    d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
+                }
+            },
+            columns: [
+                {data: 'no_rawat', name: 'no_rawat'},
+                {data: 'statustteppa.nip', name: 'statustteppa.nip'},
+                {data: 'path', name: 'path'},
+                {data: 'status', name: 'status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
         });
-
-        $('#table-rm').DataTable({
-            responsive: true
+        $("#toggleSwitch").click(function(){
+            table.draw();
         });
     });
-
-    // $(function () {
-    //     var table = $('#table-rm').DataTable({
-    //         responsive: true,
-    //         lengthChange: true,
-    //         autoWidth: true,
-    //         processing: true,
-    //         serverSide: true,
-    //         ajax: {
-    //             url: "{{ route('pembubuhan-tte') }}",
-    //             data:function (d) {
-    //                 d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
-    //             }
-    //         },
-    //         columns: [
-    //             {data: 'no_rawat', name: 'no_rawat'},
-    //             {data: 'no_rkm_medis', name: 'no_rkm_medis'},
-    //             {data: 'nm_pasien', name: 'nm_pasien'},
-    //             {data: 'png_jawab', name: 'png_jawab'},
-    //             {data: 'path', name: 'path'},
-    //             {data: 'status', name: 'status'},
-    //             {data: 'action', name: 'action', orderable: false, searchable: false},
-    //         ]
-    //     });
-    //     $("#toggleSwitch").click(function(){
-    //         table.draw();
-    //     });
-    // });
 
     $('#btn-send').click(function() {
         if ($('#form-send-tte')[0].checkValidity()) {
