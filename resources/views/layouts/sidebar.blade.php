@@ -86,8 +86,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('list-dokumen-surat') }}"
-                                class="nav-link {{ (request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}">
+                            <a href="{{ route('view-dok-surat') }}"
+                                class="nav-link {{ (request()->routeIs('view-dok-surat')) ? 'active' : '' }}">
                                 <p>Surat</p>
                             </a>
                         </li>

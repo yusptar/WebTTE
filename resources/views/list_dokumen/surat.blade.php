@@ -38,7 +38,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($manj_tte as $mt)
+                                    {{-- @foreach ($manj_tte as $mt)
                                     <tr class="data-row">
                                         <td class="no_rawat">{{ $mt->no_rawat}}</td>
                                         <td class="nama_file">{{ $mt->path }}</td>
@@ -55,7 +55,7 @@
                                             @endif
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         <div class="card-footer text-right">
@@ -72,51 +72,38 @@
 
 @section('script')
 <script>
-
-    $(document).ready(function() {
+    $(function () {
         $('input[name="daterange"]').daterangepicker({
             startDate: moment(),//.subtract(1, 'M'),
             endDate: moment()
         });
-
-        $('#table-rm').DataTable();
+            
+        var table = $('#table-rm').DataTable({
+            responsive: true,
+            lengthChange: true,
+            autoWidth: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('list-dokumen-surat') }}",
+                data:function (d) {
+                    d.from_date = $('input[name="daterange"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
+                    d.to_date = $('input[name="daterange"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
+                }
+            },
+            columns: [
+                {data: 'no_rawat', name: 'no_rawat'},
+                {data: 'path', name: 'path'},
+                {data: 'status', name: 'status'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ]
+        });
+        $(".filter").click(function(){
+            table.draw();
+        });
     });
 
-
-    // $(function () {
-    
-    //     $('input[name="daterange"]').daterangepicker({
-    //         startDate: moment(),//.subtract(1, 'M'),
-    //         endDate: moment()
-    //     });
-            
-    //     var table = $('#table-rm').DataTable({
-    //         responsive: true,
-    //         lengthChange: true,
-    //         autoWidth: true,
-    //         processing: true,
-    //         serverSide: true,
-    //         ajax: {
-    //             url: "{{ route('list-dokumen-surat') }}",
-    //             data:function (d) {
-    //                 d.from_date = $('input[name="daterange"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
-    //                 d.to_date = $('input[name="daterange"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
-    //             }
-    //         },
-    //         columns: [
-    //             {data: 'no_rawat', name: 'no_rawat'},
-    //             {data: 'path', name: 'path'},
-    //             {data: 'status', name: 'status'},
-    //             {data: 'action', name: 'action', orderable: false, searchable: false},
-    //         ]
-    //     });
-    //     $(".filter").click(function(){
-    //         table.draw();
-    //     });
-    // });
-
     $(document).ready(function() {
-
         $(document).on('click', "#download", function() {
         
             $(this).addClass(

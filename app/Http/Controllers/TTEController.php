@@ -101,7 +101,7 @@ class TTEController extends Controller
 
     // VIEW LIST DOKUMEN RANAP
     public function view_dokumen_ranap(){
-
+        return view('list_dokumen.listdokumen');
     }
 
     public function index_list_dokumen_ri(Request $request)
@@ -127,9 +127,11 @@ class TTEController extends Controller
             
         return view('list_dokumen.listdokumen');
     }
-
+    //
+    
+    // START LIST DOKUMEN RALAN
     public function view_dokumen_ralan(){
-        
+        return view('list_dokumen.listdokumen');
     }
 
     public function index_list_dokumen_rj(Request $request)
@@ -152,45 +154,42 @@ class TTEController extends Controller
                     ->rawColumns(['status','action'])
                     ->make(true);
         }
-            
         return view('list_dokumen.listdokumen');
+    }
+    // END
 
-        // $manj_tte = ManajemenTTE::get();
-        // $manj_tte = $this->manajemenTTE->getDetailRM();
-        // return view('form_tte.listdokumen', compact('manj_tte'));
+    // START LIST DOKUMEN SURAT
+    public function view_dokumen_surat(){
+        return view('list_dokumen.surat');
     }
 
     public function index_list_dokumen_sur(Request $request)
     {
-    
-        //     $data = $this->manajemenTTE->getDetailRMSurat();
-  
-        //     if ($request->filled('from_date') && $request->filled('to_date')) {
-        //         $data = $data->whereBetween('tanggal_upload', [$request->from_date, $request->to_date]);
-        //     }
-  
-        //     return Datatables::of($data)
-        //             ->addIndexColumn()
-        //             ->addColumn('status', function($row){
-        //                 return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
-        //             })
-        //             ->addColumn('action', function($row){
-        //                 return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
-        //             })
-        //             ->rawColumns(['status','action'])
-        //             ->make(true);
 
         $userNIP = Auth::user()->pegawai->nik;
-
-        // Fetch data based on the user's NIP
-        $manj_tte = ManajemenTTE::with('statustteppa')
+        $data = ManajemenTTE::with('statustteppa')
             ->whereHas('statustteppa', function ($query) use ($userNIP) {
                 $query->where('nip', $userNIP);
             })
             ->get();
 
-        return view('list_dokumen.surat', compact('manj_tte'));
+        if ($request->filled('from_date') && $request->filled('to_date')) {
+            $data = $data->whereBetween('tanggal_upload', [$request->from_date, $request->to_date]);
+        }
+
+        return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('status', function($row){
+                    return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                })
+                ->addColumn('action', function($row){
+                    return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
+                })
+                ->rawColumns(['status','action'])
+                ->make(true);
+       
     }
+    // END
 
     public function download(Request $request)
     {
