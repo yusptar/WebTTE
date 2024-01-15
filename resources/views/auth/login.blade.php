@@ -1,13 +1,13 @@
 @extends('layouts.app')
-
 @section('content')
+<!-- <img src="{{ asset('img/logo-bsre.png') }}" class="" alt="" height="9%" width="12%"> -->
 <section class="ftco-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center mb-5">
-                <img src="{{ asset('img/logorst-panjang.png') }}" class="mr-4" alt="" height="70%" width="70%">
-                <br><br>
+                <img src="{{ asset('img/logorst-panjang.png') }}" class="mr-4" alt="" height="69%" width="70%">
                 <h3 class="mb-4 text-center" style="font-weight:bold;">Tanda Tangan Elektronik (TTE)</h3>
+                <p class="mb-4 text-center" style="font-weight:bold;color:black;">Rumah Sakit Tk.II dr.Soepraoen</p>
             </div>
         </div>
         <div class="row justify-content-center">

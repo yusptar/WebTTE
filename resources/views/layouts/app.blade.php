@@ -1,22 +1,16 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <title>TTE</title>
+    <title>TTE | Rumah Sakit Tk.II dr.Soepraoen</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/bsre.png') }}">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="{{ asset('auth/css/style.css') }}">
-
 </head>
 
-<body class="img js-fullheight" style="background-image: url(auth/images/background.jpg);">
-
-
+<body class="img" style="background-image: url(auth/images/background.jpg);">
     @yield('content')
     <script src="{{ asset('auth/js/jquery.min.js') }}"></script>
     <script src="{{ asset('auth/js/popper.js') }}"></script>

@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>TTE</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('auth/images/logo-nagara.png') }}">
+    <title>TTE | Rumah Sakit Tk.II dr.Soepraoen</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/bsre.png') }}">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
