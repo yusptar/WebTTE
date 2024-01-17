@@ -7,13 +7,12 @@
             <div class="col-md-12 text-center mb-5">
                 <img src="{{ asset('img/logorst-panjang.png') }}" class="mr-4" alt="" height="69%" width="70%">
                 <h3 class="mb-4 text-center" style="font-weight:bold;">Tanda Tangan Elektronik (TTE)</h3>
-                <p class="mb-4 text-center" style="font-weight:bold;color:black;">Rumah Sakit Tk.II dr.Soepraoen</p>
+                <p class="text-center" style="font-weight:bold;color:black;">Rumah Sakit Tk.II dr.Soepraoen</p>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
                 <div class="login-wrap p-0">
-
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">

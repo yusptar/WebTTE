@@ -54,7 +54,7 @@
                         <li class="nav-item">
                             <a href="{{ route('view-pemb-rm') }}"
                                 class="nav-link {{ (request()->routeIs('view-pemb-rm')) ? 'active' : '' }}">
-                                <p>Pembubuhan TTE PDF</p>
+                                <p>Pembubuhan TTE RM</p>
                             </a>
                         </li>
                         <li class="nav-item">
