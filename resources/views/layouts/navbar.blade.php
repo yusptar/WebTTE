@@ -15,37 +15,23 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <!-- Navbar Search -->
-        <!-- <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                <i class="fas fa-search"></i>
-            </a>
-            <div class="navbar-search-block">
-                <form class="form-inline">
-                    <div class="input-group input-group-sm">
-                        <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                            <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </li> -->
+    <!-- Navbar Search -->
         <li class="nav-item">
-            <div class="user-panel pb-1 d-flex">
-                <div class="info">
-                    <a href="#" id="edit_user_btn" style="color:black; font-weight:bold; font-size:16px" data-id="{{ Auth::user()->id }}">{{ Auth::user()->pegawai->nama }} &nbsp;&nbsp;&nbsp;</a>
-                    <!-- <img src="{{ asset('img/avatar/avatar-1.png') }}" class="img-circle elevation-2" alt="User Image"> -->
-                </div>
-              
-            </div>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:black; font-weight:bold; font-size:16px">{{ Auth::user()->pegawai->nama }}</a>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();" class="nav-link">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                        </form>
+                        <strong>Log Out</strong>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </nav>
 <!-- /.navbar -->
+@section('script')
+@endsection
