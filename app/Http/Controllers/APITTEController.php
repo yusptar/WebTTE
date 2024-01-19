@@ -78,6 +78,10 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
         }
 
+        if($request->nama_file==""){
+            return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
+        }
+
         $url = $this->baseurl_api . '/api/sign/pdf';
 
         // $headers = [

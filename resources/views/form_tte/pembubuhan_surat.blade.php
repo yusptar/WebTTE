@@ -193,7 +193,7 @@
             // // var tanggal_signed = row.children(".tanggal_signed").text();
             // var nama_file = row.children(".nama_file").text();
             var no_rawat =  row.find("td:eq(0)").text();
-            var nama_file = row.find("td:eq(4)").text();
+            var nama_file = row.find("td:eq(1)").text();
 
             // fill the data in the input fields
             $("#modal_no_rawat").val(no_rawat);
