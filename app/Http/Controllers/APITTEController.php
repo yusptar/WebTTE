@@ -63,8 +63,8 @@ class APITTEController extends Controller
 
     public function signInvisible(Request $request)
     {
-        $nik = '0803202100007062';
-        // $nik = Auth::user()->pegawai->no_ktp;
+        // $nik = '0803202100007062';
+        $nik = Auth::user()->pegawai->no_ktp;
         $passphrase =$request->passphrase;
         // $passphrase ='Hantek1234.!';
         $location = '1';
@@ -196,7 +196,7 @@ class APITTEController extends Controller
             $tte_log = TTELog::create([
                 'user' => Auth::user()->pegawai->nik,
                 'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                'message' => 'Proses TTE gagal..!!' . $err,
+                'message' => 'Pengiriman data gagal..!!' . $err,
             ]);
             unlink(storage_path('app/rekam-medis/' . $target_file));
             return response()->json(['msg' => 'Proses TTE gagal..!!'], 400);
