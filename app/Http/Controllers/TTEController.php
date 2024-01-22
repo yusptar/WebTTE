@@ -51,8 +51,8 @@ class TTEController extends Controller
     {
         $data = $this->manajemenTTE->getStatusFileRM();
   
-        if ($request->status == 'BELUM') {
-            $data = $data->where('status', $request->status);
+        if ($request->status == 'SUDAH') {
+            $data = $data->where('signed_status', $request->status);
         }
 
         return Datatables::of($data)
@@ -64,7 +64,7 @@ class TTEController extends Controller
                     return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
                 })
                 ->rawColumns(['status','action'])
-                ->make(true);      
+                ->make(true);
     }
     //END
 
@@ -82,9 +82,9 @@ class TTEController extends Controller
             })
             ->get();
 
-        if ($request->status == 'BELUM') {
+        if ($request->status == 'SUDAH') {
             $data = $data->where('status', $request->status);
-        }
+        } 
 
         return Datatables::of($data)
                 ->addIndexColumn()

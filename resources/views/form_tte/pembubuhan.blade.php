@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0" style="font-weight:bold">Pembubuhan TTE PDF</h1>
+                    <h1 class="m-0" style="font-weight:bold">Pembubuhan TTE RM</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -155,9 +155,9 @@
                         text: data.msg,
                         icon: "success",
                         buttons: false,
-                        // timer: 3000,
+                        timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        window.location.href = "{{ route('view-pemb-rm') }}"
                     });
                 },
                 error: function(data) {
@@ -166,9 +166,9 @@
                         text: data.responseJSON.msg,
                         icon: "error",
                         buttons: false,
-                        // timer: 3000,
+                        timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        window.location.href = "{{ route('view-pemb-rm') }}"
                     });
                 }
             });
@@ -182,7 +182,7 @@
         $(document).on('click', "#open-modal", function() {
             $(this).addClass(
                 'open-modal-trigger-clicked'
-            ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+            ); 
 
             var options = {
                 'backdrop': 'static'
@@ -190,7 +190,6 @@
             $('#demoModal').modal(options)
         })
 
-        // on modal show
         $('#demoModal').on('show.bs.modal', function() {
             var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
             var row = el.closest("tr");
@@ -209,7 +208,6 @@
 
         })
 
-        // on modal hide
         $('#demoModal').on('hide.bs.modal', function() {
             $("#passphrase").val('');
             $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')

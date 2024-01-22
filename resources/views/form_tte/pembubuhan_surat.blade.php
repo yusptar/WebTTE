@@ -38,24 +38,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   {{-- @foreach ($manj_tte as $mt)
-                                    <tr class="data-row">
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
-                                        <td class="signed_status">
-                                            <span class="badge rounded-pill {{ $mt->signed_status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->signed_status}}</span>
-                                        </td>
-                                        <td>
-                                            @if($mt->signed_status == 'BELUM')
-                                                <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>
-                                                </div>
-                                            @else
-                                                No Action
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->
@@ -117,13 +99,12 @@
             },
             columns: [
                 {data: 'no_rawat', name: 'no_rawat'},
-                // {data: 'statustteppa.nip', name: 'statustteppa.nip'},
                 {data: 'path', name: 'path'},
                 {data: 'signed_status', name: 'signed_status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
-        $("#toggleSwitch").click(function(){
+        $("#toggleSwitch").change(function () {
             table.draw();
         });
     });
@@ -149,7 +130,7 @@
                         buttons: false,
                         // timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        window.location.href = "{{ route('view-pemb-sur') }}"
                     });
                 },
                 error: function(data) {
@@ -160,7 +141,7 @@
                         buttons: false,
                         // timer: 3000,
                     }).then(function() {
-                        window.location.href = "{{ route('pembubuhan-tte') }}"
+                        window.location.href = "{{ route('view-pemb-sur') }}"
                     });
                 }
             });
@@ -174,7 +155,7 @@
         $(document).on('click', "#open-modal", function() {
             $(this).addClass(
                 'open-modal-trigger-clicked'
-            ); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+            ); 
 
             var options = {
                 'backdrop': 'static'
@@ -182,7 +163,6 @@
             $('#demoModal').modal(options)
         })
 
-        // on modal show
         $('#demoModal').on('show.bs.modal', function() {
             var el = $(".open-modal-trigger-clicked"); // See how its usefull right here? 
             var row = el.closest("tr");
@@ -201,7 +181,6 @@
 
         })
 
-        // on modal hide
         $('#demoModal').on('hide.bs.modal', function() {
             $("#passphrase").val('');
             $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
