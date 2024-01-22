@@ -94,7 +94,7 @@
             ajax: {
                 url: "{{ route('pembubuhan-tte-surat') }}",
                 data:function (d) {
-                    d.status = ($('#toggleSwitch').is(':checked'))?'SUDAH':'BELUM';
+                    d.status = ($('#toggleSwitch').is(':checked'))?'BELUM':'SUDAH';
                 }
             },
             columns: [
