@@ -51,19 +51,21 @@ class TTEController extends Controller
     {
         $data = $this->manajemenTTE->getStatusFileRM();
   
-        if ($request->status == 'SUDAH') {
+        if ($request->status == 'BELUM') {
+            $data = $data->where('signed_status', $request->status);
+        } else {
             $data = $data->where('signed_status', $request->status);
         }
 
         return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('status', function($row){
-                    return ($row->status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                ->addColumn('signed_status', function($row){
+                    return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
-                    return ($row->status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    return ($row->signed_status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
                 })
-                ->rawColumns(['status','action'])
+                ->rawColumns(['signed_status','action'])
                 ->make(true);
     }
     //END
@@ -82,9 +84,11 @@ class TTEController extends Controller
             })
             ->get();
 
-        if ($request->status == 'SUDAH') {
-            $data = $data->where('status', $request->status);
-        } 
+        if ($request->status == 'BELUM') {
+            $data = $data->where('signed_status', $request->status);
+        } else {
+            $data = $data->where('signed_status', $request->status);
+        }
 
         return Datatables::of($data)
                 ->addIndexColumn()
