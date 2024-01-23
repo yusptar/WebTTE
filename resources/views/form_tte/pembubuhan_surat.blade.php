@@ -40,6 +40,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            
                             <!-- Modal Example Start-->
                             <div class="modal fade" id="demoModal" tabindex="-1" role="dialog" aria-labelledby="demoModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -50,16 +51,19 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div class="modal-body" style="align-items:center; justify-content:center;">
                                             <form id="form-send-tte">
                                                 @csrf
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
-                                                    <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
+                                                    <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>  
                                                 </div>
                                             </form>
+                                        </div>
+                                        <div id="loading-spinner" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); display:none;">
+                                            <img src="{{ asset('img/spinner.gif') }}" alt="" width="120" height="120">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -79,6 +83,7 @@
             </div>
         </div>
     </section>
+   
 </div>
 @endsection
 
@@ -111,6 +116,7 @@
 
     $('#btn-send').click(function() {
         if ($('#form-send-tte')[0].checkValidity()) {
+            $('#loading-spinner').show();
             var formData = new FormData();
             formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
             formData.append('nama_file', $('input[name=modal_nama_file]').val());
@@ -123,6 +129,7 @@
                 contentType: false,
                 processData: false,
                 success: function(data) {
+                    $('#loading-spinner').hide();
                     Swal.fire({
                         title: "Berhasil!",
                         text: data.msg,
@@ -134,6 +141,7 @@
                     });
                 },
                 error: function(data) {
+                    $('#loading-spinner').hide();
                     Swal.fire({
                         title: "Gagal!",
                         text: data.responseJSON.msg,

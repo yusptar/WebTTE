@@ -65,7 +65,7 @@ class APITTEController extends Controller
     {
         // $nik = '0803202100007062';
         $nik = Auth::user()->pegawai->no_ktp;
-        $passphrase =$request->passphrase;
+        $passphrase = $request->passphrase;
         // $passphrase ='Hantek1234.!';
         $location = '1';
         $nama_file = $request->nama_file;
