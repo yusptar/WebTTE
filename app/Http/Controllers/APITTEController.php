@@ -67,6 +67,20 @@ class APITTEController extends Controller
         $nik = Auth::user()->pegawai->no_ktp;
         $passphrase = $request->passphrase;
         // $passphrase ='Hantek1234.!';
+
+        // Validasi Passphrase
+        if (!preg_match('/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()-_+=])[A-Za-z0-9!@#$%^&*()-_+=]{8,}$/', $passphrase)) {
+            return response()->json(['msg' => 'Passphrase harus memenuhi kriteria: minimal 8 karakter, 1 huruf kapital, 1 angka, dan 1 simbol.'], 400);
+        }
+
+        // (?=.*[A-Z]): Minimal satu huruf kapital.
+        // (?=.*[0-9]): Minimal satu angka.
+        // (?=.*[!@#$%^&*()-_+=]): Minimal satu simbol (dalam contoh ini, simbol yang diperbolehkan adalah !@#$%^&*()-_+=).
+        // [A-Za-z0-9!@#$%^&*()-_+=]{8,}: Minimal 8 karakter dari kombinasi huruf besar/kecil, angka, dan simbol yang diperbolehkan.
+        // if (strlen($passphrase) < 8) {
+        //     return response()->json(['msg' => 'Passphrase harus memiliki minimal 8 karakter.'], 400);
+        // }
+
         $location = '1';
         $nama_file = $request->nama_file;
         $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
