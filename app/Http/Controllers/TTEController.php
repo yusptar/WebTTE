@@ -282,6 +282,12 @@ class TTEController extends Controller
                  'path' => $pdf_name,
                  'signed_status' => 'BELUM',
              ]);
+
+             $status_tte_ppa = StatusTTEPPA::create([
+                'no_rawat' => $request->no_rawat,
+                'nip' => Auth::user()->pegawai->nik,
+                'status' => 'BELUM',
+            ]);
  
          } catch (Exception $e){
              return response()->json(['error' => $e->getMessage()], 500);
