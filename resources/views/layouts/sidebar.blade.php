@@ -35,9 +35,9 @@
                 @can('admin')
                 <li class="nav-header">Pembubuhan TTE</li>
                 <li
-                    class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
+                    class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
@@ -49,6 +49,12 @@
                             <a href="{{ route('upload-rm') }}"
                                 class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
                                 <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('upload-surat') }}"
+                                class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                                <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -115,7 +121,7 @@
                 <!-- PETUGAS ACCESS -->
                 @can('petugas')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
@@ -126,9 +132,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('upload-rm') }}"
-                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
-                                <p>Upload Dokumen RM</p>
+                            <a href="{{ route('upload-surat') }}"
+                                class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                                <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
                     </ul>
@@ -159,9 +165,9 @@
                 <!-- PPA ACCESS -->
                 @can('ppa')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
@@ -170,9 +176,9 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('upload-rm') }}"
-                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
-                                <p>Upload Dokumen RM</p>
+                            <a href="{{ route('upload-surat') }}"
+                                class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                                <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
                         <li class="nav-item">

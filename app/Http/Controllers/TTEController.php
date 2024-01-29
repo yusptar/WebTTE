@@ -34,12 +34,20 @@ class TTEController extends Controller
     }
 
     // VIEW UPLOAD RM
-    public function index()
+    public function index_surat()
     {
         $mstr_berkas = MasterBerkas::all();
         $brks_digital = BerkasDigital::get();
         $manj_tte = ManajemenTTE::get();
         return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+    }
+
+    public function index_rm()
+    {
+        $mstr_berkas = MasterBerkas::all();
+        $brks_digital = BerkasDigital::get();
+        $manj_tte = ManajemenTTE::get();
+        return view('form_tte.upload_rm', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
     }
 
     // START IEW PEMBUBUHAN TTE PDF
@@ -245,6 +253,43 @@ class TTEController extends Controller
         }
         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
     }
+
+     // MENGIRIM PDF KE STORAGE LARAVEL
+     public function store_rm(Request $request)
+     {  
+         $pdf_upload = false;
+ 
+         $validator = $this->validator($request->all());
+         if ($validator->fails()) {
+             return response()->json(['error' => $validator->errors()], 400);
+         }
+ 
+         $no_rawat = $request->no_rawat; 
+         $f_no_rawat = str_replace('/', '', $no_rawat);
+         $pdf_name = 'SURAT_' . $f_no_rawat . '.pdf';
+ 
+         try{
+             if ($request->hasFile('path')) {
+                 $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
+             } else {
+                 $pdf_upload = true;
+             }
+ 
+             $tte = ManajemenTTE::create([
+                 'no_rawat' => $request->no_rawat,
+                 'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                 'tanggal_signed' => '0000-00-00 00:00:00',
+                 'path' => $pdf_name,
+                 'signed_status' => 'BELUM',
+             ]);
+ 
+         } catch (Exception $e){
+             return response()->json(['error' => $e->getMessage()], 500);
+         }
+         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
+     }
+
+    
 
     // public function update(Request $request)
     // {

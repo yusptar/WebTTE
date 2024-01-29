@@ -27,7 +27,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Pra Integrasi TTE
 
     // UPLOAD PDF
-    Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index'])->name('upload-rm');
+    Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index_rm'])->name('upload-rm');
+    Route::get('upload-surat', [App\Http\Controllers\TTEController::class, 'index_surat'])->name('upload-surat');
     // TTE PDF (RM)
     Route::get('pembubuhan-tte-rm', [App\Http\Controllers\TTEController::class, 'view_pembubuhan_rm'])->name('view-pemb-rm');
     Route::get('pembubuhan-tte', [App\Http\Controllers\TTEController::class, 'index_pembubuhan_tte'])->name('pembubuhan-tte');
@@ -42,7 +43,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('view-dokumen-surat', [App\Http\Controllers\TTEController::class, 'view_dokumen_surat'])->name('view-dok-surat');
     Route::get('list-dokumen-surat', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_sur'])->name('list-dokumen-surat');
     // SEND TTE
-    Route::post('store-rm', [App\Http\Controllers\TTEController::class, 'store'])->name('store-rm');
+    Route::post('store-surat', [App\Http\Controllers\TTEController::class, 'store'])->name('store-rm');
+    Route::post('store-rm', [App\Http\Controllers\TTEController::class, 'store_rm'])->name('store-rm-2');
     Route::post('update-tte', [App\Http\Controllers\TTEController::class, 'update'])->name('update-tte');
     
     // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
