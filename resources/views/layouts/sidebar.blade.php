@@ -121,9 +121,9 @@
                 <!-- PETUGAS ACCESS -->
                 @can('petugas')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item request()->routeIs('upload-rm') || request()->routeIs('upload-surat')  ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
+                        class="nav-link request()->routeIs('upload-rm') || request()->routeIs('upload-surat') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
@@ -132,6 +132,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('upload-surat') }}"
                                 class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
                                 <p>Upload Dokumen Surat</p>
@@ -139,9 +145,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj')) ? 'active' : '' }}"> 
+                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
                         <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
                     </a>
@@ -156,6 +162,12 @@
                             <a href="{{ route('list-dokumen-ri') }}"
                                 class="nav-link {{ (request()->routeIs('list-dokumen-ri')) ? 'active' : '' }}">
                                 <p>Rawat Inap</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('view-dok-surat') }}"
+                                class="nav-link {{ (request()->routeIs('view-dok-surat')) ? 'active' : '' }}">
+                                <p>Surat</p>
                             </a>
                         </li>
                     </ul>
@@ -165,9 +177,9 @@
                 <!-- PPA ACCESS -->
                 @can('ppa')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || {{ (request()->routeIs('view-pemb-sur') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('pembubuhan-tte') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || {{ (request()->routeIs('view-pemb-sur') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
@@ -176,22 +188,34 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{ route('upload-rm') }}"
+                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
+                                <p>Upload Dokumen RM</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('upload-surat') }}"
                                 class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
                                 <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('pembubuhan-tte') }}"
-                                class="nav-link {{ (request()->routeIs('pembubuhan-tte')) ? 'active' : '' }}">
-                                <p>Pembubuhan TTE PDF</p>
+                            <a href="{{ route('view-pemb-rm') }}"
+                                class="nav-link {{ (request()->routeIs('view-pemb-rm')) ? 'active' : '' }}">
+                                <p>Pembubuhan TTE RM</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('view-pemb-sur') }}"
+                                class="nav-link {{ (request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
+                                <p>Pembubuhan TTE Surat</p>
                             </a>
                         </li>
                     </ul>
                 </li>                
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj')) ? 'active' : '' }}"> 
+                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
                         <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
                     </a>
@@ -206,6 +230,12 @@
                             <a href="{{ route('list-dokumen-ri') }}"
                                 class="nav-link {{ (request()->routeIs('list-dokumen-ri')) ? 'active' : '' }}">
                                 <p>Rawat Inap</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('view-dok-surat') }}"
+                                class="nav-link {{ (request()->routeIs('view-dok-surat')) ? 'active' : '' }}">
+                                <p>Surat</p>
                             </a>
                         </li>
                     </ul>
