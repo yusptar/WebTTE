@@ -160,12 +160,7 @@ class TTEController extends Controller
     public function index_list_dokumen_sur(Request $request)
     {
 
-        $userNIP = Auth::user()->pegawai->nik;
-        $data = ManajemenTTE::with('statustteppa')
-            ->whereHas('statustteppa', function ($query) use ($userNIP) {
-                $query->where('nip', $userNIP);
-            })
-            ->get();
+        $data = $this->manajemenTTE->getDetailFileSurat();
 
         if ($request->filled('from_date') && $request->filled('to_date')) {
             $data = $data->whereBetween('tanggal_upload', [$request->from_date, $request->to_date]);
