@@ -121,9 +121,9 @@
                 <!-- PETUGAS ACCESS -->
                 @can('petugas')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item request()->routeIs('upload-rm') || request()->routeIs('upload-surat')  ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat'))  ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link request()->routeIs('upload-rm') || request()->routeIs('upload-surat') ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
@@ -177,9 +177,9 @@
                 <!-- PPA ACCESS -->
                 @can('ppa')
                 <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || {{ (request()->routeIs('view-pemb-sur') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || {{ (request()->routeIs('view-pemb-sur') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-signature"></i>
                         <p>
                             Form TTE
