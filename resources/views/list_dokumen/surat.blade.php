@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0" style="font-weight:bold">Daftar Dokumen Rekam Medis</h1>
+                    <h1 class="m-0" style="font-weight:bold">Daftar Dokumen Surat</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -20,7 +20,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title" style="font-weight:600">Tabel RM</h3>
+                            <h3 class="card-title" style="font-weight:600">Tabel Dokumen Surat</h3>
                         </div>
                         <div class="card-body">
                             <div style="margin: 20px 0px;">
@@ -105,16 +105,15 @@
 
     $(document).ready(function() {
         $(document).on('click', "#download", function() {
-        
             $(this).addClass(
                 'download-trigger-clicked'
             ); 
-
-            var el = $(".download-trigger-clicked"); // See how its usefull right here? 
+            var el = $(".download-trigger-clicked"); 
             var row = el.closest("tr");
+
             // get the data
             // var namaFile = row.children(".nama_file").text();
-            var namaFile = row.find("td:eq(6)").text();
+            var namaFile = row.find("td:eq(1)").text();
             $.ajax({
                 url: "{{ route('downloadRM') }}",
                 type: "POST",

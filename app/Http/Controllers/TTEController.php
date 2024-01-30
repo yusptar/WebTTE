@@ -206,7 +206,6 @@ class TTEController extends Controller
     public function download(Request $request)
     {
         $fileName = $request->namaFile;
-        //check apakah dokumen ada di storage
         if (Storage::disk('myRM')->exists($fileName)) {
             return Storage::disk('myRM')->download($fileName);
         } else {
