@@ -241,6 +241,7 @@
                     </ul>
                 </li>
                 @endcan
+                <!-- END PPA ACCESS -->
 
                 <!-- <li class="nav-header">LOG OUT</li>
                 <li class="nav-item">
