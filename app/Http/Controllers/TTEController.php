@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use \App\Models\BerkasDigital;
 use \App\Models\MasterBerkas;
 use \App\Models\ManajemenTTE;
+use \App\Models\ManajemenSurat;
 use \App\Models\StatusTTEPPA;
 use \App\Models\TTELog;
 use Exception;
@@ -38,8 +39,8 @@ class TTEController extends Controller
     {
         $mstr_berkas = MasterBerkas::all();
         $brks_digital = BerkasDigital::get();
-        $manj_tte = ManajemenTTE::get();
-        return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+        $manj_surat = ManajemenSurat::get();
+        return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_surat'));
     }
 
     public function index_rm()
@@ -55,7 +56,7 @@ class TTEController extends Controller
         return view('form_tte.pembubuhan');
     }
 
-    public function index_pembubuhan_tte(Request $request)
+    public function index_pembubuhan_rm(Request $request)
     {
         $data = $this->manajemenTTE->getStatusFileRM();
   
@@ -85,12 +86,7 @@ class TTEController extends Controller
 
     public function pembubuhan_surat_list(Request $request)
     {
-        $userNIP = Auth::user()->pegawai->nik;
-        $data = ManajemenTTE::with('statustteppa')
-            ->whereHas('statustteppa', function ($query) use ($userNIP) {
-                $query->where('nip', $userNIP);
-            })
-            ->get();
+        $data = $this->manajemenTTE->getDetailFileSurat();
 
         if ($request->status == 'BELUM') {
             $data = $data->where('signed_status', $request->status);
@@ -214,7 +210,7 @@ class TTEController extends Controller
     }
 
     // MENGIRIM PDF KE STORAGE LARAVEL
-    public function store(Request $request)
+    public function store_surat(Request $request)
     {  
         $pdf_upload = false;
 
@@ -234,7 +230,7 @@ class TTEController extends Controller
                 $pdf_upload = true;
             }
 
-            $tte = ManajemenTTE::create([
+            $tte = ManajemenSurat::create([
                 'no_rawat' => $request->no_rawat,
                 'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                 'tanggal_signed' => '0000-00-00 00:00:00',

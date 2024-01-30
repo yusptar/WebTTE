@@ -42,8 +42,8 @@ class LoginController extends Controller
                 ];
                 Session::put($ses_data);
                 Alert::success('Login Berhasil!', 'Selamat Datang! ' .  $user_data->nama);
-                // return redirect()->route('dashboard');
-                return redirect()->route('list-dokumen-rj');
+                return redirect()->route('dashboard');
+                // return redirect()->route('list-dokumen-rj');
                 
             }else if(auth()->user()->role == 'ppa'){
                 $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK
@@ -53,8 +53,8 @@ class LoginController extends Controller
                 ];
                 Session::put($ses_data);
                 Alert::success('Login Berhasil!', 'Selamat Datang! ' .  $user_data->nama);
-                // return redirect()->route('dashboard');
-                return redirect()->route('pembubuhan-tte');
+                return redirect()->route('dashboard');
+                // return redirect()->route('pembubuhan-tte');
 
             }else if(auth()->user()->role == 'perawat'){
                 $user_data = Pegawai::where('nik', $credentials['username'])->first(); // Assuming 'username' is the NIK

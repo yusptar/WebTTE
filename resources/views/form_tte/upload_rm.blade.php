@@ -63,7 +63,7 @@ $('#btn-submit').click(function() {
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({
-            url: "{{ route('store-rm-2') }}",
+            url: "{{ route('store-rm') }}",
             type: "POST",
             data: formData,
             contentType: false,
@@ -75,9 +75,7 @@ $('#btn-submit').click(function() {
                     icon: "success",
                     buttons: false,
                     timer: 3000,
-                }).then(function() {
-                    window.location.href = "{{ route('upload-rm') }}"
-                });
+                })
             },
             error: function(data) {
                 console.log(data);
