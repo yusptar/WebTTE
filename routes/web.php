@@ -36,8 +36,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pembubuhan-tte-sur', [App\Http\Controllers\TTEController::class, 'view_pembubuhan_surat'])->name('view-pemb-sur');
     Route::get('pembubuhan-tte-surat', [App\Http\Controllers\TTEController::class, 'pembubuhan_surat_list'])->name('pembubuhan-tte-surat');
     // LIST DOKUMEN RALAN
+    // Route::get('view-dokumen-rj', [App\Http\Controllers\TTEController::class, 'view_dokumen_rj'])->name('view-dok-rj');
     Route::get('list-dokumen-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rj'])->name('list-dokumen-rj');
     // LIST DOKUMEN RANAP
+    // Route::get('view-dokumen-ri', [App\Http\Controllers\TTEController::class, 'view_dokumen_ri'])->name('view-dok-ri');
     Route::get('list-dokumen-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_ri'])->name('list-dokumen-ri');
     // LIST DOKUMEN SURAT
     Route::get('view-dokumen-surat', [App\Http\Controllers\TTEController::class, 'view_dokumen_surat'])->name('view-dok-surat');
