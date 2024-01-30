@@ -202,13 +202,13 @@
                         <li class="nav-item">
                             <a href="{{ route('view-pemb-rm') }}"
                                 class="nav-link {{ (request()->routeIs('view-pemb-rm')) ? 'active' : '' }}">
-                                <p>Pembubuhan TTE Surat</p>
+                                <p>Pembubuhan TTE RM</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('view-pemb-sur') }}"
                                 class="nav-link {{ (request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
-                                <p>Pembubuhan TTE RM</p>
+                                <p>Pembubuhan TTE Surat</p>
                             </a>
                         </li>
                     </ul>
