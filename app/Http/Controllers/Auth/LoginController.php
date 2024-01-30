@@ -67,7 +67,7 @@ class LoginController extends Controller
                 return redirect()->route('dashboard');
 
             }else{
-                Alert::success('Login Berhasil!', 'Selamat Datang!');
+                Alert::success('Login Berhasil!', 'Selamat Datang! Admin');
                 return redirect()->route('dashboard');
             }
         } else {

@@ -34,28 +34,38 @@ class TTEController extends Controller
         ]);
     }
 
-    // VIEW UPLOAD RM
+    // VIEW 
     public function index_surat()
     {
-        $mstr_berkas = MasterBerkas::all();
-        $brks_digital = BerkasDigital::get();
-        $manj_surat = ManajemenSurat::get();
-        return view('form_tte.upload', compact('mstr_berkas', 'brks_digital', 'manj_surat'));
+        return view('form_tte.upload');
     }
 
     public function index_rm()
     {
-        $mstr_berkas = MasterBerkas::all();
-        $brks_digital = BerkasDigital::get();
-        $manj_tte = ManajemenTTE::get();
-        return view('form_tte.upload_rm', compact('mstr_berkas', 'brks_digital', 'manj_tte'));
+        return view('form_tte.upload_rm');
     }
 
-    // START IEW PEMBUBUHAN TTE PDF
     public function view_pembubuhan_rm(){
         return view('form_tte.pembubuhan');
     }
 
+    public function view_pembubuhan_surat(){
+        return view('form_tte.pembubuhan_surat');
+    }
+
+    public function view_dokumen_ranap(){
+        return view('list_dokumen.listdokumen');
+    }
+
+    public function view_dokumen_ralan(){
+        return view('list_dokumen.listdokumen');
+    }
+
+    public function view_dokumen_surat(){
+        return view('list_dokumen.surat');
+    }
+
+    // DATATABLE 
     public function index_pembubuhan_rm(Request $request)
     {
         $data = $this->manajemenTTE->getStatusFileRM();
@@ -77,13 +87,7 @@ class TTEController extends Controller
                 ->rawColumns(['signed_status','action'])
                 ->make(true);
     }
-    //END
-
-    // START VIEW PEMBUBUHAN TTE 
-    public function view_pembubuhan_surat(){
-        return view('form_tte.pembubuhan_surat');
-    }
-
+  
     public function pembubuhan_surat_list(Request $request)
     {
         $data = $this->manajemenTTE->getDetailFileSurat();
@@ -104,12 +108,6 @@ class TTEController extends Controller
                 })
                 ->rawColumns(['signed_status','action'])
                 ->make(true);
-    }
-    // END
-
-    // VIEW LIST DOKUMEN RANAP
-    public function view_dokumen_ranap(){
-        return view('list_dokumen.listdokumen');
     }
 
     public function index_list_dokumen_ri(Request $request)
@@ -135,12 +133,6 @@ class TTEController extends Controller
             
         return view('list_dokumen.listdokumen');
     }
-    //
-    
-    // START LIST DOKUMEN RALAN
-    public function view_dokumen_ralan(){
-        return view('list_dokumen.listdokumen');
-    }
 
     public function index_list_dokumen_rj(Request $request)
     {
@@ -164,13 +156,7 @@ class TTEController extends Controller
         }
         return view('list_dokumen.listdokumen');
     }
-    // END
-
-    // START LIST DOKUMEN SURAT
-    public function view_dokumen_surat(){
-        return view('list_dokumen.surat');
-    }
-
+   
     public function index_list_dokumen_sur(Request $request)
     {
 
@@ -197,8 +183,10 @@ class TTEController extends Controller
                 ->make(true);
        
     }
-    // END
+    // END DATATABLE
+    
 
+    // CETAK 
     public function download(Request $request)
     {
         $fileName = $request->namaFile;
@@ -209,7 +197,7 @@ class TTEController extends Controller
         }
     }
 
-    // MENGIRIM PDF KE STORAGE LARAVEL
+    // STORE
     public function store_surat(Request $request)
     {  
         $pdf_upload = false;
@@ -249,7 +237,6 @@ class TTEController extends Controller
         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
     }
 
-     // MENGIRIM PDF KE STORAGE LARAVEL
      public function store_rm(Request $request)
      {  
          $pdf_upload = false;
