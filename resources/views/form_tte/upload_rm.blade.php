@@ -75,7 +75,9 @@ $('#btn-submit').click(function() {
                     icon: "success",
                     buttons: false,
                     timer: 3000,
-                })
+                }).then(function() {
+                    window.location.href = "{{ route('upload-rm') }}"
+                });
             },
             error: function(data) {
                 console.log(data);

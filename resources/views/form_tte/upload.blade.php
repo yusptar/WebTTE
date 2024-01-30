@@ -84,7 +84,9 @@ $('#btn-submit').click(function() {
                     icon: "success",
                     buttons: false,
                     timer: 3000,
-                })
+                }).then(function() {
+                    window.location.href = "{{ route('upload-surat') }}"
+                });
             },
             error: function(data) {
                 console.log(data);
@@ -96,7 +98,7 @@ $('#btn-submit').click(function() {
                     timer: 3000,
                 })
                 // }).then(function() {
-                //     // window.location.href = "{{ route('upload-rm') }}"
+                //     // window.location.href = "{{ route('upload-surat') }}"
                 // });
             }
         });
