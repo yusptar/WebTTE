@@ -26,11 +26,12 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>Pilih Pegawai <span style="color:red;">*</span></label>
-                            <select class="form-control col-sm-3" name="nip">
-                                <option selected disabled>--- Pilih Pegawai ---</option>
-                                <option value="11950014800171">Simpen Widayati,S.Kep Ners, M.Kes</option>
-                                <option value="20220294535">Rayandra Yala Pratama, S.Kom, M.MT</option>
-                            </select>
+                            <input list="pegawai" class="form-control col-sm-4" />
+                            <datalist id="pegawai">
+                                @foreach($pegawai as $p)
+                                <option value="{{ $p->nik }}">{{ $p->nama }}</option>
+                                @endforeach
+                            </datalist>
                         </div>
                         <div class="form-group">
                             <label>No Surat <span style="color:red;">*</span></label>
@@ -67,7 +68,7 @@ $(document).ready(function() {
 $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
-        formData.append('nip', $('select[name=nip]').val());
+        formData.append('nip', $('input[list=pegawai]').val());
         formData.append('no_rawat', $('input[name=no_rawat]').val());
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());

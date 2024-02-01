@@ -25,9 +25,27 @@
                     <div class="card-body">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
+                            <label>Pilih Pegawai <span style="color:red;">*</span></label>
+                            <input list="pegawai" class="form-control col-sm-4" />
+                            <datalist id="pegawai">
+                                @foreach($pegawai as $p)
+                                <option value="{{ $p->nik }}">{{ $p->nama }}</option>
+                                @endforeach
+                            </datalist>
+                        </div>
+                        <div class="form-group">
                             <label>No Rawat <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_rawat"
                                 placeholder="Masukkan Nomer Rawat">
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis RM<span style="color:red;">*</span></label>
+                            <select class="form-control col-sm-4" name="jenis_rm">
+                                <option selected disabled>--- Pilih Jenis RM ---</option>
+                                @foreach($m_berkas as $mb)
+                                <option value="{{ $mb->kode }}">{{ $mb->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>File PDF <span style="color:red;">*</span></label>
@@ -60,6 +78,8 @@ $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
         var formData = new FormData();
         formData.append('no_rawat', $('input[name=no_rawat]').val());
+        formData.append('nip', $('input[list=pegawai]').val());
+        formData.append('jenis_rm', $('select[name=jenis_rm]').val());
         formData.append('path', $('input[name=path]')[0].files[0]);
         formData.append('_token', $('input[name=_token]').val());
         $.ajax({

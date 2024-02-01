@@ -8,6 +8,7 @@ use \App\Models\ManajemenTTE;
 use \App\Models\ManajemenSurat;
 use \App\Models\StatusTTEPPA;
 use \App\Models\TTELog;
+use \App\Models\Pegawai;
 use Exception;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\Facades\DataTables;
@@ -37,12 +38,16 @@ class TTEController extends Controller
     // VIEW 
     public function index_surat()
     {
-        return view('form_tte.upload');
+        $pegawai = Pegawai::all();
+        $m_berkas = MasterBerkas::all();
+        return view('form_tte.upload', compact('m_berkas', 'pegawai'));
     }
 
     public function index_rm()
     {
-        return view('form_tte.upload_rm');
+        $pegawai = Pegawai::all();
+        $m_berkas = MasterBerkas::all();
+        return view('form_tte.upload_rm', compact('m_berkas', 'pegawai'));
     }
 
     public function view_pembubuhan_rm(){
@@ -262,7 +267,7 @@ class TTEController extends Controller
 
              $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
-                'nip' => Auth::user()->pegawai->nik,
+                'nip' => $request->nip,
                 'status' => 'BELUM',
             ]);
  
