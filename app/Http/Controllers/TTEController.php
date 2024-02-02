@@ -248,7 +248,7 @@ class TTEController extends Controller
  
          $no_rawat = $request->no_rawat; 
          $f_no_rawat = str_replace('/', '', $no_rawat);
-         $pdf_name = 'SURAT_' . $f_no_rawat . '.pdf';
+         $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
  
          try{
              if ($request->hasFile('path')) {
