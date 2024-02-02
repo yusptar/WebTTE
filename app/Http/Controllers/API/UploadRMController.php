@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UploadRMController extends Controller
 {
+    protected $statusRM;
+    
+    public function __construct()
+    {
+      $this->statusRM = new ManajemenTTE();
+    }
+
     public function index()
     {
 
@@ -49,34 +56,41 @@ class UploadRMController extends Controller
         $f_no_rawat = str_replace('/', '', $no_rawat);
         $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
 
-        $filerm = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->get();
-        if($filerm){
-            if($filerm->signed_status == 'SUDAH'){
-                return response()->json(['code' => '400','message' => 'RM sudah tertandatangani secara elektronik, tidak bisa upload ulang.'], 400);
-            } else {
-                $edit = true;
-            }
+        // $filerm = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->find();
+        // if($filerm){
+        //     if($filerm->signed_status == 'SUDAH'){
+        //         return response()->json(['code' => '400','message' => 'RM sudah tertandatangani secara elektronik, tidak bisa upload ulang.'], 400);
+        //     } else {
+        //         $edit = true;
+        //     }
+        // }
+        
+        if($this->statusRM->countStatusSudah($no_rawat,$jenis_rm) > 0){
+            return response()->json(['code' => '400','message' => 'RM sudah tertandatangani secara elektronik, tidak bisa upload ulang.'], 400);
+        } else {
+            $edit = true;
         }
         
         try {
             $pdf_upload = $request->file('file')->storeAs('rekam-medis', $pdf_name);
             
             if($edit){
-                $filerm->tanggal_upload = Carbon::now()->format('Y-m-d H:i:s');
-                $filerm->jenis_rm = $jenis_rm;
-                $filerm->path = $pdf_name;
-                $filerm->signed_status = 'BELUM';
-                $filerm->save();
-            } else {
-                $data = ManajemenTTE::create([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $jenis_rm,
-                    'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
-                    'tanggal_signed' => '0000-00-00 00:00:00',
-                    'path' => $pdf_name,
-                    'signed_status' => 'BELUM',
-                ]);
+                ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->delete();
+                // $filerm->tanggal_upload = Carbon::now()->format('Y-m-d H:i:s');
+                // $filerm->jenis_rm = $jenis_rm;
+                // $filerm->path = $pdf_name;
+                // $filerm->signed_status = 'BELUM';
+                // $filerm->save();
             }
+            
+            $data = ManajemenTTE::create([
+                'no_rawat' => $request->no_rawat,
+                'jenis_rm' => $jenis_rm,
+                'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                'tanggal_signed' => '0000-00-00 00:00:00',
+                'path' => $pdf_name,
+                'signed_status' => 'BELUM',
+            ]);
         } catch (Exception $errmsg) {
             // return ApiFormatter::createAPI(400, 'Failed' . $errmsg);
             return response()->json(['code' => '400','message' => $errmsg], 400);

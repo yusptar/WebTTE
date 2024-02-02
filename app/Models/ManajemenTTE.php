@@ -98,4 +98,10 @@ class ManajemenTTE extends Model
     {
         return $this->belongsTo(StatusTTEPPA::class, 'no_rawat', 'no_rawat');
     }
+    
+    public function countStatusSudah($no_rawat,$jenis_rm){
+        $result = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('status','SUDAH')->count();
+        
+        return $result;
+    }
 }
