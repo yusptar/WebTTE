@@ -17,6 +17,7 @@ class StatusTTEPPA extends Model
         'no_rawat',
         'nip',
         'status',
+        'jenis_rm'
     ];
 
     public function countStatusBelum($no_rawat){

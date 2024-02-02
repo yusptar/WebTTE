@@ -272,6 +272,7 @@ class TTEController extends Controller
                  'no_rawat' => $request->no_rawat,
                  'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                  'tanggal_signed' => '0000-00-00 00:00:00',
+                 'jenis_rm' => $request->jenis_rm,
                  'path' => $pdf_name,
                  'signed_status' => 'BELUM',
             ]);
@@ -279,6 +280,7 @@ class TTEController extends Controller
             $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
                 'nip' => $request->nip,
+                'jenis_rm' => $request->jenis_rm,
                 'status' => 'BELUM',
             ]);
          } catch (Exception $e){

@@ -19,6 +19,7 @@ class ManajemenTTE extends Model
         'no_rawat',
         'tanggal_upload',
         'path',
+        'jenis_rm',
         'signed_status',
     ];
 
