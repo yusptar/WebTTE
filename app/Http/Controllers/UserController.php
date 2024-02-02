@@ -64,7 +64,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        
+
+        $pegawai = Pegawai::where('nik', $request->nip)->first();
+        if (!$pegawai) {
+            return response()->json(['error' => 'Petugas tidak ditemukan'], 400);
+        }
+
         try{
             $user = User::create([
                 'role' => $request->role,
@@ -74,7 +79,7 @@ class UserController extends Controller
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        return response()->json(['success' => 'Berhasil menambahkan data', 'data' => $user], 200);
+        return response()->json(['success' => 'Data berhasil ditambahkan', 'data' => $user], 200);
     }
 
     public function update(Request $request)

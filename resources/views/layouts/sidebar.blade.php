@@ -71,9 +71,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}"> 
+                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
                         <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
                     </a>
@@ -145,9 +145,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}"> 
+                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
                         <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
                     </a>
@@ -213,9 +213,9 @@
                         </li>
                     </ul>
                 </li>                
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'menu-open' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) ? 'active' : '' }}"> 
+                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
                         <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
                     </a>

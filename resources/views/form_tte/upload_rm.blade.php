@@ -26,7 +26,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>Pilih Pegawai <span style="color:red;">*</span></label>
-                            <input list="pegawai" class="form-control col-sm-4" />
+                            <input list="pegawai" class="form-control col-sm-4" required/>
                             <datalist id="pegawai">
                                 @foreach($pegawai as $p)
                                 <option value="{{ $p->nik }}">{{ $p->nama }}</option>
@@ -36,11 +36,11 @@
                         <div class="form-group">
                             <label>No Rawat <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_rawat"
-                                placeholder="Masukkan Nomer Rawat">
+                                placeholder="Masukkan Nomer Rawat" required>
                         </div>
                         <div class="form-group">
                             <label>Jenis RM<span style="color:red;">*</span></label>
-                            <select class="form-control col-sm-4" name="jenis_rm">
+                            <select class="form-control col-sm-4" name="jenis_rm" required>>
                                 <option selected disabled>--- Pilih Jenis RM ---</option>
                                 @foreach($m_berkas as $mb)
                                 <option value="{{ $mb->kode }}">{{ $mb->nama }}</option>
@@ -91,7 +91,7 @@ $('#btn-submit').click(function() {
             success: function(data) {
                 Swal.fire({
                     title: "Berhasil!",
-                    text: "Data Berhasil ditambahkan",
+                    text: data.responseJSON.success,
                     icon: "success",
                     buttons: false,
                     timer: 3000,
@@ -103,7 +103,7 @@ $('#btn-submit').click(function() {
                 console.log(data);
                 Swal.fire({
                     title: "Gagal!",
-                    text: "Data gagal ditambahkan",
+                    text: data.responseJSON.error,
                     icon: "error",
                     buttons: false,
                     timer: 3000,

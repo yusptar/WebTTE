@@ -212,6 +212,11 @@ class TTEController extends Controller
         $pdf_name = 'SURAT_' . $f_no_rawat . '.pdf';
 
         try{
+            $pegawai = Pegawai::where('nik', $request->nip)->first();
+            if (!$pegawai) {
+                return response()->json(['error' => 'Petugas tidak ditemukan'], 400);
+            }
+
             if ($request->hasFile('path')) {
                 $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
             } else {
@@ -251,30 +256,34 @@ class TTEController extends Controller
          $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
  
          try{
-             if ($request->hasFile('path')) {
+            $pegawai = Pegawai::where('nik', $request->nip)->first();
+            if (!$pegawai) {
+                return response()->json(['error' => 'Petugas tidak ditmeukan'], 400);
+            }
+
+            if ($request->hasFile('path')) {
                  $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
-             } else {
+            } else {
                  $pdf_upload = true;
-             }
+            }
  
-             $tte = ManajemenTTE::create([
+            $tte = ManajemenTTE::create([
                  'no_rawat' => $request->no_rawat,
                  'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                  'tanggal_signed' => '0000-00-00 00:00:00',
                  'path' => $pdf_name,
                  'signed_status' => 'BELUM',
-             ]);
+            ]);
 
-             $status_tte_ppa = StatusTTEPPA::create([
+            $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
                 'nip' => $request->nip,
                 'status' => 'BELUM',
             ]);
- 
          } catch (Exception $e){
              return response()->json(['error' => $e->getMessage()], 500);
          }
-         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
+         return response()->json(['success' => 'Data berhasil ditambahkan'], 200);
      }
 
     

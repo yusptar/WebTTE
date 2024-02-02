@@ -26,7 +26,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                         <div class="form-group">
                             <label>Pilih Pegawai <span style="color:red;">*</span></label>
-                            <input list="pegawai" class="form-control col-sm-4" />
+                            <input list="pegawai" class="form-control col-sm-4" required/>
                             <datalist id="pegawai">
                                 @foreach($pegawai as $p)
                                 <option value="{{ $p->nik }}">{{ $p->nama }}</option>
@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label>No Surat <span style="color:red;">*</span></label>
                             <input type="text" class="form-control" name="no_rawat"
-                                placeholder="Masukkan Nomer Surat">
+                                placeholder="Masukkan Nomer Surat" required>
                         </div>
                         <div class="form-group">
                             <label>File PDF <span style="color:red;">*</span></label>
@@ -81,7 +81,7 @@ $('#btn-submit').click(function() {
             success: function(data) {
                 Swal.fire({
                     title: "Berhasil!",
-                    text: "Data Berhasil ditambahkan",
+                    text: data.responseJSON.success,
                     icon: "success",
                     buttons: false,
                     timer: 3000,
@@ -93,7 +93,7 @@ $('#btn-submit').click(function() {
                 console.log(data);
                 Swal.fire({
                     title: "Gagal!",
-                    text: "Data gagal ditambahkan",
+                    text: data.responseJSON.error,
                     icon: "error",
                     buttons: false,
                     timer: 3000,

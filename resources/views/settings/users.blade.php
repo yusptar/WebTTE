@@ -179,7 +179,7 @@ $('#btn-submit').click(function() {
             success: function(data) {
                 Swal.fire({
                     title: "Berhasil!",
-                    text: "Data Berhasil ditambahkan",
+                    text: data.responseJSON.success,
                     icon: "success",
                     buttons: false,
                     timer: 3000,
@@ -191,7 +191,7 @@ $('#btn-submit').click(function() {
                 console.log(data);
                 Swal.fire({
                     title: "Gagal!",
-                    text: "Data gagal ditambahkan",
+                    text: data.responseJSON.error,
                     icon: "error",
                     buttons: false,
                     timer: 3000,
