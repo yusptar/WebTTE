@@ -100,7 +100,7 @@ class ManajemenTTE extends Model
     }
     
     public function countStatusSudah($no_rawat,$jenis_rm){
-        $result = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('status','SUDAH')->count();
+        $result = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('signed_status','SUDAH')->count();
         
         return $result;
     }
