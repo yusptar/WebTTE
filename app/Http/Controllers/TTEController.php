@@ -234,10 +234,11 @@ class TTEController extends Controller
             $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
                 'nip' => $request->nip,
+                'jenis_rm' => '999',
                 'status' => 'BELUM',
             ]);
         } catch (Exception $e){
-            // return response()->json(['error' => $e->getMessage()], 500);
+            // return response()->json(['msg' => $e->getMessage()], 500);
             return response()->json(['error' => 'Data gagal ditambahkan'], 500);
         }
         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
