@@ -258,7 +258,7 @@ class TTEController extends Controller
          try{
             $pegawai = Pegawai::where('nik', $request->nip)->first();
             if (!$pegawai) {
-                return response()->json(['error' => 'Petugas tidak ditmeukan'], 400);
+                return response()->json(['error' => 'Petugas tidak ditemukan'], 400);
             }
 
             if ($request->hasFile('path')) {
