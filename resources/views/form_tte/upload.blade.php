@@ -50,6 +50,9 @@
                 </form>
             </div>
         </div>
+        <div id="loading-spinner" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); display:none;">
+            <img src="{{ asset('img/spinner.gif') }}" alt="" width="120" height="120">
+        </div>
     </section>
     <!-- End Main content -->
 </div>
@@ -67,6 +70,7 @@ $(document).ready(function() {
 
 $('#btn-submit').click(function() {
     if ($('#form-upload-rm')[0].checkValidity()) {
+        $('#loading-spinner').show();
         var formData = new FormData();
         formData.append('nip', $('input[list=pegawai]').val());
         formData.append('no_rawat', $('input[name=no_rawat]').val());
@@ -79,9 +83,10 @@ $('#btn-submit').click(function() {
             contentType: false,
             processData: false,
             success: function(data) {
+                $('#loading-spinner').hide();
                 Swal.fire({
                     title: "Berhasil!",
-                    text: data.responseJSON.success,
+                    text: "Data berhasil ditambahkan!",
                     icon: "success",
                     buttons: false,
                     timer: 3000,
@@ -90,6 +95,7 @@ $('#btn-submit').click(function() {
                 });
             },
             error: function(data) {
+                $('#loading-spinner').hide();
                 console.log(data);
                 Swal.fire({
                     title: "Gagal!",
