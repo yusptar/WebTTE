@@ -237,7 +237,8 @@ class TTEController extends Controller
                 'status' => 'BELUM',
             ]);
         } catch (Exception $e){
-            return response()->json(['error' => $e->getMessage()], 500);
+            // return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Data gagal ditambahkan'], 500);
         }
         return response()->json(['success' => 'Berhasil menambahkan data'], 200);
     }
@@ -281,7 +282,8 @@ class TTEController extends Controller
                 'status' => 'BELUM',
             ]);
          } catch (Exception $e){
-             return response()->json(['error' => $e->getMessage()], 500);
+            //  return response()->json(['error' => $e->getMessage()], 500);
+             return response()->json(['error' => 'Data gagal ditambahkan'], 500);
          }
          return response()->json(['success' => 'Data berhasil ditambahkan'], 200);
      }
