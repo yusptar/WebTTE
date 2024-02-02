@@ -26,10 +26,12 @@ class UploadRMController extends Controller
         # Validation  Rules
         $rules = [
             'no_rawat'=>'required',
+            'jenis_rm'=>'required',
             'file' => 'required|mimes:pdf',
         ];
         $messages = [
             'no_rawat.required' =>'Nomor Rawat tidak boleh kosong.',
+            'jenis_rm.required' =>'Jenis RM tidak boleh kosong.',
             'file.required' => 'File upload tidak boleh kosong.',
             'file.mimes' => 'File upload harus berupa PDF.',
         ];
@@ -42,11 +44,12 @@ class UploadRMController extends Controller
         }
         # End of Validation
 
-        $no_rawat = $request->no_rawat; 
+        $no_rawat = $request->no_rawat;
+        $jenis_rm = $request->jenis_rm; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
         $pdf_name = 'RM_' . $f_no_rawat . '.pdf';
 
-        $filerm = ManajemenTTE::find($no_rawat);
+        $filerm = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->get();
         if($filerm){
             if($filerm->signed_status == 'SUDAH'){
                 return response()->json(['code' => '400','message' => 'RM sudah tertandatangani secara elektronik, tidak bisa upload ulang.'], 400);
@@ -60,12 +63,14 @@ class UploadRMController extends Controller
             
             if($edit){
                 $filerm->tanggal_upload = Carbon::now()->format('Y-m-d H:i:s');
+                $filerm->jenis_rm = $jenis_rm;
                 $filerm->path = $pdf_name;
                 $filerm->signed_status = 'BELUM';
                 $filerm->save();
             } else {
                 $data = ManajemenTTE::create([
                     'no_rawat' => $request->no_rawat,
+                    'jenis_rm' => $jenis_rm,
                     'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                     'tanggal_signed' => '0000-00-00 00:00:00',
                     'path' => $pdf_name,
