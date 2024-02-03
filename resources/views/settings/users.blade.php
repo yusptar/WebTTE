@@ -179,7 +179,7 @@ $('#btn-submit').click(function() {
             success: function(data) {
                 Swal.fire({
                     title: "Berhasil!",
-                    text: data.responseJSON.success,
+                    text: data.success,
                     icon: "success",
                     buttons: false,
                     timer: 3000,
