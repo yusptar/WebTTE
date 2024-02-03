@@ -65,7 +65,7 @@ class UserController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
-        $pegawai = Pegawai::where('nik', $request->nip)->first();
+        $pegawai = Pegawai::where('nik', $request->username)->first();
         if (!$pegawai) {
             return response()->json(['error' => 'Petugas tidak ditemukan'], 400);
         }
