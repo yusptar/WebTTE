@@ -40,28 +40,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($manj_tte as $mt)
-                                    <tr class="data-row">
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
-                                        <td class="no_rawat">{{ $mt->no_rawat}}</td>
-                                        <td class="nama_file">{{ $mt->path }}</td>
-                                        <td class="signed_status">
-                                            <span class="badge rounded-pill {{ $mt->signed_status == 'BELUM' ? "bg-secondary" : "bg-success" }}" >{{ $mt->signed_status}}</span>
-                                        </td>
-                                        <td>
-                                            @if($mt->signed_status == 'BELUM')
-                                                <div>
-                                                    <button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>
-                                                </div>
-                                            @else
-                                                No Action
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                             <!-- Modal Example Start-->

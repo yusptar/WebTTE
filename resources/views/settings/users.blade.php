@@ -84,40 +84,11 @@
                 </div>
             </div>
         </div>
+        <div id="loading-spinner" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); display:none;">
+            <img src="{{ asset('img/spinner.gif') }}" alt="" width="120" height="120">
+        </div>
     </section>
     <!-- End Main content -->
-    {{-- <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title" style="font-weight:600">Tabel Users</h3>
-                        </div>
-                        <div class="card-body">
-                            <table id="users_table" class="table table-striped jambo_table">
-                                <thead>
-                                    <tr class="headings">
-                                        <th class="column-title">NIP/NRP</th>
-                                        <th class="column-title">Role</th>
-                                        <th class="column-title">Nama</th>
-                                        <th class="column-title">NIK</th>
-                                        <th class="column-title">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="card-footer text-right">
-                            <nav class="d-inline-block">
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 </div>
 
 <!-- The modal -->
@@ -149,6 +120,9 @@
                         <label>Konfirmasi Password Baru</label>
                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
                     </div>
+                    <div id="loading-spinner" style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); display:none;">
+                        <img src="{{ asset('img/spinner.gif') }}" alt="" width="120" height="120">
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-primary" type="reset">Reset</button>
                         <button type="submit" class="btn btn-success">Update</button>
@@ -164,6 +138,7 @@
 <script>
 $('#btn-submit').click(function() {
     if ($('#form-users')[0].checkValidity()) {
+        $('#loading-spinner').show();
         var formData = new FormData();
         formData.append('role', $('select[name=role]').val());
         formData.append('username', $('input[name=username]').val());
@@ -177,6 +152,7 @@ $('#btn-submit').click(function() {
             contentType: false,
             processData: false,
             success: function(data) {
+                $('#loading-spinner').hide();
                 Swal.fire({
                     title: "Berhasil!",
                     text: data.success,
@@ -189,6 +165,7 @@ $('#btn-submit').click(function() {
             },
             error: function(data) {
                 console.log(data);
+                $('#loading-spinner').hide();
                 Swal.fire({
                     title: "Gagal!",
                     text: data.responseJSON.error,
@@ -261,6 +238,7 @@ $(document).on('click', '#edit_user_btn', function() {
 
 $('#update_user').on('submit', function(e) {
     e.preventDefault();
+    $('#loading-spinner').show();
     var form = this;
     $.ajax({
         url: $(form).attr('action'),
@@ -274,6 +252,7 @@ $('#update_user').on('submit', function(e) {
         },
         success: function(data) {
             if (data.code == 0) {
+                $('#loading-spinner').hide();
                 $.each(data.error, function(prefix, val) {
                     $(form).find('span.' + prefix + '_error').text(val[0]);
                 });
@@ -281,6 +260,7 @@ $('#update_user').on('submit', function(e) {
                 $(form)[0].reset();
                 $('#users_table').DataTable().ajax.reload(null, false);
                 $('.user_modal').modal('hide');
+                $('#loading-spinner').hide();
                 Swal.fire(
                     'Updated!',
                     'Password telah diperbarui!',
