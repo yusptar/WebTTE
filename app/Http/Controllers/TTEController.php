@@ -132,7 +132,7 @@ class TTEController extends Controller
                         return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                     })
                     ->addColumn('action', function($row){
-                        return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
+                        return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button>' : 'No Action';
                     })
                     ->rawColumns(['status','action'])
                     ->make(true);
@@ -156,7 +156,7 @@ class TTEController extends Controller
                         return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                     })
                     ->addColumn('action', function($row){
-                        return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
+                        return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button>' : 'No Action';
                     })
                     ->rawColumns(['status','action'])
                     ->make(true);
@@ -179,7 +179,7 @@ class TTEController extends Controller
                     return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
-                    return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button">Download</button>' : 'No Action';
+                    return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button>' : 'No Action';
                 })
                 ->rawColumns(['status','action'])
                 ->make(true);

@@ -107,7 +107,8 @@
 
             // get the data
             // var namaFile = row.children(".nama_file").text();
-            var namaFile = row.find("td:eq(6)").text();
+            // var namaFile = row.find("td:eq(6)").text();
+            var namaFile = $(this).attr("value");
             $.ajax({
                 url: "{{ route('downloadRM') }}",
                 type: "POST",
