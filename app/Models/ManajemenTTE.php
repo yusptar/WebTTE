@@ -39,6 +39,23 @@ class ManajemenTTE extends Model
                     ->join('poliklinik', function ($join) {
                         $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
                     })
+                    ->join('kamar_inap', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'kamar_inap.no_rawat');
+                    })
+                    ->join('kamar', function ($join) {
+                        $join->on('kamar_inap.kd_kamar', '=', 'kamar.kd_kamar');
+                    })
+                    ->join('bangsal', function ($join) {
+                        $join->on('kamar.kd_bangsal', '=', 'bangsal.kd_bangsal');
+                    })
+                    ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
+                    ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
+                    ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
+                    ->selectRaw('`reg_periksa`.`tgl_registrasi` as tgl_registrasi')
+                    ->selectRaw('`bangsal`.`nm_bangsal` as nm_ruang')
+                    ->selectRaw('`penjab`.`png_jawab` as png_jawab')
+                    ->selectRaw('`manajemen_rm_tte`.`path` as path')
+                    ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
                     ->get();
         return $result;
     }
@@ -58,6 +75,14 @@ class ManajemenTTE extends Model
                     ->join('poliklinik', function ($join) {
                         $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
                     })
+                    ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
+                    ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
+                    ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
+                    ->selectRaw('`reg_periksa`.`tgl_registrasi` as tgl_registrasi')
+                    ->selectRaw('`poliklinik`.`nm_poli` as nm_ruang')
+                    ->selectRaw('`penjab`.`png_jawab` as png_jawab')
+                    ->selectRaw('`manajemen_rm_tte`.`path` as path')
+                    ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
                     ->get();
         return $result;
     }

@@ -85,7 +85,7 @@
                 {data: 'no_rkm_medis', name: 'no_rkm_medis'},
                 {data: 'nm_pasien', name: 'nm_pasien'},
                 {data: 'tgl_registrasi', name: 'tgl_registrasi'},
-                {data: 'nm_poli', name: 'nm_poli'},
+                {data: 'nm_ruang', name: 'nm_ruang'},
                 {data: 'png_jawab', name: 'png_jawab'},
                 {data: 'path', name: 'path'},
                 {data: 'status', name: 'status'},
