@@ -22,4 +22,15 @@ class ManajemenSurat extends Model
         'signed_status',
     ];
 
+    
+    public function getDetailFileSurat(){
+        $result = DB::table('manajemen_surat_tte')
+                ->join('status_tte_ppa', function ($join) {
+                $join->on('manajemen_surat_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
+                    ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik);
+                })
+                ->get();
+        return $result;
+    }
+
 }

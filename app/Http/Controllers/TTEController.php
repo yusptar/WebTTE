@@ -21,10 +21,12 @@ use Illuminate\Support\Facades\Storage;
 class TTEController extends Controller
 {
     protected $manajemenTTE;
+    protected $manajemenTTESurat;
     public function __construct()
     {
         $this->middleware('auth');
         $this->manajemenTTE = new ManajemenTTE();
+        $this->manajemenTTESurat = new ManajemenSurat();
     }
 
     protected function validator(array $data)
@@ -95,7 +97,7 @@ class TTEController extends Controller
   
     public function pembubuhan_surat_list(Request $request)
     {
-        $data = $this->manajemenTTE->getDetailFileSurat();
+        $data = $this->manajemenTTESurat->getDetailFileSurat();
 
         if ($request->status == 'BELUM') {
             $data = $data->where('signed_status', $request->status);
@@ -165,7 +167,7 @@ class TTEController extends Controller
     public function index_list_dokumen_sur(Request $request)
     {
 
-        $data = $this->manajemenTTE->getDetailFileSurat();
+        $data = $this->manajemenTTESurat->getDetailFileSurat();
 
         if ($request->filled('from_date') && $request->filled('to_date')) {
             $data = $data->whereBetween('tanggal_upload', [$request->from_date, $request->to_date]);

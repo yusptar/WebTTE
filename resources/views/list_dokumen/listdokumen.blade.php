@@ -31,7 +31,7 @@
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
                                     <tr>
-                                        <th>No Surat</th>
+                                        <th>No Rawat</th>
                                         <th>No RM</th>
                                         <th>Nama Pasien</th>
                                         <th>Tgl Registrasi</th>
