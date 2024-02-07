@@ -91,6 +91,7 @@ class ManajemenTTE extends Model
         $result = DB::table('manajemen_rm_tte')
                     ->join('status_tte_ppa', function ($join) {
                         $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
+                            ->on('manajemen_rm_tte.jenis_rm', '=', 'status_tte_ppa.jenis_rm')
                             ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik);
                     })
                     ->join('reg_periksa', function ($join) {
