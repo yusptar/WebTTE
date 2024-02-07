@@ -55,7 +55,12 @@ class UploadRMController extends Controller
         $jenis_rm = $request->jenis_rm; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
         // $pdf_name = $request->file->getClientOriginalName();
-        $pdf_name = 'RM'. $jenis_rm . '_' . $f_no_rawat . '.pdf';
+        // $pdf_name = 'RM'. $jenis_rm . '_' . $f_no_rawat . '.pdf';
+        if($jenis_rm=="012") {
+            $pdf_name = $request->file->getClientOriginalName();
+        }else{
+            $pdf_name = 'RM'. $jenis_rm . '_' . $f_no_rawat . '.pdf';
+        }
 
         // $filerm = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->find();
         // if($filerm){
