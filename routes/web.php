@@ -13,19 +13,20 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
+
 
 Auth::routes([ // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
 
-Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 // add login middleware
 Route::group(['middleware' => ['auth']], function () {
-    // Pra Integrasi TTE
+    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
+    // Pra Integrasi TTE
     // UPLOAD PDF
     Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index_rm'])->name('upload-rm');
     Route::get('upload-surat', [App\Http\Controllers\TTEController::class, 'index_surat'])->name('upload-surat');
