@@ -13,20 +13,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
 
 Auth::routes([ // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
 
+Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
 // add login middleware
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-
     // Pra Integrasi TTE
+
     // UPLOAD PDF
     Route::get('upload-rm', [App\Http\Controllers\TTEController::class, 'index_rm'])->name('upload-rm');
     Route::get('upload-surat', [App\Http\Controllers\TTEController::class, 'index_surat'])->name('upload-surat');
@@ -37,10 +36,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('pembubuhan-tte-sur', [App\Http\Controllers\TTEController::class, 'view_pembubuhan_surat'])->name('view-pemb-sur');
     Route::get('pembubuhan-tte-surat', [App\Http\Controllers\TTEController::class, 'pembubuhan_surat_list'])->name('pembubuhan-tte-surat');
     // LIST DOKUMEN RALAN
-    // Route::get('view-dokumen-rj', [App\Http\Controllers\TTEController::class, 'view_dokumen_rj'])->name('view-dok-rj');
+    Route::get('view-dokumen-rj', [App\Http\Controllers\TTEController::class, 'view_dokumen_rj'])->name('view-dok-rj');
     Route::get('list-dokumen-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rj'])->name('list-dokumen-rj');
     // LIST DOKUMEN RANAP
-    // Route::get('view-dokumen-ri', [App\Http\Controllers\TTEController::class, 'view_dokumen_ri'])->name('view-dok-ri');
+    Route::get('view-dokumen-ri', [App\Http\Controllers\TTEController::class, 'view_dokumen_ri'])->name('view-dok-');
     Route::get('list-dokumen-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_ri'])->name('list-dokumen-ri');
     // LIST DOKUMEN SURAT
     Route::get('view-dokumen-surat', [App\Http\Controllers\TTEController::class, 'view_dokumen_surat'])->name('view-dok-surat');
