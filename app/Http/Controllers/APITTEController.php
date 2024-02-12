@@ -167,10 +167,10 @@ class APITTEController extends Controller
                 try{
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
-                    if($this->statusTTE->countStatusBelum($request->no_rawat) == 0){
+                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
                         $signed_status = 'SUDAH';
                     }
-                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->get();
+                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
                     if($jumlahFileRM->count()>0){
                         $tte = ManajemenTTE::where([
                             'no_rawat' => $request->no_rawat,

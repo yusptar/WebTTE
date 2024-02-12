@@ -106,6 +106,9 @@ class ManajemenTTE extends Model
                     ->join('poliklinik', function ($join) {
                         $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
                     })
+                    ->join('master_berkas_digital', function ($join) {
+                        $join->on('manajemen_rm_tte.jenis_rm', '=', 'master_berkas_digital.kode');
+                    })
                     ->get();
         return $result;
     }

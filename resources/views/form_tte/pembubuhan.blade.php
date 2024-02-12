@@ -30,11 +30,11 @@
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
                                     <tr>
-                                        <th>No Surat</th>
+                                        <th>No Rawat</th>
+                                        <th>Nama File</th>
                                         <th>No RM</th>
                                         <th>Nama Pasien</th>
-                                        <th>Jenis Bayar</th>
-                                        <th>Nama File</th>
+                                        <th>Jenis RM</th>
                                         <th>Status TTE</th>
                                         <th>Action</th>
                                     </tr>
@@ -57,8 +57,9 @@
                                                 @csrf
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
-                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
+                                                    <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden> 
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
+                                                    <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
                                                     <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
                                                 </div>
                                             </form>
@@ -104,11 +105,11 @@
             },
             columns: [
                 {data: 'no_rawat', name: 'no_rawat'},
+                {data: 'path', name: 'path'},
                 {data: 'no_rkm_medis', name: 'no_rkm_medis'},
                 {data: 'nm_pasien', name: 'nm_pasien'},
-                {data: 'png_jawab', name: 'png_jawab'},
-                {data: 'path', name: 'path'},
-                {data: 'status', name: 'status'},
+                {data: 'nama', name: 'nama'},
+                {data: 'status', name: 'status', searchable: true, visible: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
@@ -123,6 +124,7 @@
             var formData = new FormData();
             formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
             formData.append('nama_file', $('input[name=modal_nama_file]').val());
+            formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
             formData.append('passphrase', $('input[name=passphrase]').val());
             formData.append('_token', $('input[name=_token]').val());
             $.ajax({
@@ -184,11 +186,13 @@
             // // var tanggal_signed = row.children(".tanggal_signed").text();
             // var nama_file = row.children(".nama_file").text();
             var no_rawat =  row.find("td:eq(0)").text();
-            var nama_file = row.find("td:eq(4)").text();
+            var nama_file = row.find("td:eq(1)").text();
+            var jenis_rm = nama_file.substring(2, 5);
 
             // fill the data in the input fields
             $("#modal_no_rawat").val(no_rawat);
             $("#modal_nama_file").val(nama_file);
+            $("#modal_jenis_rm").val(jenis_rm);
 
         })
 

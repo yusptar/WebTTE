@@ -20,8 +20,8 @@ class StatusTTEPPA extends Model
         'jenis_rm'
     ];
 
-    public function countStatusBelum($no_rawat){
-        $result = StatusTTEPPA::where('no_rawat', '=', $no_rawat)->where('status','BELUM')->count();
+    public function countStatusBelum($no_rawat,$jenis_rm){
+        $result = StatusTTEPPA::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('status','BELUM')->count();
         
         return $result;
     }
