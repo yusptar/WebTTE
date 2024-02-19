@@ -76,20 +76,23 @@ class TTEController extends Controller
     public function index_pembubuhan_rm(Request $request)
     {
         $data = $this->manajemenTTE->getStatusFileRM();
-  
+        // var_dump($data);
         if ($request->status == 'BELUM') {
-            $data = $data->where('signed_status', $request->status);
+            $data = $data->where('status_ppa', $request->status);
         } else {
-            $data = $data->where('signed_status', $request->status);
+            $data = $data->where('status_ppa', $request->status);
         }
 
         return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('nm_ruang', function($row){
+                    return  $this->manajemenTTE->getKamar($row->no_rawat)->nm_ruang;;
+                })
                 ->addColumn('signed_status', function($row){
-                    return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+                    return ($row->status_ppa == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
-                    return ($row->signed_status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
                 })
                 ->rawColumns(['signed_status','action'])
                 ->make(true);

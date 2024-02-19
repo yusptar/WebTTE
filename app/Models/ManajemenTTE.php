@@ -48,6 +48,20 @@ class ManajemenTTE extends Model
                     ->join('bangsal', function ($join) {
                         $join->on('kamar.kd_bangsal', '=', 'bangsal.kd_bangsal');
                     })
+                    ->join('master_berkas_digital', function ($join) {
+                        $join->on('master_berkas_digital.kode', '=', 'manajemen_rm_tte.jenis_rm');
+                    })
+                    ->join('status_tte_ppa', function ($join) {
+                        $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat');
+                        $join->on('manajemen_rm_tte.jenis_rm', '=', 'status_tte_ppa.jenis_rm');
+                    })
+                    ->join('pegawai', function ($join) {
+                        $join->on('status_tte_ppa.nip', '=', 'pegawai.nik');
+                    })
+                    ->groupBy('manajemen_rm_tte.no_rawat')
+                    ->groupBy('manajemen_rm_tte.jenis_rm')
+                    ->groupBy('bangsal.nm_bangsal')
+                    ->groupBy('manajemen_rm_tte.path')
                     ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
                     ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
                     ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
@@ -56,6 +70,8 @@ class ManajemenTTE extends Model
                     ->selectRaw('`penjab`.`png_jawab` as png_jawab')
                     ->selectRaw('`manajemen_rm_tte`.`path` as path')
                     ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
+                    ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('GROUP_CONCAT(pegawai.nama,\' (\',status_tte_ppa.status, \'); \') as petugas')
                     ->get();
         return $result;
     }
@@ -75,6 +91,19 @@ class ManajemenTTE extends Model
                     ->join('poliklinik', function ($join) {
                         $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
                     })
+                    ->join('master_berkas_digital', function ($join) {
+                        $join->on('master_berkas_digital.kode', '=', 'manajemen_rm_tte.jenis_rm');
+                    })
+                    ->join('status_tte_ppa', function ($join) {
+                        $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat');
+                        $join->on('manajemen_rm_tte.jenis_rm', '=', 'status_tte_ppa.jenis_rm');
+                    })
+                    ->join('pegawai', function ($join) {
+                        $join->on('status_tte_ppa.nip', '=', 'pegawai.nik');
+                    })
+                    ->groupBy('manajemen_rm_tte.no_rawat')
+                    ->groupBy('manajemen_rm_tte.jenis_rm')
+                    ->groupBy('manajemen_rm_tte.path')
                     ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
                     ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
                     ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
@@ -83,6 +112,8 @@ class ManajemenTTE extends Model
                     ->selectRaw('`penjab`.`png_jawab` as png_jawab')
                     ->selectRaw('`manajemen_rm_tte`.`path` as path')
                     ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
+                    ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('GROUP_CONCAT(pegawai.nama,\' (\',status_tte_ppa.status, \'); \') as petugas')
                     ->get();
         return $result;
     }
@@ -109,7 +140,46 @@ class ManajemenTTE extends Model
                     ->join('master_berkas_digital', function ($join) {
                         $join->on('manajemen_rm_tte.jenis_rm', '=', 'master_berkas_digital.kode');
                     })
+                    ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
+                    ->selectRaw('`manajemen_rm_tte`.`path` as path')
+                    ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
+                    ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
+                    ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('`reg_periksa`.`tgl_registrasi` as tgl_registrasi')
+                    ->selectRaw('`poliklinik`.`nm_poli` as nm_ruang')
+                    ->selectRaw('`penjab`.`png_jawab` as png_jawab')
+                    ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
+                    ->selectRaw('`status_tte_ppa`.`status` as status_ppa')
+                    ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
                     ->get();
+                    
+        return $result;
+    }
+
+    
+    
+    public function getKamar($no_rawat){
+        if(DB::table('kamar_inap')->where('no_rawat', '=', $no_rawat)->exists()){
+            $result = DB::table('kamar_inap')
+                ->join('kamar', function ($join) {
+                    $join->on('kamar_inap.kd_kamar', '=', 'kamar.kd_kamar');
+                })
+                ->join('bangsal', function ($join) {
+                    $join->on('kamar.kd_bangsal', '=', 'bangsal.kd_bangsal');
+                })
+                ->selectRaw('bangsal.nm_bangsal as nm_ruang')
+                ->where('kamar_inap.no_rawat', '=', $no_rawat)
+                ->first();
+        }else{
+            $result = DB::table('reg_periksa')
+                ->join('poliklinik', function ($join) {
+                    $join->on('poliklinik.kd_poli', '=', 'reg_periksa.kd_poli');
+                })
+                ->selectRaw('poliklinik.nm_poli as nm_ruang')
+                ->where('reg_periksa.no_rawat', '=', $no_rawat)
+                ->first();
+        }
+
         return $result;
     }
 

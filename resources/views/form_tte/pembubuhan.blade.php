@@ -35,6 +35,7 @@
                                         <th>No RM</th>
                                         <th>Nama Pasien</th>
                                         <th>Jenis RM</th>
+                                        <th>Asal</th>
                                         <th>Status TTE</th>
                                         <th>Action</th>
                                     </tr>
@@ -108,8 +109,9 @@
                 {data: 'path', name: 'path'},
                 {data: 'no_rkm_medis', name: 'no_rkm_medis'},
                 {data: 'nm_pasien', name: 'nm_pasien'},
-                {data: 'nama', name: 'nama'},
-                {data: 'status', name: 'status', searchable: true, visible: false},
+                {data: 'jenis_rm', name: 'jenis_rm'},
+                {data: 'nm_ruang', name: 'nm_ruang'},
+                {data: 'signed_status', name: 'signed_status', searchable: true, visible: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });

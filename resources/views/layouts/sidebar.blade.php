@@ -33,14 +33,13 @@
 
                 <!-- ADMIN ACCESS -->
                 @can('admin')
-                <li class="nav-header">Pembubuhan TTE</li>
-                <li
-                    class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
+                <li class="nav-header">Rekam Medis</li>
+                <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-signature"></i>
+                        class="nav-link {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-upload"></i>
                         <p>
-                            Form TTE
+                            Upload RM
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -57,6 +56,18 @@
                                 <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-signature"></i>
+                        <p>
+                            Pembubuhan TTE
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('view-pemb-rm') }}"
                                 class="nav-link {{ (request()->routeIs('view-pemb-rm')) ? 'active' : '' }}">
@@ -118,71 +129,15 @@
                 </li>
                 @endcan
                 
-                <!-- PETUGAS ACCESS -->
-                @can('petugas')
-                <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat'))  ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-signature"></i>
-                        <p>
-                            Form TTE
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('upload-rm') }}"
-                                class="nav-link {{ (request()->routeIs('upload-rm')) ? 'active' : '' }}">
-                                <p>Upload Dokumen RM</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('upload-surat') }}"
-                                class="nav-link {{ (request()->routeIs('upload-surat')) ? 'active' : '' }}">
-                                <p>Upload Dokumen Surat</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
-                        <i class="nav-icon fas fa-file-pdf"></i>
-                        <p> List Dokumen RM <i class="right fas fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('list-dokumen-rj') }}"
-                                class="nav-link {{ (request()->routeIs('list-dokumen-rj')) ? 'active' : '' }}">
-                                <p>Rawat Jalan</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('list-dokumen-ri') }}"
-                                class="nav-link {{ (request()->routeIs('list-dokumen-ri')) ? 'active' : '' }}">
-                                <p>Rawat Inap</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('view-dok-surat') }}"
-                                class="nav-link {{ (request()->routeIs('view-dok-surat')) ? 'active' : '' }}">
-                                <p>Surat</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endcan
-                
                 <!-- PPA ACCESS -->
                 @can('ppa')
-                <li class="nav-header">Pra Integrasi TTE</li>
-                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
+                <li class="nav-header">Rekam Medis</li>
+                <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('upload-rm') || request()->routeIs('upload-surat') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-signature"></i>
+                        class="nav-link {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-upload"></i>
                         <p>
-                            Form TTE
+                            Upload RM
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -199,6 +154,18 @@
                                 <p>Upload Dokumen Surat</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('view-pemb-sur')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('view-pemb-rm') || request()->routeIs('view-pemb-sur')) ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-signature"></i>
+                        <p>
+                            Pembubuhan TTE
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('view-pemb-rm') }}"
                                 class="nav-link {{ (request()->routeIs('view-pemb-rm')) ? 'active' : '' }}">
@@ -212,7 +179,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>                
+                </li>            
                 <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
@@ -243,17 +210,6 @@
                 @endcan
                 <!-- END PPA ACCESS -->
 
-                <!-- <li class="nav-header">LOG OUT</li>
-                <li class="nav-item">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();" class="nav-link">
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                            @csrf
-                        </form>
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Log Out</p>
-                    </a>
-                </li> -->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
