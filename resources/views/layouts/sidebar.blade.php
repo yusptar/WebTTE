@@ -231,6 +231,33 @@
                 @endcan
                 <!-- END PPA ACCESS -->
 
+                <!-- BPJS ACCESS -->
+                @can('petugas')
+                <li class="nav-header">Rekam Medis</li>
+                <li class="nav-item {{ (request()->routeIs('list-dokumen-rm-ri') || request()->routeIs('list-dokumen-rm-rj')) ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ (request()->routeIs('list-dokumen-rm-ri') || request()->routeIs('list-dokumen-rm-rj')) ? 'active' : '' }}"> 
+                        <i class="nav-icon fas fa-file-pdf"></i>
+                        <p> Dokumen Pasien <i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('list-dokumen-rm-rj') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-rm-rj')) ? 'active' : '' }}">
+                                <p>Rawat Jalan</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('list-dokumen-rm-ri') }}"
+                                class="nav-link {{ (request()->routeIs('list-dokumen-rm-ri')) ? 'active' : '' }}">
+                                <p>Rawat Inap</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+                <!-- END BPJS ACCESS -->
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
