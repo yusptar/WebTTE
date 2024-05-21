@@ -39,7 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('view-dokumen-rj', [App\Http\Controllers\TTEController::class, 'view_dokumen_rj'])->name('view-dok-rj');
     Route::get('list-dokumen-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rj'])->name('list-dokumen-rj');
     // LIST DOKUMEN RANAP
-    Route::get('view-dokumen-ri', [App\Http\Controllers\TTEController::class, 'view_dokumen_ri'])->name('view-dok-');
+    Route::get('view-dokumen-ri', [App\Http\Controllers\TTEController::class, 'view_dokumen_ri'])->name('view-dok-ri');
     Route::get('list-dokumen-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_ri'])->name('list-dokumen-ri');
     // LIST DOKUMEN SURAT
     Route::get('view-dokumen-surat', [App\Http\Controllers\TTEController::class, 'view_dokumen_surat'])->name('view-dok-surat');
@@ -49,6 +49,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('store-rm', [App\Http\Controllers\TTEController::class, 'store_rm'])->name('store-rm');
     Route::post('update-tte', [App\Http\Controllers\TTEController::class, 'update'])->name('update-tte');
     
+    // LIST DOKUMEN BY PASIEN
+    Route::get('list-dokumen-rm-rj', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rm_rj'])->name('list-dokumen-rm-rj');
+    // LIST DOKUMEN RANAP
+    Route::get('list-dokumen-rm-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rm_ri'])->name('list-dokumen-rm-ri');
+    Route::post('rm-detail', [App\Http\Controllers\TTEController::class, 'rm_detail'])->name('rm.detail');
+
     // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
 
     // Lainnya
@@ -63,4 +69,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
 
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
+    Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
 });

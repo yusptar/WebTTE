@@ -173,7 +173,133 @@ class ManajemenTTE extends Model
     }
 
     
+    public function getPasienRalan(){
+        $result = DB::table('reg_periksa')
+                    ->join('pasien', function ($join) {
+                        $join->on('reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis');
+                    })
+                    ->join('poliklinik', function ($join) {
+                        $join->on('reg_periksa.kd_poli', '=', 'poliklinik.kd_poli');
+                    })
+                    ->join('bridging_sep', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'bridging_sep.no_rawat');
+                    })
+                    // ->join('verifikasi_berkas_klaim_bpjs', function ($join) {
+                    //     $join->on('reg_periksa.no_rawat', '=', 'verifikasi_berkas_klaim_bpjs.no_rawat');
+                    // })
+                    ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
+                    ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
+                    ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
+                    ->selectRaw('`reg_periksa`.`tgl_registrasi` as tanggal')
+                    ->selectRaw('`poliklinik`.`nm_poli` as nm_ruang')
+                    ->selectRaw('`bridging_sep`.`no_sep` as no_sep')
+                    // ->selectRaw('`verifikasi_berkas_klaim_bpjs`.`status_akhir` as status_akhir')
+                    ->where('reg_periksa.status_lanjut', '=', 'Ralan')
+                    ->get();
+        return $result;
+    }
     
+    public function getPasienRanap(){
+        $result = DB::table('reg_periksa')
+                    ->join('pasien', function ($join) {
+                        $join->on('reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis');
+                    })
+                    ->join('kamar_inap', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'kamar_inap.no_rawat');
+                    })
+                    ->join('kamar', function ($join) {
+                        $join->on('kamar_inap.kd_kamar', '=', 'kamar.kd_kamar');
+                    })
+                    ->join('bangsal', function ($join) {
+                        $join->on('kamar.kd_bangsal', '=', 'bangsal.kd_bangsal');
+                    })
+                    ->join('bridging_sep', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'bridging_sep.no_rawat');
+                    })
+                    // ->join('verifikasi_berkas_klaim_bpjs', function ($join) {
+                    //     $join->on('reg_periksa.no_rawat', '=', 'verifikasi_berkas_klaim_bpjs.no_rawat');
+                    // })
+                    ->selectRaw('`reg_periksa`.`no_rawat` as no_rawat')
+                    ->selectRaw('`reg_periksa`.`no_rkm_medis` as no_rkm_medis')
+                    ->selectRaw('`pasien`.`nm_pasien` as nm_pasien')
+                    ->selectRaw('`kamar_inap`.`tgl_keluar` as tanggal')
+                    ->selectRaw('`bangsal`.`nm_bangsal` as nm_ruang')
+                    ->selectRaw('`bridging_sep`.`no_sep` as no_sep')
+                    // ->selectRaw('`verifikasi_berkas_klaim_bpjs`.`status_akhir` as status_akhir')
+                    ->where('kamar_inap.tgl_keluar', '<>', '0000:00:00')
+                    ->where('bridging_sep.jnspelayanan', '=', '1')
+                    ->get();
+        return $result;
+    }
+    
+        
+    public function getDetailRM($no_rawat,$jnsPelayanan){
+        $result = DB::table('reg_periksa')
+                    ->join('pasien', function ($join) {
+                        $join->on('reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis');
+                    })
+                    ->join('bridging_sep', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'bridging_sep.no_rawat');
+                    })
+                    ->join('manajemen_rm_tte', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'manajemen_rm_tte.no_rawat');
+                    })
+                    ->leftjoin('verifikasi_berkas_klaim_bpjs', function ($join) {
+                        $join->on('reg_periksa.no_rawat', '=', 'verifikasi_berkas_klaim_bpjs.no_rawat');
+                    })
+                    ->selectRaw('pasien.nm_pasien')
+                    ->selectRaw('reg_periksa.no_rawat')
+                    ->selectRaw('reg_periksa.no_rkm_medis')
+                    ->selectRaw('bridging_sep.no_sep')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_akhir')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_awal_medis_igd')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_awal_medis_igd')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_awal_kep_igd')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_awal_kep_igd')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_awal_medis')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_awal_medis')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_awal_kep')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_awal_kep')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_resume_medis')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_resume_medis')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_laporan_operasi')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_laporan_operasi')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_hasil_lab')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_hasil_lab')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_hasil_rad')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_hasil_rad')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.status_cppt')
+                    ->selectRaw('verifikasi_berkas_klaim_bpjs.ket_cppt')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'026\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_awal_medis_igd')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'019\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_awal_kep_igd')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'006\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_awal_medis')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'020\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_awal_kep')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'017\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_resume_medis')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'008\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_laporan_operasi')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'012\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_hasil_lab')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'013\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_hasil_rad')
+                    ->selectRaw('IFNULL(GROUP_CONCAT((CASE WHEN manajemen_rm_tte.jenis_rm = \'022\' THEN manajemen_rm_tte.signed_status ELSE NULL END) SEPARATOR \'\'),\'-\') btn_cppt')
+                    ->where('reg_periksa.no_rawat', '=', $no_rawat)
+                    ->where('bridging_sep.jnspelayanan', '=', $jnsPelayanan)
+                    ->groupBy('reg_periksa.no_rawat')
+                    ->get()->first();
+        return $result;
+    }
+
+    public function getJenisPelayanan($noRawat){
+        $result = DB::table('reg_periksa')
+                ->selectRaw('status_lanjut')
+                ->where('no_rawat', '=', $noRawat)
+                ->get()->first();
+        return $result;
+    }
+
+    public function getFileName($noRawat, $kodeJenisRM){
+        $result = ManajemenTTE::where('no_rawat', '=', $noRawat)->where('jenis_rm', '=', $kodeJenisRM)->select('path')->get()->first();
+        
+        return $result;
+    }
+
     public function getKamar($no_rawat){
         if(DB::table('kamar_inap')->where('no_rawat', '=', $no_rawat)->exists()){
             $result = DB::table('kamar_inap')

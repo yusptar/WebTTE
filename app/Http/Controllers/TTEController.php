@@ -86,7 +86,7 @@ class TTEController extends Controller
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('nm_ruang', function($row){
-                    return  $this->manajemenTTE->getKamar($row->no_rawat)->nm_ruang;;
+                    return  $this->manajemenTTE->getKamar($row->no_rawat)->nm_ruang;
                 })
                 ->addColumn('signed_status', function($row){
                     return ($row->status_ppa == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
@@ -188,6 +188,55 @@ class TTEController extends Controller
                 ->make(true);
        
     }
+
+    public function index_list_dokumen_rm_rj(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $this->manajemenTTE->getPasienRalan();
+  
+            if ($request->filled('from_date') && $request->filled('to_date')) {
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+            }
+  
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        return '<button class="btn btn-primary btn-sm cetak-btn" id="detail" type="button" data-id="'.$row->no_rawat.'">Detail</button>' ;
+                    })
+                    ->make(true);
+                    // return ($row->status_akhir == '1') ? '<button class="btn btn-primary btn-sm cetak-btn" id="detail" type="button" value="'.$row->path.'">Detail</button>' : 'Belum Lengkap';
+        }
+        return view('list_dokumen.listpasien');
+    }
+    
+    public function index_list_dokumen_rm_ri(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $this->manajemenTTE->getPasienRanap();
+  
+            if ($request->filled('from_date') && $request->filled('to_date')) {
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+            }
+  
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        return '<button class="btn btn-primary btn-sm cetak-btn" id="detail" type="button" data-id="'.$row->no_rawat.'">Detail</button>' ;
+                    })
+                    ->make(true);
+                    // return ($row->status_akhir == '1') ? '<button class="btn btn-primary btn-sm cetak-btn" id="detail" type="button" value="'.$row->path.'">Detail</button>' : 'Belum Lengkap';
+        }
+            
+        return view('list_dokumen.listpasien');
+    }
+   
+    public function rm_detail(Request $request)
+    {
+        $no_rawat = $request->id;
+        $jenis_pelayanan = ($this->manajemenTTE->getJenisPelayanan($no_rawat)=="Ralan")?"2":"1";
+        $rm_details = $this->manajemenTTE->getDetailRM($no_rawat,$jenis_pelayanan);
+        return response()->json(['details' => $rm_details]);
+    }
     // END DATATABLE
     
 
@@ -198,7 +247,49 @@ class TTEController extends Controller
         if (Storage::disk('myRM')->exists($fileName)) {
             return Storage::disk('myRM')->download($fileName);
         } else {
-            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!!'], 400);
+            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
+        }
+    }
+
+    public function downloadberkas(Request $request)
+    {
+        $noRawat = $request->noRawat;
+        $jenisRM = $request->jenisRM;
+        $kodeJenisRM="";
+        switch($jenisRM){
+            case "btn-awal-medis-igd":
+                $kodeJenisRM="026";
+                break;
+            case "btn-awal-kep-igd":
+                $kodeJenisRM="019";
+                break;
+            case "btn-awal-medis":
+                $kodeJenisRM="006";
+                break;
+            case "btn-awal-kep":
+                $kodeJenisRM="020";
+                break;
+            case "btn-resume-medis":
+                $kodeJenisRM="017";
+                break;
+            case "btn-laporan-operasi":
+                $kodeJenisRM="008";
+                break;
+            case "btn-hasil-lab":
+                $kodeJenisRM="012";
+                break;
+            case "btn-hasil-rad":
+                $kodeJenisRM="013";
+                break;
+            case "btn-cppt":
+                $kodeJenisRM="022";
+                break;
+        }
+        $fileName = $this->manajemenTTE->getFileName($noRawat,$kodeJenisRM)['path'];
+        if (Storage::disk('myRM')->exists($fileName)) {
+            return Storage::disk('myRM')->download($fileName);
+        } else {
+            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '.$fileName.' | '.$kodeJenisRM], 400);
         }
     }
 
