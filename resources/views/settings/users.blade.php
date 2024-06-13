@@ -25,6 +25,9 @@
                         <form id="form-users">
                             @csrf
                             <div class="card-body">
+                                <label>Syarat dan ketentuan pengisian password yang baik</label>
+                                <p>1. Minimal terdiri dari 8 karakter</p>
+                                <p>2. Merupakan kombinasi dari huruf besar, huruf kecil, angka dan karakter symbol</p>
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                 <div class="form-group">
                                     <label>Pilih Role <span style="color:red;">*</span></label>
@@ -105,6 +108,9 @@
                 <form id="update_user" action="{{ route('user-update') }}" method="POST"
                     class="form-label-left input_mask">
                     @csrf
+                    <label>Syarat dan ketentuan pengisian password yang baik</label>
+                    <p>1. Minimal terdiri dari 8 karakter</p>
+                    <p>2. Merupakan kombinasi dari huruf besar, huruf kecil, angka dan karakter symbol</p>
                     <input type="hidden" name="id">
                     <!-- <div class="col-md-12  form-group has-feedback">
                         <label for="username">NIP/NRP</label>

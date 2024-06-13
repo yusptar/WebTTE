@@ -1,10 +1,10 @@
-<!-- resources/views/errors/404.blade.php -->
+<!-- resources/views/errors/error.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found</title>
+    <title>Error</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,9 +34,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>404</h1>
-        <p>Oops! The page you are looking for does not exist.</p>
-        <!-- <a href="{{ url('/') }}">Go to Home</a> -->
+        <h1>{{ $exception->getStatusCode() }}</h1>
+        <p>{{ $exception->getMessage() ?: 'Oops! An error occurred.' }}</p>
+        <a href="{{ url('/') }}">Go to Home</a>
     </div>
 </body>
 </html>
