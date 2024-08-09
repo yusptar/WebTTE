@@ -156,6 +156,18 @@ class APITTEController extends Controller
                     ],
                     'sink' => $resource
                 ]);
+                
+                //check if filesize is > 1KB
+                $stat = fstat($resource);
+                $size = $stat['size'];
+                if($size <= 1000){
+                    $tte_log = TTELog::create([
+                        'user' => Auth::user()->pegawai->nik,
+                        'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
+                        'message' => 'Size file '. $target_file . ' kurang dari 1000 ' . $size,
+                    ]);
+                }
+                
                 //update status untuk PPA yang melakukan tanda tangan
                 $status_tte = StatusTTEPPA::where([
                     'no_rawat' => $request->no_rawat,
