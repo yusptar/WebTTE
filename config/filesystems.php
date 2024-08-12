@@ -35,6 +35,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'rekam-medis' => [
+            'driver' => 'local',
+            'root' => storage_path('app/rekam-medis'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
