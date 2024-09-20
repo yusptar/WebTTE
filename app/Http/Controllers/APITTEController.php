@@ -324,8 +324,6 @@ class APITTEController extends Controller
             unlink(storage_path('app/rekam-medis/' . $target_file));
             return response()->json(['msg' => 'Pengiriman data gagal..!!'], 400);
         }
-        
-
     }
 }
 
