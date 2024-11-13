@@ -156,33 +156,44 @@
                             
                         },
                         error: function(data) {
-                            errorMsg += no_rawat + "gagal, " + data.responseJSON.msg + ".\n";
+                            if(data.status == 400){
+                                // console.log(data.responseJSON.msg);
+                                errorMsg += no_rawat + "gagal, " + data.responseJSON.msg + ".\n";
+                            }
                         }
                     });
                 });
-                if(errorMsg==""){
-                    $('#loading-spinner').hide();
-                    Swal.fire({
-                        title: "Berhasil!",
-                        text: "Bulk TTE berhasil..!!",
-                        icon: "success",
-                        buttons: false,
-                        timer: 3000,
-                    }).then(function() {
-                        window.location.href = "{{ route('view-pemb-rm') }}"
-                    });
-                }else{
-                    $('#loading-spinner').hide();
-                    Swal.fire({
-                        title: "Gagal!",
-                        text: errorMsg,
-                        icon: "error",
-                        buttons: false,
-                        timer: 3000,
-                    }).then(function() {
-                        window.location.href = "{{ route('view-pemb-rm') }}"
-                    });
-                }
+
+                //fungsi menunggu semua ajax dalam loop selesai
+                $(document).ajaxStop(function () {
+                    console.log("selesai");
+                        
+                    if(errorMsg==""){
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Bulk TTE berhasil..!!",
+                            icon: "success",
+                            buttons: false,
+                            timer: 3000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    }else{
+                        console.log(errorMsg);
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: errorMsg,
+                            icon: "error",
+                            buttons: false,
+                            timer: 5000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    }
+                    $(this).unbind('ajaxStop'); // to stop this event repeating further
+                });
             }else{
                 var formData = new FormData();
                 formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
