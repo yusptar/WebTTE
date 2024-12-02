@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ManajemenSurat extends Model
 {
     use HasFactory;
-    protected $table = 'manajemen_surat_tte';
+    protected $table = 'manajemen_rm_tte';
     protected $primaryKey = 'no_rawat';
     public $incrementing = false;
     public $timestamps = false;
@@ -24,9 +24,9 @@ class ManajemenSurat extends Model
 
     
     public function getDetailFileSurat(){
-        $result = DB::table('manajemen_surat_tte')
+        $result = DB::table('manajemen_rm_tte')
                 ->join('status_tte_ppa', function ($join) {
-                $join->on('manajemen_surat_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
+                $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
                     ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik);
                 })
                 ->get();

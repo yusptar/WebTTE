@@ -26,6 +26,8 @@
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input toggleSwitch" id="toggleSwitch" name="toggleSwitch" checked>
                                 <label class="custom-control-label" for="toggleSwitch">BELUM TTE</label>
+                                &nbsp;
+                                <button class="btn btn-danger btn-sm" id="tte-semua" type="button" data-id="asdasd">TTE Semua</button>
                             </div>
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
@@ -58,6 +60,7 @@
                                                 @csrf
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
+                                                    <input type="text" class="form-control" name="modal_type" id="modal_type" hidden> 
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden> 
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
                                                     <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
@@ -123,54 +126,140 @@
     $('#btn-send').click(function() {
         if ($('#form-send-tte')[0].checkValidity()) {
             $('#loading-spinner').show();
-            var formData = new FormData();
-            formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
-            formData.append('nama_file', $('input[name=modal_nama_file]').val());
-            formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
-            formData.append('passphrase', $('input[name=passphrase]').val());
-            formData.append('_token', $('input[name=_token]').val());
-            $.ajax({
-                url: "{{ route('signInvisibleTTE') }}",
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(data) {
-                    $('#loading-spinner').hide();
-                    Swal.fire({
-                        title: "Berhasil!",
-                        text: data.msg,
-                        icon: "success",
-                        buttons: false,
-                        timer: 3000,
-                    }).then(function() {
-                        window.location.href = "{{ route('view-pemb-rm') }}"
+            if($('input[name=modal_type]').val()=="bulk"){
+                console.log("bulk");
+                var dataArr = $('#table-rm').DataTable().rows().data().toArray();
+                var no_rawat = "";
+                var nama_file = "";
+                var jenis_rm = "";
+                var passphrase = $('input[name=passphrase]').val();
+                var errorMsg = "";
+                // console.log(dataArr);
+                dataArr.forEach((data) => {
+                    no_rawat = data['no_rawat'];
+                    nama_file = data['path'];
+                    jenis_rm = nama_file.substring(2, 5);
+                    // console.log(no_rawat + " | " + nama_file + " | " + jenis_rm + " | "+passphrase);
+                    var formData = new FormData();
+                    formData.append('no_rawat', no_rawat);
+                    formData.append('nama_file', nama_file);
+                    formData.append('jenis_rm', jenis_rm);
+                    formData.append('passphrase', passphrase);
+                    formData.append('_token', $('input[name=_token]').val());
+                    $.ajax({
+                        url: "{{ route('signInvisibleTTE') }}",
+                        type: "POST",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            
+                        },
+                        error: function(data) {
+                            if(data.status == 400){
+                                // console.log(data.responseJSON.msg);
+                                errorMsg += no_rawat + "gagal, " + data.responseJSON.msg + ".\n";
+                            }
+                        }
                     });
-                },
-                error: function(data) {
-                    $('#loading-spinner').hide();
-                    Swal.fire({
-                        title: "Gagal!",
-                        text: data.responseJSON.msg,
-                        icon: "error",
-                        buttons: false,
-                        timer: 3000,
-                    }).then(function() {
-                        window.location.href = "{{ route('view-pemb-rm') }}"
-                    });
-                }
-            });
+                });
+
+                //fungsi menunggu semua ajax dalam loop selesai
+                $(document).ajaxStop(function () {
+                    console.log("selesai");
+                        
+                    if(errorMsg==""){
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Bulk TTE berhasil..!!",
+                            icon: "success",
+                            buttons: false,
+                            timer: 3000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    }else{
+                        console.log(errorMsg);
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: errorMsg,
+                            icon: "error",
+                            buttons: false,
+                            timer: 5000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    }
+                    $(this).unbind('ajaxStop'); // to stop this event repeating further
+                });
+            }else{
+                var formData = new FormData();
+                formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
+                formData.append('nama_file', $('input[name=modal_nama_file]').val());
+                formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
+                formData.append('passphrase', $('input[name=passphrase]').val());
+                formData.append('_token', $('input[name=_token]').val());
+                $.ajax({
+                    url: "{{ route('signInvisibleTTE') }}",
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: data.msg,
+                            icon: "success",
+                            buttons: false,
+                            timer: 3000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    },
+                    error: function(data) {
+                        $('#loading-spinner').hide();
+                        Swal.fire({
+                            title: "Gagal!",
+                            text: data.responseJSON.msg,
+                            icon: "error",
+                            buttons: false,
+                            timer: 3000,
+                        }).then(function() {
+                            window.location.href = "{{ route('view-pemb-rm') }}"
+                        });
+                    }
+                });
+            }
+            
         } else {
             $('#form-send-tte')[0].reportValidity();
         }
     });
 
     $(document).ready(function() {
-
+        var type = "";
         $(document).on('click', "#open-modal", function() {
             $(this).addClass(
                 'open-modal-trigger-clicked'
             ); 
+
+            type = "single";
+
+            var options = {
+                'backdrop': 'static'
+            };
+            $('#demoModal').modal(options)
+        })
+
+        $(document).on('click', "#tte-semua", function() {
+            $(this).addClass(
+                'open-modal-trigger-clicked'
+            ); 
+
+            type = "bulk";
 
             var options = {
                 'backdrop': 'static'
@@ -195,6 +284,8 @@
             $("#modal_no_rawat").val(no_rawat);
             $("#modal_nama_file").val(nama_file);
             $("#modal_jenis_rm").val(jenis_rm);
+            $("#modal_type").val(type);
+            
 
         })
 
