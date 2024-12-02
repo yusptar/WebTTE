@@ -52,6 +52,11 @@ class TTEController extends Controller
         return view('form_tte.upload_rm', compact('m_berkas', 'pegawai'));
     }
 
+    public function index_ket_tte()
+    {
+        return view('naskah-tte.index');
+    }
+
     public function view_pembubuhan_rm(){
         return view('form_tte.pembubuhan');
     }

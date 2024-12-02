@@ -56,8 +56,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('list-dokumen-rm-ri', [App\Http\Controllers\TTEController::class, 'index_list_dokumen_rm_ri'])->name('list-dokumen-rm-ri');
     Route::post('rm-detail', [App\Http\Controllers\TTEController::class, 'rm_detail'])->name('rm.detail');
 
-    // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
+    // NASKAH KET TTE
+    Route::get('/naskah-tte', [App\Http\Controllers\TTEController::class, 'index_ket_tte'])->name('naskah-tte');
 
+    // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
     // Lainnya
     Route::get('users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
     Route::get('user-list', [App\Http\Controllers\UserController::class, 'user_list'])->name('user-list');
@@ -65,10 +67,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('users-store', [App\Http\Controllers\UserController::class, 'store'])->name('user-store');
     Route::post('users-update', [App\Http\Controllers\UserController::class, 'update'])->name('user-update');
     Route::post('users-delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('user-delete');
-
     Route::get('/status-user-tte', [App\Http\Controllers\APITTEController::class, 'getStatusUser'])->name('getStatusUserTTE');
     Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
-
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
 });
