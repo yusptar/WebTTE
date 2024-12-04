@@ -40,10 +40,16 @@
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
             border-radius: 15px;
+        }
+        .container-srk img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
         .hash p {
             font-size: 14px;
@@ -92,15 +98,12 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-
-        <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" height="200" width="600">
+            <img class="" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" style="max-width: 100%; height: auto;">
             <br>
         </div>
-        <!-- Main Content -->
         <div class="container-srk">
-            <img src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" height="200" width="600">
+            <img src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" height="auto" width="auto">
 
             <h5 style="margin-top: 10px; margin-bottom: 5px; font-weight:bold">KETERANGAN TANDA TANGAN ELEKTRONIK</h3>
             <!-- <h5 style="font-weight:bold">SISTEM INFORMASI KEARSIPAN DINAMIS TERINTEGRASI</h3> -->
