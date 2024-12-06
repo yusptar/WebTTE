@@ -57,7 +57,7 @@
                                             <form id="form-send-tte">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <input type="hidden" name="_token" value="Wm0qbXXO6oIkYEbFWl4as7auxZdxYa06" />
+                                                    <input type="hidden" name="_token" value="{{ env('TOKEN') }}" />
                                                     <input type="text" class="form-control" name="modal_type" id="modal_type" hidden> 
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden>
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
