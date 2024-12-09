@@ -74,3 +74,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
 });
+
+Route::get('/naskah-tte/{id}', [\App\Http\Controllers\TTEController::class, 'index_ket_tte'])->name('naskah-tte');
