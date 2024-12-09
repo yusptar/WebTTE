@@ -212,6 +212,7 @@ class APITTEController extends Controller
                     }catch(Exception $e){
                         $status_tte = StatusTTEPPA::where([
                             'no_rawat' => $request->no_rawat,
+                            'jenis_rm' => $request->jenis_rm,
                             'nip' => Auth::user()->username,
                             ])->update([
                                 'status' => 'BELUM',
