@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Hashids\Hashids;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +58,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('rm-detail', [App\Http\Controllers\TTEController::class, 'rm_detail'])->name('rm.detail');
 
     // NASKAH KET TTE
-    Route::get('/naskah-tte', [App\Http\Controllers\TTEController::class, 'index_ket_tte'])->name('naskah-tte');
+    Route::get('/naskah-tte/{id}', [\App\Http\Controllers\TTEController::class, 'index_ket_tte'])->name('naskah-tte');
+
 
     // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
     // Lainnya

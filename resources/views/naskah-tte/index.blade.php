@@ -108,26 +108,28 @@
             <h5 style="margin-top: 10px; margin-bottom: 5px; font-weight:bold">KETERANGAN TANDA TANGAN ELEKTRONIK</h3>
             <!-- <h5 style="font-weight:bold">SISTEM INFORMASI KEARSIPAN DINAMIS TERINTEGRASI</h3> -->
             <div class="hash">
-                <p><strong>Naskah ini telah ditandatangani oleh: Kaisar Jepang ke-124, Hirohito</strong></p>
+                <p><strong>Naskah ini telah ditandatangani oleh:</strong></p>
             </div>
             <hr>
             <table>
                 <tr>
                     <th>Nama</th>
-                    <th>Jabatan</th>
-                    <th>Unit Kerja</th>
+                    <th>Jenis RM</th>
                     <th>Instansi</th>
                 </tr>
                 <tr>
-                    <td>Tiomaida Seviana H.H., S.H., M.A.P</td>
-                    <td>Kepala Pusat Data dan Teknologi Informasi Kemenkes</td>
-                    <td>PUSAT DATA DAN TEKNOLOGI INFORMASI KEMENKES</td>
-                    <td>Kementerian Kesehatan</td>
+                    <td>{{ $ket_tte->nm_pegawai}}</td>
+                    <td>{{ $ket_tte->nm_rm }}</td>
+                    <td>Rumah Sakit Tk.II dr.Soepraoen</td>
                 </tr>
             </table>
             <hr>
             <div class="timestamp">
-                <p>Ditandatangani pada: Jum'at, 17 Agustus 1945 pukul 01:37</p>
+                @if($ket_tte->tgl_signed == '0000-00-00 00:00:00')
+                    <p>Ditandatangani pada: (Masih Dalam Proses Penandatanganan)</p>
+                @else
+                    <p>Ditandatangani pada: {{ $ket_tte->tgl_signed }}</p>
+                @endif
             </div>
         </div>
         <!-- include footer -->

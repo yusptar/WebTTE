@@ -7,6 +7,7 @@ use \App\Models\MasterBerkas;
 use \App\Models\ManajemenTTE;
 use \App\Models\ManajemenSurat;
 use \App\Models\StatusTTEPPA;
+use \App\Models\KeteranganTTE;
 use \App\Models\TTELog;
 use \App\Models\Pegawai;
 use Exception;
@@ -17,6 +18,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Hashids\Hashids;
 
 class TTEController extends Controller
 {
@@ -52,10 +54,32 @@ class TTEController extends Controller
         return view('form_tte.upload_rm', compact('m_berkas', 'pegawai'));
     }
 
-    public function index_ket_tte()
+    public function index_ket_tte($id)
     {
-        return view('naskah-tte.index');
+        $hashids = new Hashids('this is my salt');
+        $_id = $hashids->decode($id);
+        if (empty($_id)) {
+            abort(404, 'Invalid or malformed ID');
+        }
+
+        $decoded_id = $_id[0] . '007';
+        $ket_tte = KeteranganTTE::find($decoded_id);
+        if (!$ket_tte) {
+            abort(404, 'Data not found');
+        }
+        // dd($ket_tte);
+        return view('naskah-tte.index', compact('ket_tte'));
     }
+
+    // public function index_ket_tte($id)
+    // {
+    //     $id = 'eBkQKEvwZVsn';
+    //     $hashids = new Hashids('this is my salt'); 
+    //     $_id = $hashids->decode($id);
+    //     $ket_tte = KeteranganTTE::find($id);
+    //     dd($_id);
+    //     return view('naskah-tte.index', compact('ket_tte'));
+    // }
 
     public function view_pembubuhan_rm(){
         return view('form_tte.pembubuhan');
