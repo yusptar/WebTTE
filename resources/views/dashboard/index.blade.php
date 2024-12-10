@@ -27,6 +27,14 @@
                         <div class="icon">
                           <i class="fas fa-check"></i>
                         </div>
+                        <button id="toggle-sudah" class="btn btn-success btn-block" style="margin-top: 5px;">Detail Dokumen</button>
+                    </div>
+                    <div id="list-sudah" style="display: none; margin-bottom: 20px">
+                        <ul class="list-group">
+                            @foreach($jumlah_dokumen_sudah->dokumen_count as $dokumen => $count)
+                            <li class="list-group-item">Dokumen {{ $dokumen }} = {{ $count }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
                 <div class="col-lg-6 col-6">
@@ -38,6 +46,14 @@
                         <div class="icon">
                             <i class="fas fa-minus"></i>
                         </div>
+                        <button id="toggle-belum" class="btn btn-info btn-block" style="margin-top: 5px;">Detail Dokumen</button>
+                    </div>
+                    <div id="list-belum" style="display: none; margin-bottom: 20px;">
+                        <ul class="list-group">
+                            @foreach($jumlah_dokumen_belum->dokumen_count as $dokumen => $count)
+                                <li class="list-group-item">Dokumen {{ $dokumen }} = {{ $count }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -47,7 +63,7 @@
                         <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
                     </div> -->
                     <div class="card-body">
-                        <canvas id="tte-sudah" width="200" height="100"></canvas>
+                        <canvas id="tte-sudah" width="100" height="50"></canvas>
                     </div>
                 </div>
                 <div class="card col-lg-6 col-6">
@@ -55,7 +71,7 @@
                         <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
                     </div> -->
                     <div class="card-body">
-                        <canvas id="tte-belum" width="200" height="100"></canvas>
+                        <canvas id="tte-belum" width="100" height="50"></canvas>
                     </div>
                 </div>
             </div>
@@ -183,6 +199,27 @@
         } else {
             image.style.display = 'none';
             button.textContent = 'Tampilkan Gambar';
+        }
+    });
+    document.getElementById('toggle-sudah').addEventListener('click', function () {
+        const list = document.getElementById('list-sudah');
+        if (list.style.display === 'none') {
+            list.style.display = 'block';
+            this.textContent = 'Sembunyikan Detail Dokumen';
+        } else {
+            list.style.display = 'none';
+            this.textContent = 'Tampilkan Detail Dokumen';
+        }
+    });
+
+    document.getElementById('toggle-belum').addEventListener('click', function () {
+        const list = document.getElementById('list-belum');
+        if (list.style.display === 'none') {
+            list.style.display = 'block';
+            this.textContent = 'Sembunyikan Detail Dokumen';
+        } else {
+            list.style.display = 'none';
+            this.textContent = 'Tampilkan Detail Dokumen';
         }
     });
 </script>

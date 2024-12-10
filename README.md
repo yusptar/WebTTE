@@ -1,2 +1,2 @@
-# Web Service BIOS G2 Next-Gen, Codename: Endgame
-DIREKTORAT JENDERAL PERBENDAHARAAN KEMENTERIAN KEUANGAN 2022
+# TTE Web Service
+BSRE X Rumah Sakit Tk.II dr.Soepraoen

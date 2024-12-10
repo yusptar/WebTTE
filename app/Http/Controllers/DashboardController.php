@@ -63,13 +63,41 @@ class DashboardController extends Controller
             ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
             ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
             ->select(
+                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
                 DB::raw('SUM(CASE WHEN s.status = "BELUM" THEN 1 ELSE 0 END) as belum'),
                 DB::raw('SUM(CASE WHEN s.status = "SUDAH" THEN 1 ELSE 0 END) as sudah')
             )
             ->where('p.nama', $user_name)
             ->first();
 
-        return view('dashboard.index', compact('jumlah_tte', 'months', 'belum', 'sudah'));
+        $jumlah_dokumen_sudah = DB::table('pegawai as p')
+            ->join('status_tte_ppa as s', 'p.nik', '=', 's.nip')
+            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
+            ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
+            ->select(
+                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
+            )
+            ->where('p.nama', $user_name)
+            ->where('s.status', 'SUDAH')
+            ->first();
+
+        $jumlah_dokumen_belum = DB::table('pegawai as p')
+            ->join('status_tte_ppa as s', 'p.nik', '=', 's.nip')
+            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
+            ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
+            ->select(
+                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
+            )
+            ->where('p.nama', $user_name)
+            ->where('s.status', 'BELUM')
+            ->first();
+
+        $jumlah_dokumen_sudah->dokumen_list = explode(', ', $jumlah_dokumen_sudah->dokumen);
+        $jumlah_dokumen_belum->dokumen_list = explode(', ', $jumlah_dokumen_belum->dokumen);
+        $jumlah_dokumen_sudah->dokumen_count = array_count_values($jumlah_dokumen_sudah->dokumen_list);
+        $jumlah_dokumen_belum->dokumen_count = array_count_values($jumlah_dokumen_belum->dokumen_list);
+
+        return view('dashboard.index', compact('jumlah_tte', 'jumlah_dokumen_sudah','jumlah_dokumen_belum','months', 'belum', 'sudah'));
     }
 
 
