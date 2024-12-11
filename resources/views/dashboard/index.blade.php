@@ -77,7 +77,7 @@
             </div>
             <div class="d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
                 <button id="toggleImageBtn" class="btn btn-success mb-3" style="border-radius:25px;"><strong>ALUR PENGGUNAAN TTE</strong></button>
-                <img id="alurTteImage" src="{{ asset('img/alur-tte-new.png') }}" alt="Alur TTE" style="width: auto; height: auto; display: none;">
+                <img id="alurTteImage" src="{{ asset('img/alur-tte-new.png') }}" alt="Alur TTE" class="img-fluid" style="max-width: 100%; height: auto; display: none;">
             </div>
         </div><!-- /.container-fluid -->
     </section>
