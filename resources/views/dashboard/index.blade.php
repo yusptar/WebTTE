@@ -21,8 +21,10 @@
                 <div class="col-lg-6 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
+                            <strong>{{ Auth::user()->pegawai->nama }}</strong>
                             <h3>{{ $jumlah_tte->sudah }} Dokumen</h3>
                             <h6>Jumlah Keseluruhan Dokumen TTE berstatus <strong style="color:white; font-weight:bold">(SUDAH)</strong></h6>
+                            
                         </div>
                         <div class="icon">
                           <i class="fas fa-check"></i>
@@ -40,6 +42,7 @@
                 <div class="col-lg-6 col-6">
                     <div class="small-box bg-info">
                         <div class="inner">
+                            <strong>{{ Auth::user()->pegawai->nama }}</strong>
                             <h3>{{ $jumlah_tte->belum }} Dokumen</h3>
                             <h6>Jumlah Keselurahan Dokumen TTE berstatus <strong style="color:white; font-weight:bold">(BELUM)</strong></h6>
                         </div>
@@ -58,24 +61,48 @@
                 </div>
             </div>
             <div class="row">
-                <div class="card col-lg-6 col-6">
-                    <!-- <div class="card-header">
+                <!-- <div class="card col-lg-6">
+                    <div class="card-header">
                         <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
-                    </div> -->
-                    <div class="card-body">
-                        <canvas id="tte-sudah" width="100" height="50"></canvas>
                     </div>
-                </div>
-                <div class="card col-lg-6 col-6">
-                    <!-- <div class="card-header">
+                    <div class="card-body">
+                        <canvas id="tte-all" width="100" height="50"></canvas>
+                    </div>
+                </div> -->
+                <!-- <div class="card col-lg-6">
+                    <div class="card-header">
                         <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
-                    </div> -->
+                    </div>
+                    <div class="card-body">
+                        <canvas id="tte-all-pie" width="100" height="50"></canvas>
+                    </div>
+                </div> -->
+                <!-- <div class="card col-lg-6">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
+                    </div>
                     <div class="card-body">
                         <canvas id="tte-belum" width="100" height="50"></canvas>
                     </div>
                 </div>
+                <div class="card col-lg-6 col-6">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="tte-all" width="100" height="50"></canvas>
+                    </div>
+                </div> -->
             </div>
             <div class="d-flex flex-column justify-content-center align-items-center text-center" style="height: 100%;">
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                        <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="tte-all" width="100" height="50"></canvas>
+                    </div>
+                </div>
                 <button id="toggleImageBtn" class="btn btn-success mb-3" style="border-radius:25px;"><strong>ALUR PENGGUNAAN TTE</strong></button>
                 <img id="alurTteImage" src="{{ asset('img/alur-tte-new.png') }}" alt="Alur TTE" class="img-fluid" style="max-width: 100%; height: auto; display: none;">
             </div>
@@ -92,25 +119,39 @@
     const months = @json($months);
     const dataBelum = @json($belum);
     const dataSudah = @json($sudah);
+    // const dokumenBelum = [];
+    // const countBelum = [];
+    // const dokumenSudah = [];
+    // const countSudah = [];
 
-    const ctx = document.getElementById('tte-sudah').getContext('2d');
-    const cty = document.getElementById('tte-belum').getContext('2d');
-    new Chart(ctx, {
-        type: 'line', 
+    // @foreach($jumlah_dokumen_belum->dokumen_count as $dokumen => $count)
+    //     dokumenBelum.push('{{ $dokumen }}');
+    //     countBelum.push({{ $count }});
+    // @endforeach
+    // @foreach($jumlah_dokumen_sudah->dokumen_count as $dokumen => $count)
+    //     dokumenSudah.push('{{ $dokumen }}');
+    //     countSudah.push({{ $count }});
+    // @endforeach
+
+        
+    const ctall = document.getElementById('tte-all').getContext('2d');
+    // const ctallpie = document.getElementById('tte-all-pie').getContext('2d');
+    new Chart(ctall, {
+        type: 'bar', 
         data: {
             labels: months,
             datasets: [
-                // {
-                //     label: 'BELUM',
-                //     data: dataBelum,
-                //     borderColor: 'rgba(54, 162, 235, 1)', 
-                //     backgroundColor: 'rgba(54, 162, 235, 0.2)', 
-                //     borderWidth: 2, 
-                //     fill: true, 
-                //     tension: 0.3, 
-                // },
                 {
-                    label: 'SUDAH',
+                    label: 'Dokumen BELUM TTE',
+                    data: dataBelum,
+                    borderColor: 'rgba(54, 162, 235, 1)', 
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', 
+                    borderWidth: 2, 
+                    fill: true, 
+                    tension: 0.3, 
+                },
+                {
+                    label: 'Dokumen SUDAH TTE',
                     data: dataSudah,
                     borderColor: 'rgba(75, 192, 192, 1)', 
                     backgroundColor: 'rgba(75, 192, 192, 0.2)', 
@@ -128,7 +169,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Grafik Jumlah Dokumen TTE Per Bulan (SUDAH)', 
+                    text: 'Perbandingan Jumlah Dokumen TTE Per Bulan', 
                 },
             },
             scales: {
@@ -141,53 +182,61 @@
             },
         },
     });
-    new Chart(cty, {
-        type: 'line', 
-        data: {
-            labels: months,
-            datasets: [
-                {
-                    label: 'BELUM',
-                    data: dataBelum,
-                    borderColor: 'rgba(54, 162, 235, 1)', 
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', 
-                    borderWidth: 2, 
-                    fill: true, 
-                    tension: 0.3, 
-                },
-                // {
-                //     label: 'SUDAH',
-                //     data: dataSudah,
-                //     borderColor: 'rgba(75, 192, 192, 1)', 
-                //     backgroundColor: 'rgba(75, 192, 192, 0.2)', 
-                //     borderWidth: 2, 
-                //     fill: true, 
-                //     tension: 0.3, 
-                // },
-            ],
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top', 
-                },
-                title: {
-                    display: true,
-                    text: 'Grafik Jumlah Dokumen TTE Per Bulan (BELUM)', 
-                },
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                },
-                y: {
-                    beginAtZero: true,
-                },
-            },
-        },
-    });
+    // new Chart(ctallpie, {
+    //     type: 'bar', 
+    //     data: {
+    //         labels: months,
+    //         datasets: [
+    //             {
+    //                 label: 'Jumlah Dokumen Belum TTE',
+    //                 data: countBelum,
+    //                 borderColor: 'rgba(54, 162, 235, 1)', 
+    //                 backgroundColor: [
+    //                     'rgba(255, 99, 132, 0.2)',
+    //                     'rgba(54, 162, 235, 0.2)',
+    //                     'rgba(255, 206, 86, 0.2)',
+    //                     'rgba(75, 192, 192, 0.2)',
+    //                     'rgba(153, 102, 255, 0.2)',
+    //                     'rgba(255, 159, 64, 0.2)',
+    //                 ],
+    //                 borderWidth: 2, 
+    //                 fill: true, 
+    //                 tension: 0.3, 
+    //             },
+    //             {
+    //                 label: 'Jumlah Dokumen Belum TTE',
+    //                 data: countSudah,
+    //                 borderColor: 'rgba(54, 162, 235, 1)', 
+    //                 backgroundColor: [
+    //                     'rgba(255, 99, 132, 0.2)',
+    //                     'rgba(54, 162, 235, 0.2)',
+    //                     'rgba(255, 206, 86, 0.2)',
+    //                     'rgba(75, 192, 192, 0.2)',
+    //                     'rgba(153, 102, 255, 0.2)',
+    //                     'rgba(255, 159, 64, 0.2)',
+    //                 ],
+    //                 borderWidth: 2, 
+    //                 fill: true, 
+    //                 tension: 0.3, 
+    //             },
+    //         ],
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         plugins: {
+    //             legend: {
+    //                 position: 'top', 
+    //             },
+    //             title: {
+    //                 display: true,
+    //                 text: 'Jumlah Dokumen Belum TTE', 
+    //             },
+    //         },
+    //     },
+    // });
+
 </script>
+
 <script>
     document.getElementById('toggleImageBtn').addEventListener('click', function () {
         const image = document.getElementById('alurTteImage');
