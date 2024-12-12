@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 text-center mb-5">
-                <img src="{{ asset('img/logorst-panjang.png') }}" class="mr-4" alt="" height="69%" width="70%">
+                <img class="" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" style="max-width: 100%; height: auto;">
                 <h3 class="mb-4 text-center" style="font-weight:bold;">Tanda Tangan Elektronik (TTE)</h3>
                 <p class="text-center" style="font-weight:bold;color:black;">Rumah Sakit Tk.II dr.Soepraoen</p>
             </div>
@@ -46,13 +46,13 @@
                         </div>
                         <div class="form-group d-md-flex">
                             <div class="w-50">
-                                <label class="checkbox-wrap checkbox-primary">Remember Me
+                                <label class="checkbox-wrap checkbox-success" style="font-weight:bold;">Remember Me
                                     <input type="checkbox" checked>
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
                             <div class="w-50 text-md-right">
-                                <a href="#" style="color: #fff">Forgot Password</a>
+                                <a href="#" style="color: #fff; font-weight:bold">Forgot Password</a>
                             </div>
                             <!-- <div class="w-50 text-md-right">
                                 <a href="{{ route('register') }}" style="color: #fff">Register</a>
