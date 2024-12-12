@@ -33,6 +33,15 @@
 
                 <!-- ADMIN ACCESS -->
                 @can('admin')
+                <li class="nav-header">Dashboard</li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard')}}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-header">Rekam Medis</li>
                 <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
@@ -152,6 +161,15 @@
                 
                 <!-- PPA ACCESS -->
                 @can('ppa')
+                <li class="nav-header">Dashboard</li>
+                <li class="nav-item">
+                    <a href="{{ route('dashboard')}}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-header">Rekam Medis</li>
                 <li class="nav-item {{ (request()->routeIs('upload-rm') || request()->routeIs('upload-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
