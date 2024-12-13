@@ -395,7 +395,7 @@ class APITTEController extends Controller
                         'contents' => 'visible'
                     ],
                     [
-                        'name' => 'iamge',
+                        'name' => 'image',
                         'contents' => 'true'
                     ],
                     [
