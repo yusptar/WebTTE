@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
+    Route::post('/sign-koordinat', [App\Http\Controllers\APITTEController::class, 'signCoordinate'])->name('signKoordinatTTE');
 });
 
 Route::get('/naskah-tte/{id}', [\App\Http\Controllers\NaskahTTEController::class, 'index_ket_tte'])->name('naskah-tte');

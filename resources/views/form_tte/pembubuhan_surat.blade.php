@@ -194,8 +194,9 @@
                 formData.append('jenis_rm', "999");
                 formData.append('passphrase', $('input[name=passphrase]').val());
                 formData.append('_token', $('input[name=_token]').val());
+                // url: "{{ route('signInvisibleTTE') }}",
                 $.ajax({
-                    url: "{{ route('signInvisibleTTE') }}",
+                    url: "{{ route('signKoordinatTTE') }}",
                     type: "POST",
                     data: formData,
                     contentType: false,
