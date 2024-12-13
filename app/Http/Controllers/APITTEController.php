@@ -400,11 +400,11 @@ class APITTEController extends Controller
                     ],
                     [
                         'name' => 'width',
-                        'contents' => '200'
+                        'contents' => '75'
                     ],
                     [
                         'name' => 'height',
-                        'contents' => '200'
+                        'contents' => '75'
                     ],
                     [
                         'name' => 'tag_koordinat',
