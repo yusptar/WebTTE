@@ -23,7 +23,6 @@ class LoginController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'username' => 'required|string',
-            'password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
