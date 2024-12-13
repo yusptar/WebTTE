@@ -343,7 +343,7 @@ class APITTEController extends Controller
         $nama_file = $request->nama_file;
         $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
 
-        $nama_qr = 'QR2.png';
+        $nama_qr = 'QR1.png';
 
         /*
         Check apakah file ada di dalam storage
@@ -408,7 +408,7 @@ class APITTEController extends Controller
                     ],
                     [
                         'name' => 'tag_koordinat',
-                        'contents' => '$'
+                        'contents' => '&'
                     ]
                 ],
                 'auth' => [
