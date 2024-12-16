@@ -27,4 +27,5 @@ Route::post('/auth', [App\Http\Controllers\API\AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Route::get('/view-rm', [App\Http\Controllers\API\UploadRMController::class, 'index']);
     Route::post('/api-store-pdf', [App\Http\Controllers\API\UploadRMController::class, 'store']);
+    Route::post('/api-store-qr', [App\Http\Controllers\API\UploadRMController::class, 'storeQR']);
 });  
