@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Http;
 use Config;
 use Exception;
 use Illuminate\Support\Facades\Storage;
+use \App\Models\KeteranganTTE;
 
 
 
@@ -342,8 +343,9 @@ class APITTEController extends Controller
         $location = '1';
         $nama_file = $request->nama_file;
         $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
-
-        $nama_qr = 'QR1.png';
+        
+        $nama_qr = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->id;
+        $tag = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->tag;;
 
         /*
         Check apakah file ada di dalam storage
@@ -408,7 +410,7 @@ class APITTEController extends Controller
                     ],
                     [
                         'name' => 'tag_koordinat',
-                        'contents' => '&'
+                        'contents' => $tag
                     ]
                 ],
                 'auth' => [
@@ -444,6 +446,14 @@ class APITTEController extends Controller
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
                         'status' => 'SUDAH',
+                    ]);
+
+                $status_ket_tte = KeteranganTTE::where([
+                    'no_rawat' => $request->no_rawat,
+                    'jenis_rm' => $request->jenis_rm,
+                    'nip' => Auth::user()->pegawai->nik,
+                    ])->update([
+                        'tgl_signed' => Carbon::now()->format('Y/m/d H:i:s'),
                     ]);
 
                 try{
@@ -509,5 +519,6 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'Pengiriman data gagal..!!'], 400);
         }
     }
+
 }
 
