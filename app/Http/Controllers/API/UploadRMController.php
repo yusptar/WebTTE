@@ -105,4 +105,16 @@ class UploadRMController extends Controller
         // return ApiFormatter::createAPI(200, 'Success', $data);
         // return ApiFormatter::createAPI(200, 'Success '.$pdf_name);
     }
+    
+    public function storeQR(Request $request)
+    {
+        try {
+            $file_name = $request->id . '.png';
+            $pdf_upload = $request->file('file')->storeAs('qr-code', $file_name);
+        } catch (Exception $errmsg) {
+            // return ApiFormatter::createAPI(400, 'Failed' . $errmsg);
+            return response()->json(['code' => '400','message' => $errmsg], 400);
+        }
+        return response()->json(['code' => '200','message' => 'Berhasil upload dengan nama file '.$file_name], 200);
+    }
 }
