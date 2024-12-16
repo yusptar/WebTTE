@@ -344,8 +344,8 @@ class APITTEController extends Controller
         $nama_file = $request->nama_file;
         $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
         
-        $nama_qr = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->id;
-        $tag = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->tag;;
+        $nama_qr = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->id . '.png';
+        $tag = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->tag;
 
         /*
         Check apakah file ada di dalam storage
