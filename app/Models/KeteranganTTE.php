@@ -20,5 +20,6 @@ class KeteranganTTE extends Model
         'nm_pegawai',
         'nm_rm',
         'tgl_signed',
+        'tag',
     ];
 }
