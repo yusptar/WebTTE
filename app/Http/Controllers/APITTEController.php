@@ -455,6 +455,8 @@ class APITTEController extends Controller
                     ])->update([
                         'tgl_signed' => Carbon::now()->format('Y/m/d H:i:s'),
                     ]);
+                //hapus QR
+                unlink(storage_path($this->qr_location . $nama_qr));
 
                 try{
                     //cek apakah semua PPA sudah melakukan tanda tangan 
