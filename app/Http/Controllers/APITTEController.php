@@ -354,6 +354,10 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
         }
 
+        if(!file_exists($this->qr_location . $nama_qr)){
+            return response()->json(['msg' => 'QR tidak ditemukan..!!'], 400);
+        }
+
         if($request->nama_file==""){
             return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
         }
