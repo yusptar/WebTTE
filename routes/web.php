@@ -74,6 +74,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
     Route::post('/sign-koordinat', [App\Http\Controllers\APITTEController::class, 'signCoordinate'])->name('signKoordinatTTE');
+
+    // Route::post('/berkas', [App\Http\Controllers\APITTEController::class, 'manageBerkas'])->name('berkas');
+
 });
 
 Route::get('/naskah-tte/{id}', [\App\Http\Controllers\NaskahTTEController::class, 'index_ket_tte'])->name('naskah-tte');

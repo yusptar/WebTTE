@@ -522,5 +522,50 @@ class APITTEController extends Controller
         }
     }
 
+    public function manageBerkas(Request $request){
+
+        if($request->type == "hapus"){
+            $passphrase = $request->passphrase;
+            $no_rawat = $request->no_rawat;
+            $nama_file = $request->nama_file;
+            $jenis_rm = $request->jenis_rm;
+    
+            if(!file_exists($this->storage_location . $nama_file)){
+                return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
+            }
+    
+            try{
+                if(unlink(storage_path('app/rekam-medis/' . $nama_file))){
+                    $tte = ManajemenTTE::where([
+                        'no_rawat' => $request->no_rawat,
+                        'path' => $nama_file,
+                        ])->delete();
+            
+                    $tte = StatusTTEPPA::where([
+                        'no_rawat' => $request->no_rawat,
+                        'jenis_rm' => $jenis_rm,
+                        ])->delete();
+            
+                    $dataKetTTE = KeteranganTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->where('tgl_signed', '<>', '0000-00-00 00:00:00')->get();
+                    if($dataKetTTE->count()>0){
+                        foreach($dataKetTTE as $data){
+                            unlink(storage_path('app/qr-code/' . $data->id . '.png'));
+                        }
+                    }
+                    $tte = KeteranganTTE::where([
+                        'no_rawat' => $request->no_rawat,
+                        'jenis_rm' => $jenis_rm,
+                        ])->delete();
+        
+                    return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+                }else{
+                    return response()->json(['msg' => 'Proses hapus gagal..!!'], 400);
+                }
+            }catch(RequestException $err){   
+                $errMsg="Error: " . $err->getMessage();
+                return response()->json(['msg' => $errMsg], 400);
+            }
+        }
+    }
 }
 

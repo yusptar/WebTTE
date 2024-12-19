@@ -294,6 +294,56 @@
             $('.open-modal-trigger-clicked').removeClass('open-modal-trigger-clicked')
             $("#demoModal").trigger("reset");
         })
+
+        
+        // $(document).on('click', "#hapus", function() {
+        //     if (confirm("Apakah anda yakin ingin menghapus..??") == true) {
+        //         var el = $("#hapus"); 
+        //         var row = el.closest("tr");
+        //         var no_rawat =  row.find("td:eq(0)").text();
+        //         var nama_file = row.find("td:eq(1)").text();
+        //         var jenis_rm = nama_file.substring(2, 5);
+
+        //         var formData = new FormData();
+        //         formData.append('no_rawat', no_rawat);
+        //         formData.append('nama_file', nama_file);
+        //         formData.append('jenis_rm', jenis_rm);
+        //         formData.append('type', 'hapus');
+        //         formData.append('_token', "{{ csrf_token() }}");
+                
+        //         $.ajax({
+        //             url: "{{ route('berkas') }}",
+        //             type: "POST",
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             success: function(data) {
+        //                 $('#loading-spinner').hide();
+        //                 Swal.fire({
+        //                     title: "Berhasil!",
+        //                     text: data.msg,
+        //                     icon: "success",
+        //                     buttons: false,
+        //                     // timer: 3000,
+        //                 }).then(function() {
+        //                     window.location.href = "{{ route('view-pemb-rm') }}"
+        //                 });
+        //             },
+        //             error: function(data) {
+        //                 $('#loading-spinner').hide();
+        //                 Swal.fire({
+        //                     title: "Gagal!",
+        //                     text: data.responseJSON.msg,
+        //                     icon: "error",
+        //                     buttons: false,
+        //                     // timer: 3000,
+        //                 }).then(function() {
+        //                     window.location.href = "{{ route('view-pemb-rm') }}"
+        //                 });
+        //             }
+        //         });
+        //     }
+        // })
     });
 </script>
 @endsection

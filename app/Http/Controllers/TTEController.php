@@ -105,6 +105,7 @@ class TTEController extends Controller
                     return ($row->status_ppa == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
+                    // return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button> &nbsp; <button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>' : '<button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>';
                     return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
                 })
                 ->rawColumns(['signed_status','action'])
@@ -128,6 +129,7 @@ class TTEController extends Controller
                 })
                 ->addColumn('action', function($row){
                     return ($row->signed_status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    // return ($row->signed_status == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button> &nbsp; <button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>' : '<button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>';
                 })
                 ->rawColumns(['signed_status','action'])
                 ->make(true);
@@ -318,7 +320,7 @@ class TTEController extends Controller
 
         $no_rawat = $request->no_rawat; 
         $f_no_rawat = str_replace('/', '', $no_rawat);
-        $pdf_name = 'SURAT999_' . $f_no_rawat . '.pdf';
+        $pdf_name = 'RM999_' . $f_no_rawat . '.pdf';
 
         try{
             $pegawai = Pegawai::where('nik', $request->nip)->first();
@@ -336,6 +338,7 @@ class TTEController extends Controller
                 'no_rawat' => $request->no_rawat,
                 'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
                 'tanggal_signed' => '0000-00-00 00:00:00',
+                'jenis_rm' => '999',
                 'path' => $pdf_name,
                 'signed_status' => 'BELUM',
             ]);
