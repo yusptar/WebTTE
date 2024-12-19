@@ -312,7 +312,7 @@
         //         formData.append('_token', "{{ csrf_token() }}");
                 
         //         $.ajax({
-        //             url: "{{ route('berkas') }}",
+        //             url: "",
         //             type: "POST",
         //             data: formData,
         //             contentType: false,
