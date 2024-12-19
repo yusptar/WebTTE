@@ -460,7 +460,7 @@ class APITTEController extends Controller
                         'tgl_signed' => Carbon::now()->format('Y/m/d H:i:s'),
                     ]);
                 //hapus QR
-                unlink(storage_path($this->qr_location . $nama_qr));
+                unlink(storage_path('app/qr-code/' . $nama_qr));
 
                 try{
                     //cek apakah semua PPA sudah melakukan tanda tangan 
@@ -506,7 +506,7 @@ class APITTEController extends Controller
 
                 
                 /* remove file RM yang sebelumnya untuk menghemat storage */
-                // unlink(storage_path('app/rekam-medis/' . $nama_file));
+                unlink(storage_path('app/rekam-medis/' . $nama_file));
                 return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
             }
                 
