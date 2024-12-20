@@ -14,7 +14,7 @@ class NaskahTTEController extends Controller
 {
     public function index_ket_tte($id)
     {
-        $hashids = new Hashids('this is my salt');
+        $hashids = new Hashids('RSTDS JAYA');
         $_id = $hashids->decode($id);
         if (empty($_id)) {
             abort(404, 'Invalid or malformed ID');
