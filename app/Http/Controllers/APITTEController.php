@@ -149,172 +149,87 @@ class APITTEController extends Controller
                 'http_errors' => true,
                 // 'sink' => $resource,
             ]);
-            // $response_ = json_decode($response->getBody(),true);
-            // if($response_==null){
-                // $headers = $response->getHeaders();
-                // dd($headers);
-                // $id_dokumen =  $headers['id_dokumen'][0];
-                // $response = $this->client->request('GET', $this->baseurl_api . '/api/sign/download/' . $id_dokumen, [
-                //     'auth' => [
-                //         'esign', 
-                //         'qwerty'
-                //     ],
-                //     'sink' => $resource
-                // ]);
+            
+            $dateTime = Carbon::now()->format('Y/m/d H:i:s');
+            $headers = $response->getHeaders();
+            if($headers['Content-Type'][0] == 'application/json'){
+                $response_ = json_decode($response->getBody(),true);
+                // dd($response_);
+                
+                $tte_log = TTELog::create([
+                    'user' => Auth::user()->pegawai->nik,
+                    'created_at' => $dateTime,
+                    'message' => $response_['error'],
+                ]);
+                return response()->json(['msg' => $response_['error']], 400);
 
-                $headers = $response->getHeaders();
-                if($headers['Content-Type'][0] == 'application/json'){
-                    $response_ = json_decode($response->getBody(),true);
-                    // dd($response_);
-                    
-                    $tte_log = TTELog::create([
-                        'user' => Auth::user()->pegawai->nik,
-                        'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                        'message' => $response_['error'],
+            }else if($headers['Content-Type'][0] == 'application/pdf'){
+                // Storing pdf contents to a file
+                Storage::disk('rekam-medis')->put($target_file, $response->getBody()->getContents());
+
+                $status_tte = StatusTTEPPA::where([
+                    'no_rawat' => $request->no_rawat,
+                    'jenis_rm' => $request->jenis_rm,
+                    'nip' => Auth::user()->pegawai->nik,
+                    ])->update([
+                        'status' => 'SUDAH',
                     ]);
-                    return response()->json(['msg' => $response_['error']], 400);
+                    
+                $status_ket_tte = KeteranganTTE::where([
+                    'no_rawat' => $request->no_rawat,
+                    'jenis_rm' => $request->jenis_rm,
+                    'nip' => Auth::user()->pegawai->nik,
+                    ])->update([
+                        'tgl_signed' => $dateTime,
+                    ]);
 
-                }else if($headers['Content-Type'][0] == 'application/pdf'){
-                    // Storing pdf contents to a file
-                    Storage::disk('rekam-medis')->put($target_file, $response->getBody()->getContents());
-
+                try{
+                    //cek apakah semua PPA sudah melakukan tanda tangan 
+                    $signed_status = 'BELUM';
+                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
+                        $signed_status = 'SUDAH';
+                    }
+                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
+                    if($jumlahFileRM->count()>0){
+                        $tte = ManajemenTTE::where([
+                            'no_rawat' => $request->no_rawat,
+                            'path' => $nama_file,
+                            ])->update([
+                                'tanggal_signed' => $dateTime,
+                                'path' => $target_file,
+                                'signed_status' => $signed_status,
+                            ]);
+                    } else {
+                        $tte = ManajemenSurat::where([
+                            'no_rawat' => $request->no_rawat,
+                            'path' => $nama_file,
+                            ])->update([
+                                'tanggal_signed' => $dateTime,
+                                'path' => $target_file,
+                                'signed_status' => $signed_status,
+                            ]);
+                    }
+                }catch(Exception $e){
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
                         'jenis_rm' => $request->jenis_rm,
-                        'nip' => Auth::user()->pegawai->nik,
+                        'nip' => Auth::user()->username,
                         ])->update([
-                            'status' => 'SUDAH',
+                            'status' => 'BELUM',
                         ]);
-    
-                    try{
-                        //cek apakah semua PPA sudah melakukan tanda tangan 
-                        $signed_status = 'BELUM';
-                        if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
-                            $signed_status = 'SUDAH';
-                        }
-                        $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
-                        if($jumlahFileRM->count()>0){
-                            $tte = ManajemenTTE::where([
-                                'no_rawat' => $request->no_rawat,
-                                'path' => $nama_file,
-                                ])->update([
-                                    'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-                                    'path' => $target_file,
-                                    'signed_status' => $signed_status,
-                                ]);
-                        } else {
-                            $tte = ManajemenSurat::where([
-                                'no_rawat' => $request->no_rawat,
-                                'path' => $nama_file,
-                                ])->update([
-                                    'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-                                    'path' => $target_file,
-                                    'signed_status' => $signed_status,
-                                ]);
-                        }
-                    }catch(Exception $e){
-                        $status_tte = StatusTTEPPA::where([
-                            'no_rawat' => $request->no_rawat,
-                            'jenis_rm' => $request->jenis_rm,
-                            'nip' => Auth::user()->username,
-                            ])->update([
-                                'status' => 'BELUM',
-                            ]);
-                        $tte_log = TTELog::create([
-                                            'user' => Auth::user()->pegawai->nik,
-                                            'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                                            'message' => 'Update Database Gagal..!!',
-                                        ]);
-                        return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
-                    }
-    
-                    
-                    /* remove file RM yang sebelumnya untuk menghemat storage */
-                    // unlink(storage_path('app/rekam-medis/' . $nama_file));
-                    return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+                    $tte_log = TTELog::create([
+                                        'user' => Auth::user()->pegawai->nik,
+                                        'created_at' => $dateTime,
+                                        'message' => 'Update Database Gagal..!!',
+                                    ]);
+                    return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
                 }
+
                 
-                //check if filesize is < 1KB
-                // $stat = fstat($resource);
-                // $size = $stat['size'];
-                // if($size <= 1000){
-                    // unlink(storage_path('app/rekam-medis/' . $target_file));
-                    
-                    // $tte_log = TTELog::create([
-                    //     'user' => Auth::user()->pegawai->nik,
-                    //     'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                    //     'message' => 'Size file '. $target_file . ' kurang dari 1000 ' . $size,
-                    // ]);
-                    // return response()->json(['msg' => 'Proses Tanda tangan gagal..!! '], 400);
-                // }
-                
-                //update status untuk PPA yang melakukan tanda tangan
-                
-
-            // }else{
-            //     $tte_log = TTELog::create([
-            //         'user' => Auth::user()->pegawai->nik,
-            //         'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-            //         'message' => $response_['error'],
-            //     ]);
-            //     return response()->json(['msg' => $response_['error']], 400);
-            // }
-
-            // echo $response->getBody();
-            // if ($response_->status_code != 2031) {
-            // // if ($response->getStatusCode() == 200) {
-
-            //     //update status untuk PPA yang melakukan tanda tangan
-            //     $status_tte = StatusTTEPPA::where([
-            //         'no_rawat' => $request->no_rawat,
-            //         'nip' => Auth::user()->pegawai->nik,
-            //         ])->update([
-            //             'status' => 'SUDAH',
-            //         ]);
-
-            //     try{
-            //         //cek apakah semua PPA sudah melakukan tanda tangan 
-            //         $signed_status = 'BELUM';
-            //         if($this->statusTTE->countStatusBelum($request->no_rawat) == 0){
-            //             $signed_status = 'SUDAH';
-            //         }
-            //         $tte = ManajemenTTE::where([
-            //             'no_rawat' => $request->no_rawat,
-            //             'path' => $nama_file,
-            //             ])->update([
-            //                 'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-            //                 'path' => $target_file,
-            //                 'signed_status' => $signed_status,
-            //             ]);
-            //     }catch(Exception $e){
-            //         $status_tte = StatusTTEPPA::where([
-            //             'no_rawat' => $request->no_rawat,
-            //             'nip' => Auth::user()->username,
-            //             ])->update([
-            //                 'status' => 'BELUM',
-            //             ]);
-            //         $tte_log = TTELog::create([
-            //                             'user' => Auth::user()->pegawai->nik,
-            //                             'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-            //                             'message' => 'Update Database Gagal..!!',
-            //                         ]);
-            //         return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
-            //     }
-
-            //     /* remove file RM yang sebelumnya untuk menghemat storage */
-            //     // unlink(storage_path('app/rekam-medis/' . $nama_file));
-
-            //     return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
-            // }else{
-            //     $tte_log = TTELog::create([
-            //         'user' => Auth::user()->pegawai->nik,
-            //         'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-            //         'message' => 'Proses TTE gagal..!!',
-            //     ]);
-            //     unlink(storage_path('app/rekam-medis/' . $target_file));
-            //     return response()->json(['msg' => 'Proses TTE gagal..!!'], 400);
-            // }
-        
+                /* remove file RM yang sebelumnya untuk menghemat storage */
+                // unlink(storage_path('app/rekam-medis/' . $nama_file));
+                return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+            }
         }catch(RequestException $err){
             $errMsg="Error: " . $err->getMessage();
             if ($err->hasResponse()) {
