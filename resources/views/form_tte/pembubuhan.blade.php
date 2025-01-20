@@ -187,7 +187,7 @@
                             text: errorMsg,
                             icon: "error",
                             buttons: false,
-                            timer: 5000,
+                            // timer: 5000,
                         }).then(function() {
                             window.location.href = "{{ route('view-pemb-rm') }}"
                         });
