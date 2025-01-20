@@ -226,7 +226,7 @@
                             text: data.responseJSON.msg,
                             icon: "error",
                             buttons: false,
-                            timer: 3000,
+                            // timer: 3000,
                         }).then(function() {
                             window.location.href = "{{ route('view-pemb-rm') }}"
                         });
