@@ -22,9 +22,12 @@
                     <div class="small-box bg-success">
                         <div class="inner">
                             <strong>{{ Auth::user()->pegawai->nama }}</strong>
+                            @if(!empty($jumlah_tte->sudah))
                             <h3>{{ $jumlah_tte->sudah }} Dokumen</h3>
+                            @else
+                            <h3>0 Dokumen</h3>
+                            @endif
                             <h6>Jumlah Keseluruhan Dokumen TTE berstatus <strong style="color:white; font-weight:bold">(SUDAH)</strong></h6>
-                            
                         </div>
                         <div class="icon">
                           <i class="fas fa-check"></i>
@@ -43,7 +46,11 @@
                     <div class="small-box bg-info">
                         <div class="inner">
                             <strong>{{ Auth::user()->pegawai->nama }}</strong>
+                            @if(!empty($jumlah_tte->belum))
                             <h3>{{ $jumlah_tte->belum }} Dokumen</h3>
+                            @else
+                            <h3>0 Dokumen</h3>
+                            @endif
                             <h6>Jumlah Keselurahan Dokumen TTE berstatus <strong style="color:white; font-weight:bold">(BELUM)</strong></h6>
                         </div>
                         <div class="icon">
@@ -54,7 +61,7 @@
                     <div id="list-belum" style="display: none; margin-bottom: 20px;">
                         <ul class="list-group">
                             @foreach($jumlah_dokumen_belum->dokumen_count as $dokumen => $count)
-                                <li class="list-group-item">Dokumen {{ $dokumen }} = {{ $count }}</li>
+                            <li class="list-group-item">Dokumen {{ $dokumen }} = {{ $count }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -100,6 +107,10 @@
                         <h3 class="card-title"><strong>{{ Auth::user()->pegawai->nama }}</strong></h3>
                     </div>
                     <div class="card-body">
+                        <select id="yearFilter">
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
                         <canvas id="tte-all" width="100" height="50"></canvas>
                     </div>
                 </div>
@@ -116,48 +127,44 @@
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const months = @json($months);
-    const dataBelum = @json($belum);
-    const dataSudah = @json($sudah);
-    // const dokumenBelum = [];
-    // const countBelum = [];
-    // const dokumenSudah = [];
-    // const countSudah = [];
+    const tteData = @json($tte_data);
+    
+    function updateChart(selectedYear) {
+        const data = tteData[selectedYear];
+        if (!data) {
+            console.error('Data for the selected year is not available.');
+            return;
+        }
 
-    // @foreach($jumlah_dokumen_belum->dokumen_count as $dokumen => $count)
-    //     dokumenBelum.push('{{ $dokumen }}');
-    //     countBelum.push({{ $count }});
-    // @endforeach
-    // @foreach($jumlah_dokumen_sudah->dokumen_count as $dokumen => $count)
-    //     dokumenSudah.push('{{ $dokumen }}');
-    //     countSudah.push({{ $count }});
-    // @endforeach
+        chart.data.labels = data.months;
+        chart.data.datasets[0].data = data.belum;
+        chart.data.datasets[1].data = data.sudah;
+        chart.update();
+    }
 
-        
     const ctall = document.getElementById('tte-all').getContext('2d');
-    // const ctallpie = document.getElementById('tte-all-pie').getContext('2d');
-    new Chart(ctall, {
-        type: 'bar', 
+    const chart = new Chart(ctall, {
+        type: 'bar',
         data: {
-            labels: months,
+            labels: [],
             datasets: [
                 {
                     label: 'Dokumen BELUM TTE',
-                    data: dataBelum,
-                    borderColor: 'rgba(54, 162, 235, 1)', 
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', 
-                    borderWidth: 2, 
-                    fill: true, 
-                    tension: 0.3, 
+                    data: [],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
                 },
                 {
                     label: 'Dokumen SUDAH TTE',
-                    data: dataSudah,
-                    borderColor: 'rgba(75, 192, 192, 1)', 
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', 
-                    borderWidth: 2, 
-                    fill: true, 
-                    tension: 0.3, 
+                    data: [],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
                 },
             ],
         },
@@ -165,11 +172,11 @@
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'top', 
+                    position: 'top',
                 },
                 title: {
                     display: true,
-                    text: 'Perbandingan Jumlah Dokumen TTE Per Bulan', 
+                    text: 'Perbandingan Jumlah Dokumen TTE Per Bulan',
                 },
             },
             scales: {
@@ -182,59 +189,17 @@
             },
         },
     });
-    // new Chart(ctallpie, {
-    //     type: 'bar', 
-    //     data: {
-    //         labels: months,
-    //         datasets: [
-    //             {
-    //                 label: 'Jumlah Dokumen Belum TTE',
-    //                 data: countBelum,
-    //                 borderColor: 'rgba(54, 162, 235, 1)', 
-    //                 backgroundColor: [
-    //                     'rgba(255, 99, 132, 0.2)',
-    //                     'rgba(54, 162, 235, 0.2)',
-    //                     'rgba(255, 206, 86, 0.2)',
-    //                     'rgba(75, 192, 192, 0.2)',
-    //                     'rgba(153, 102, 255, 0.2)',
-    //                     'rgba(255, 159, 64, 0.2)',
-    //                 ],
-    //                 borderWidth: 2, 
-    //                 fill: true, 
-    //                 tension: 0.3, 
-    //             },
-    //             {
-    //                 label: 'Jumlah Dokumen Belum TTE',
-    //                 data: countSudah,
-    //                 borderColor: 'rgba(54, 162, 235, 1)', 
-    //                 backgroundColor: [
-    //                     'rgba(255, 99, 132, 0.2)',
-    //                     'rgba(54, 162, 235, 0.2)',
-    //                     'rgba(255, 206, 86, 0.2)',
-    //                     'rgba(75, 192, 192, 0.2)',
-    //                     'rgba(153, 102, 255, 0.2)',
-    //                     'rgba(255, 159, 64, 0.2)',
-    //                 ],
-    //                 borderWidth: 2, 
-    //                 fill: true, 
-    //                 tension: 0.3, 
-    //             },
-    //         ],
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         plugins: {
-    //             legend: {
-    //                 position: 'top', 
-    //             },
-    //             title: {
-    //                 display: true,
-    //                 text: 'Jumlah Dokumen Belum TTE', 
-    //             },
-    //         },
-    //     },
-    // });
 
+    const years = Object.keys(tteData); 
+    const latestYear = years.sort().reverse()[0];
+
+    document.getElementById('yearFilter').value = latestYear; 
+    updateChart(latestYear);
+
+    document.getElementById('yearFilter').addEventListener('change', function () {
+        const selectedYear = this.value;
+        updateChart(selectedYear);
+    });
 </script>
 
 <script>
