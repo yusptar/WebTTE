@@ -139,7 +139,7 @@
                     no_rawat = data['no_rawat'];
                     nama_file = data['path'];
                     jenis_rm = nama_file.substring(2, 5);
-                    // console.log(no_rawat + " | " + nama_file + " | " + jenis_rm + " | "+passphrase);
+                    console.log(no_rawat + " | " + nama_file + " | " + jenis_rm + " | "+passphrase);
                     var formData = new FormData();
                     formData.append('no_rawat', no_rawat);
                     formData.append('nama_file', nama_file);
@@ -158,7 +158,7 @@
                         error: function(data) {
                             if(data.status == 400){
                                 // console.log(data.responseJSON.msg);
-                                errorMsg += no_rawat + "gagal, " + data.responseJSON.msg + ".\n";
+                                errorMsg += no_rawat + " gagal, " + data.responseJSON.msg + ".\n";
                             }
                         }
                     });
