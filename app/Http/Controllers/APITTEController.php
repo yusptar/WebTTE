@@ -108,7 +108,7 @@ class APITTEController extends Controller
         $resource = fopen($this->storage_location . $target_file, 'w');
 
         try{
-            $response = $this->client->request('POST', $url, [
+            $response = $this->client->post($url, [
                 'multipart' => [
                     [
                         'name' => 'file',
