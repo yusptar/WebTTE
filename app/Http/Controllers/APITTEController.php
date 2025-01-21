@@ -165,7 +165,7 @@ class APITTEController extends Controller
             //     // 'sink' => $resource,
             // ]);
 
-            $response = $client->post($url, [
+            $response = $this->client->post($url, [
                 'headers' => $headers, 
                 'json' => $body,
             ]);
