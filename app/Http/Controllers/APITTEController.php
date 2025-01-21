@@ -100,7 +100,7 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
         }
 
-        $url = $this->baseurl_api . '/api/sign/pdf';
+        $url = $this->baseurl_api . '/api/v2/sign/pdf';
 
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
@@ -154,7 +154,7 @@ class APITTEController extends Controller
             $headers = $response->getHeaders();
             if($headers['Content-Type'][0] == 'application/json'){
                 $response_ = json_decode($response->getBody(),true);
-                dd($response_);
+                // dd($response_);
                 
                 $tte_log = TTELog::create([
                     'user' => Auth::user()->pegawai->nik,
@@ -277,7 +277,7 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
         }
 
-        $url = $this->baseurl_api . '/api/sign/pdf';
+        $url = $this->baseurl_api . '/api/v2/sign/pdf';
 
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
