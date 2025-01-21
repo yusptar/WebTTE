@@ -127,8 +127,11 @@ class APITTEController extends Controller
                         'contents' => $passphrase
                     ],
                     [
-                        'name' => 'tampilan',
-                        'contents' => 'invisible'
+                        'name' => 'signatureProperties',
+                        'contents' => [
+                            'name' => 'tampilan',
+                            'contents' => 'INVISIBLE'
+                        ]
                     ],
                     [
                         'name' => 'location',
