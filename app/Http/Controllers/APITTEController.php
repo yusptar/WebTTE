@@ -153,7 +153,9 @@ class APITTEController extends Controller
             ]);
             
             $dateTime = Carbon::now()->format('Y/m/d H:i:s');
+            dd($response);
             $headers = $response->getHeaders();
+
             if($headers['Content-Type'][0] == 'application/json'){
                 $response_ = json_decode($response->getBody(),true);
                 // dd($response_);
