@@ -117,7 +117,7 @@ class APITTEController extends Controller
               '.Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r').'
             ]
           }';
-          $request = new Request('POST', $url, $headers, $body);
+          $request = new Request('POST', $url, $headers, json_encode($body));
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         // ];
