@@ -154,7 +154,7 @@ class APITTEController extends Controller
             $headers = $response->getHeaders();
             if($headers['Content-Type'][0] == 'application/json'){
                 $response_ = json_decode($response->getBody(),true);
-                // dd($response_);
+                dd($response_);
                 
                 $tte_log = TTELog::create([
                     'user' => Auth::user()->pegawai->nik,
