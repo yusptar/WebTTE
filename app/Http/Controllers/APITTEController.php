@@ -104,20 +104,18 @@ class APITTEController extends Controller
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => 'Basic ZXNpZ246cXdlcnR5'
-          ];
-          $body = '{
-            "nik": "'.$nik.'",
-            "passphrase": "'.$passphrase.'",
-            "signatureProperties": [
-              {
-                "tampilan": "INVISIBLE"
-              }
+        ];
+        $body = [
+            "nik"=> $nik,
+            "passphrase" => $passphrase,
+            "signatureProperties" => [
+                "tampilan" => "INVISIBLE"
             ],
-            "file": [
-              '.Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r').'
+            "file" => [
+              Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r')
             ]
-          }';
-          $request = new Request('POST', $url, $headers, json_encode($body));
+        ];
+        // $request = new Request('POST', $url, $headers, $body);
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         // ];
@@ -167,8 +165,10 @@ class APITTEController extends Controller
             //     // 'sink' => $resource,
             // ]);
 
-            $response = $this->client->sendAsync($request)->wait();
-
+            $response = $client->post($url, [
+                'headers' => $headers, 
+                'json' => $body,
+            ]);
             $dateTime = Carbon::now()->format('Y/m/d H:i:s');
             $headers = $response->getHeaders();
             if($headers['Content-Type'][0] == 'application/json'){
