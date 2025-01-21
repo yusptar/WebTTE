@@ -101,74 +101,57 @@ class APITTEController extends Controller
         }
 
         $url = $this->baseurl_api . '/api/v2/sign/pdf';
-        $headers = [
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Basic ZXNpZ246cXdlcnR5'
-        ];
-        $body = [
-            "nik"=> $nik,
-            "passphrase" => $passphrase,
-            "signatureProperties" => [
-                "tampilan" => "INVISIBLE"
-            ],
-            "file" => [
-              Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r')
-            ]
-        ];
-        // $request = new Request('POST', $url, $headers, $body);
+
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         // ];
-        // $resource = fopen($this->storage_location . $target_file, 'w');
+        $resource = fopen($this->storage_location . $target_file, 'w');
 
         try{
-            // ---------------------- API V1 ----------------------------
-            // $response = $this->client->request('POST', $url, [
-            //     'multipart' => [
-            //         [
-            //             'name' => 'file',
-            //             'contents' => Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r'),
-            //             'filename' => $nama_file,
-            //             'headers'  => [
-            //                 'Content-Type' => 'application/pdf',
-            //             ]
-            //         ],
-            //         [
-            //             'name' => 'nik',
-            //             'contents' => $nik
-            //         ],
-            //         [
-            //             'name' => 'passphrase',
-            //             'contents' => $passphrase
-            //         ],
-            //         [
-            //             'name' => 'tampilan',
-            //             'contents' => 'invisible'
-            //         ],
-            //         [
-            //             'name' => 'location',
-            //             'contents' => $location
-            //         ],
-            //         [
-            //             'name' => 'text',
-            //             'contents' => 'Dokumen ini ditandatangani secara elektronik.'
-            //         ]
-            //     ],
-            //     'auth' => [
-            //         'esign', 
-            //         'qwerty'
-            //     ],
-            //     // 'headers' => $headers,
-            //     'stream' => true,
-            //     'verify'  => true,
-            //     'http_errors' => true,
-            //     // 'sink' => $resource,
-            // ]);
-
-            $response = $this->client->post($url, [
-                'headers' => $headers, 
-                'json' => $body,
+            $response = $this->client->request('POST', $url, [
+                'multipart' => [
+                    [
+                        'name' => 'file',
+                        'contents' => Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r'),
+                        'filename' => $nama_file,
+                        'headers'  => [
+                            'Content-Type' => 'application/pdf',
+                        ]
+                    ],
+                    [
+                        'name' => 'nik',
+                        'contents' => $nik
+                    ],
+                    [
+                        'name' => 'passphrase',
+                        'contents' => $passphrase
+                    ],
+                    [
+                        'name' => 'signatureProperties',
+                        'contents' => json_encode([
+                            'tampilan' => 'INVISIBLE'
+                        ])
+                    ],
+                    [
+                        'name' => 'location',
+                        'contents' => $location
+                    ],
+                    [
+                        'name' => 'text',
+                        'contents' => 'Dokumen ini ditandatangani secara elektronik.'
+                    ]
+                ],
+                'auth' => [
+                    'esign', 
+                    'qwerty'
+                ],
+                // 'headers' => $headers,
+                'stream' => true,
+                'verify'  => true,
+                'http_errors' => true,
+                // 'sink' => $resource,
             ]);
+            
             $dateTime = Carbon::now()->format('Y/m/d H:i:s');
             $headers = $response->getHeaders();
             if($headers['Content-Type'][0] == 'application/json'){
