@@ -128,8 +128,8 @@ class APITTEController extends Controller
                     ],
                     [
                         'name' => 'signatureProperties',
-                        'contents' => '{"tampilan":"INVISIBLE"}',
-                        'headers'  => ['Content-Type' => 'text/x-json']
+                        'contents' => 'tampilan=INVISIBLE',
+                        'headers'  => ['Content-Type' => 'text/plain; charset=ISO-8859-1']
                     ],
                     [
                         'name' => 'location',
