@@ -100,7 +100,7 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
         }
 
-        $url = $this->baseurl_api . '/api/v2/sign/pdf';
+        $url = $this->baseurl_api . '/api/sign/pdf';
 
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
@@ -108,7 +108,7 @@ class APITTEController extends Controller
         $resource = fopen($this->storage_location . $target_file, 'w');
 
         try{
-            $response = $this->client->post($url, [
+            $response = $this->client->request('POST', $url, [
                 'multipart' => [
                     [
                         'name' => 'file',
@@ -127,10 +127,8 @@ class APITTEController extends Controller
                         'contents' => $passphrase
                     ],
                     [
-                        'name' => 'signatureProperties',
-                        'contents' => json_encode([
-                            'tampilan' => 'INVISIBLE'
-                        ])
+                        'name' => 'tampilan',
+                        'contents' => 'invisible'
                     ],
                     [
                         'name' => 'location',
@@ -153,9 +151,7 @@ class APITTEController extends Controller
             ]);
             
             $dateTime = Carbon::now()->format('Y/m/d H:i:s');
-            dd($response);
             $headers = $response->getHeaders();
-
             if($headers['Content-Type'][0] == 'application/json'){
                 $response_ = json_decode($response->getBody(),true);
                 // dd($response_);
@@ -281,7 +277,7 @@ class APITTEController extends Controller
             return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
         }
 
-        $url = $this->baseurl_api . '/api/v2/sign/pdf';
+        $url = $this->baseurl_api . '/api/sign/pdf';
 
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
