@@ -158,7 +158,7 @@
                         error: function(data) {
                             if(data.status == 400){
                                 // console.log(data.responseJSON.msg);
-                                errorMsg += no_rawat + " gagal, " + data.responseJSON.msg + ".\n";
+                                errorMsg += data.responseJSON.msg + ".\n";
                             }
                         }
                     });

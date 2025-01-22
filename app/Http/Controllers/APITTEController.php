@@ -93,11 +93,11 @@ class APITTEController extends Controller
         Check apakah file ada di dalam storage
         */ 
         if(!file_exists($this->storage_location . $nama_file)){
-            return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
+            return response()->json(['msg' => $request->no_rawat . ', ' . 'File tidak ditemukan..!!'], 400);
         }
 
         if($request->nama_file==""){
-            return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
+            return response()->json(['msg' => $request->no_rawat . ', ' . 'Nama File tidak ditemukan..!!'], 400);
         }
 
         $url = $this->baseurl_api . '/api/sign/pdf';
@@ -161,7 +161,7 @@ class APITTEController extends Controller
                     'created_at' => $dateTime,
                     'message' => $response_['error'],
                 ]);
-                return response()->json(['msg' => $response_['error']], 400);
+                return response()->json(['msg' => $request->no_rawat . ', ' . $response_['error']], 400);
 
             }else if($headers['Content-Type'][0] == 'application/pdf'){
                 // Storing pdf contents to a file
@@ -222,7 +222,7 @@ class APITTEController extends Controller
                                         'created_at' => $dateTime,
                                         'message' => 'Update Database Gagal..!!',
                                     ]);
-                    return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
+                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! '.$e], 400);
                 }
 
                 
@@ -242,7 +242,7 @@ class APITTEController extends Controller
                 'message' => 'Pengiriman data gagal..!!' . $err,
             ]);
             unlink(storage_path('app/rekam-medis/' . $target_file));
-            return response()->json(['msg' => 'Pengiriman data gagal..!!'], 400);
+            return response()->json(['msg' => $request->no_rawat . ', ' . 'Pengiriman data gagal..!!'], 400);
         }
     }
 
