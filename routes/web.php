@@ -75,6 +75,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
     Route::post('/sign-koordinat', [App\Http\Controllers\APITTEController::class, 'signCoordinate'])->name('signKoordinatTTE');
 
+    Route::get('view-berkas-tte', [App\Http\Controllers\TTEController::class, 'view_berkas_tte'])->name('view-berkas-tte');
+    Route::get('cek-berkas-tte', [App\Http\Controllers\TTEController::class, 'index_cek_tte'])->name('cek-tte');
+    Route::post('delete-berkas', [App\Http\Controllers\TTEController::class, 'delete_berkas'])->name('delete-berkas');
+
     // Route::post('/berkas', [App\Http\Controllers\APITTEController::class, 'manageBerkas'])->name('berkas');
 
 });

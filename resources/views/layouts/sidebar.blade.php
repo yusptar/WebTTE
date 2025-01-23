@@ -140,8 +140,8 @@
                     </ul>
                 </li>
                 <li class="nav-header">Lainnya</li>
-                <li class="nav-item {{ (request()->routeIs('users')) ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ (request()->routeIs('users'))  ? 'active' : '' }}">
+                <li class="nav-item {{ (request()->routeIs('users')) || (request()->routeIs('view-berkas-tte')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->routeIs('users')) || (request()->routeIs('view-berkas-tte')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Settings
@@ -151,8 +151,16 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('users') }}"
-                                class="nav-link {{ (request()->routeIs('users')) ? 'active' : '' }}">
+                                class="nav-link {{ (request()->routeIs('users'))  ? 'active' : '' }}">
                                 <p>Users</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('view-berkas-tte') }}"
+                                class="nav-link {{ (request()->routeIs('view-berkas-tte')) ? 'active' : '' }}">
+                                <p>Berkas Pembubuhan TTE</p>
                             </a>
                         </li>
                     </ul>

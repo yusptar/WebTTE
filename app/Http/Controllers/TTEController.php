@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Hashids\Hashids;
+use Illuminate\Support\Facades\DB;
+
 
 class TTEController extends Controller
 {
@@ -85,6 +87,10 @@ class TTEController extends Controller
         return view('list_dokumen.surat');
     }
 
+    public function view_berkas_tte(){
+        return view('settings.cek_tte');
+    }
+
     // DATATABLE 
     public function index_pembubuhan_rm(Request $request)
     {
@@ -111,7 +117,65 @@ class TTEController extends Controller
                 ->rawColumns(['signed_status','action'])
                 ->make(true);
     }
-  
+
+    public function index_cek_tte()
+    {
+
+        $data = $this->manajemenTTE->getStatusFileRMAdmin();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('nm_ruang', function ($row) {
+                return $this->manajemenTTE->getKamar($row->no_rawat)->nm_ruang;
+            })
+            ->addColumn('signed_status', function($row){
+                return ($row->status_ppa == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
+            })
+            ->rawColumns(['signed_status'])
+            ->make(true);
+    }
+
+    public function delete_berkas(Request $request)
+    {
+        try {
+            if ($request->type === 'hapus_semua') {
+                DB::table('manajemen_rm_tte')->delete();
+                DB::table('status_tte_ppa')->delete();
+                DB::table('keterangan_tte_ppa')->delete();
+    
+                return response()->json([
+                    'msg' => 'Semua data berhasil dihapus.',
+                ]);
+            } else {
+                $noRawat = $request->no_rawat;
+                $namaFile = $request->nama_file;
+                $jenisRM = $request->jenis_rm;
+                $noRawatFormatted = str_replace("/", "", $noRawat);
+
+                DB::table('manajemen_rm_tte')
+                    ->where('no_rawat', $noRawat)
+                    ->where('path', $namaFile)
+                    ->delete();
+
+                DB::table('status_tte_ppa')
+                    ->where('no_rawat', $noRawat)
+                    ->where('jenis_rm', $jenisRM)
+                    ->delete();
+
+                DB::table('keterangan_tte_ppa')
+                    ->where('id', $noRawatFormatted)
+                    ->delete();
+
+                return response()->json([
+                    'msg' => 'Data berhasil dihapus.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'msg' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function pembubuhan_surat_list(Request $request)
     {
         $data = $this->manajemenTTESurat->getDetailFileSurat();
