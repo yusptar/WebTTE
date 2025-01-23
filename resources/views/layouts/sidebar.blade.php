@@ -160,7 +160,7 @@
                         <li class="nav-item">
                             <a href="{{ route('view-berkas-tte') }}"
                                 class="nav-link {{ (request()->routeIs('view-berkas-tte')) ? 'active' : '' }}">
-                                <p>Berkas Pembubuhan TTE</p>
+                                <p>Hapus Data Corrupted</p>
                             </a>
                         </li>
                     </ul>

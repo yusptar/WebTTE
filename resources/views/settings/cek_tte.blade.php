@@ -29,12 +29,12 @@
                                 &nbsp;
                                 <button class="btn btn-outline-secondary btn-sm" id="all-in-one" type="button" data-id="asdasd">ALL IN ONE (HONDA)</button>
                             </div> -->
-                            <div class="btn-group mb-3">
+                            <!-- <div class="btn-group mb-3">
                                 <button class="btn btn-outline-primary btn-sm" id="all-in-one" type="button" data-id="asdasd">ALL IN ONE (HONDA)</button>
                                
-                            </div>
+                            </div> -->
                             <div class="btn-group mb-3">
-                                <button class="btn btn-outline-danger btn-sm" id="hapus-semua" type="button" data-id="asdasd"><i class="fas fa-trash"></i> DESTROY ALL OF THIS</button>
+                                <button class="btn btn-danger btn-sm" id="hapus-semua" type="button" data-id="asdasd"><i class="fas fa-trash"></i> DESTROY ALL OF THIS</button>
                             </div>
                             <table class="table table-bordered table-hover" id="table-rm">
                                 <thead>
