@@ -261,7 +261,13 @@ class TTEController extends Controller
                     return ($row->signed_status == 'BELUM') ? '<span class="badge rounded-pill bg-secondary" >BELUM</span>' : '<span class="badge rounded-pill bg-success" >SUDAH</span>';
                 })
                 ->addColumn('action', function($row){
-                    return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button>' : 'No Action';
+                    return ($row->signed_status == 'SUDAH') ? 
+                    '<div class="btn-group" role="group">
+                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '"><i class="fas fa-download"></i></button>
+                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '"><i class="fas fa-share"></i></button>
+                    </div>' : 'No Action';
+                    // '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button> &nbsp <button class="btn btn-primary btn-sm cetak-btn" id="download1" type="button" value="'.$row->path.'">KIRIM</button>' 
+                    // : 'No Action';
                 })
                 ->rawColumns(['status','action'])
                 ->make(true);

@@ -28,8 +28,9 @@ class ManajemenSurat extends Model
         $result = DB::table('manajemen_rm_tte')
                 ->join('status_tte_ppa', function ($join) {
                 $join->on('manajemen_rm_tte.no_rawat', '=', 'status_tte_ppa.no_rawat')
-                    ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik)
-                    ->where('status_tte_ppa.jenis_rm', '=', '999');
+                    // ->where('status_tte_ppa.nip', '=', Auth::user()->pegawai->nik)
+                    ->where('manajemen_rm_tte.jenis_rm', 'like', '9%')
+                    ->where('status_tte_ppa.jenis_rm', 'like', '9%');
                 })
                 ->get();
         return $result;

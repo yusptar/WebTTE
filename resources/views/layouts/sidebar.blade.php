@@ -118,7 +118,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ (request()->routeIs('list-dokumen-rm-ri') || request()->routeIs('list-dokumen-rm-rj')) ? 'menu-open' : '' }}">
+                <!-- <li class="nav-item {{ (request()->routeIs('list-dokumen-rm-ri') || request()->routeIs('list-dokumen-rm-rj')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('list-dokumen-rm-ri') || request()->routeIs('list-dokumen-rm-rj')) ? 'active' : '' }}"> 
                         <i class="nav-icon fas fa-file-pdf"></i>
@@ -138,7 +138,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
                 <li class="nav-header">Lainnya</li>
                 <li class="nav-item {{ (request()->routeIs('users')) || (request()->routeIs('view-berkas-tte')) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ (request()->routeIs('users')) || (request()->routeIs('view-berkas-tte')) ? 'active' : '' }}">
