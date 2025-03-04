@@ -99,148 +99,62 @@ $(function () {
     });
 });
 
-$(document).on('click', '#kirim_wa', function() {
-    const namaFile = $(this).data('id');
-    console.log(namaFile);
-    $.ajax({
-        url: "{{ route('downloadRM') }}",
-        type: "POST",
-        data: {
-            _token : "{{ csrf_token() }}",
-            namaFile : namaFile
-        },
-        xhrFields: {
-            responseType: 'blob'
-        },
-        success: function(data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            a.href = url;
-            a.download = namaFile;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-            Swal.fire({
-                title: "Berhasil!",
-                text: "Dokumen berhasil didownload..!",
-                icon: "success",
-                buttons: false,
-                timer: 3000,
-            })
-        },
-        error: function(data) {
-            Swal.fire({
-                title: "Gagal!",
-                text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
-                icon: "error",
-                buttons: false,
-                timer: 3000,
-            })
-        }
-    });
-});
 
-$(document).on('click', '#download', function() {
-    const namaFile = $(this).data('id');
-    $.ajax({
-        url: "{{ route('downloadRM') }}",
-        type: "POST",
-        data: {
-            _token : "{{ csrf_token() }}",
-            namaFile : namaFile
-        },
-        xhrFields: {
-            responseType: 'blob'
-        },
-        success: function(data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            a.href = url;
-            a.download = namaFile;
-            document.body.append(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-            Swal.fire({
-                title: "Berhasil!",
-                text: "Dokumen berhasil didownload..!",
-                icon: "success",
-                buttons: false,
-                timer: 3000,
-            })
-        },
-        error: function(data) {
-            Swal.fire({
-                title: "Gagal!",
-                text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
-                icon: "error",
-                buttons: false,
-                timer: 3000,
-            })
-        }
-    });
-});
+$(document).ready(function() {
+    $(document).on('click', "#download", function() {
+        // $(this).addClass(
+        //     'download-trigger-clicked'
+        // ); 
+        // var el = $(".download-trigger-clicked"); 
+        // var row = el.closest("tr");
 
-// $(document).ready(function() {
-//     $(document).on('click', "#download", function() {
-//         // $(this).addClass(
-//         //     'download-trigger-clicked'
-//         // ); 
-//         // var el = $(".download-trigger-clicked"); 
-//         // var row = el.closest("tr");
-
-//         // get the data
-//         // var namaFile = row.children(".nama_file").text();
-//         // var namaFile = row.find("td:eq(6)").text();
-//         const namaFile = $(this).data('id');
-//         // var namaFile = $(this).attr("value");
-//         // console.log(namaFile);
-//         $.ajax({
-//             url: "{{ route('downloadRM') }}",
-//             type: "POST",
-//             data: {
-//                 _token : "{{ csrf_token() }}",
-//                 namaFile : namaFile
-//             },
-//             xhrFields: {
-//                 responseType: 'blob'
-//             },
-//             success: function(data) {
-//                 var a = document.createElement('a');
-//                 var url = window.URL.createObjectURL(data);
-//                 a.href = url;
-//                 a.download = namaFile;
-//                 document.body.append(a);
-//                 a.click();
-//                 a.remove();
-//                 window.URL.revokeObjectURL(url);
-//                 Swal.fire({
-//                     title: "Berhasil!",
-//                     text: "Dokumen berhasil didownload..!",
-//                     icon: "success",
-//                     buttons: false,
-//                     timer: 3000,
-//                 })
-//             },
-//             error: function(data) {
-//                 Swal.fire({
-//                     title: "Gagal!",
-//                     text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
-//                     icon: "error",
-//                     buttons: false,
-//                     timer: 3000,
-//                 })
-//             }
-//         });
+        // get the data
+        // var namaFile = row.children(".nama_file").text();
+        // var namaFile = row.find("td:eq(6)").text();
+        const namaFile = $(this).data('id');
+        // var namaFile = $(this).attr("value");
+        // console.log(namaFile);
+        $.ajax({
+            url: "{{ route('downloadRM') }}",
+            type: "POST",
+            data: {
+                _token : "{{ csrf_token() }}",
+                namaFile : namaFile
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var a = document.createElement('a');
+                var url = window.URL.createObjectURL(data);
+                a.href = url;
+                a.download = namaFile;
+                document.body.append(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: "Dokumen berhasil didownload..!",
+                    icon: "success",
+                    buttons: false,
+                    timer: 3000,
+                })
+            },
+            error: function(data) {
+                Swal.fire({
+                    title: "Gagal!",
+                    text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
+                    icon: "error",
+                    buttons: false,
+                    timer: 3000,
+                })
+            }
+        });
         
-//         // $('.download-trigger-clicked').removeClass('download-trigger-clicked')
-//     });
-
-    
-
-
-// });
+        // $('.download-trigger-clicked').removeClass('download-trigger-clicked')
+    });
+});
 
 </script>
 @endsection

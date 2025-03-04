@@ -36,4 +36,16 @@ class ManajemenSurat extends Model
         return $result;
     }
 
+    public function getDataPasien($fileName){
+        $result = DB::table('manajemen_rm_tte')
+                ->join('reg_periksa', function ($join) {
+                    $join->on('manajemen_rm_tte.no_rawat', '=', 'reg_periksa.no_rawat');
+                })
+                ->join('pasien', function ($join) {
+                    $join->on('pasien.no_rkm_medis', '=', 'reg_periksa.no_rkm_medis');
+                })
+                ->where('manajemen_rm_tte.path', '=', $fileName)
+                ->get();
+        return $result; 
+    }
 }

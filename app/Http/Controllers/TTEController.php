@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Hashids\Hashids;
 use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Psr7;
 
 
 class TTEController extends Controller
@@ -375,6 +376,98 @@ class TTEController extends Controller
             return Storage::disk('myRM')->download($fileName);
         } else {
             return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '.$fileName.' | '.$kodeJenisRM], 400);
+        }
+    }
+
+    public function kirimWA(Request $request)
+    {
+        $fileName = $request->namaFile;
+        if (Storage::disk('myRM')->exists($fileName)) {
+
+            $url = config('app.url_api_wa').'/api/messages/send';
+
+            $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
+            // dd($dataPasien);
+            $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
+            
+            $number = '62'.$nomorTelp.'@s.whatsapp.net';
+            $namaPasien = $dataPasien[0]->nm_pasien;
+            $noRM = $dataPasien[0]->no_rkm_medis;
+
+            $requested_data = [
+                'number' => $number,
+                'message' => 'Terimakasih atas kepercayaan yg telah diberikan kepada RS Tk. II dr. Soepraoen
+                     Yth. Bpk/Ibu '.$namaPasien.'
+                     Dengan ini kami kirimkan surat keterangan buta warna.
+                       Nomor RM     : '.$noRM.'
+                       Nama         : '.$namaPasien.'
+                     Untuk pendaftaran online, unduh aplikasi Halo Soepraoen/ JKN Mobile.
+                     Pendaftaran pasien BPJS Rumah Sakit Tk.II dr.Soepraoen per tanggal 03 September 2024 *Wajib Melakukan Pendaftaran Melalui Mobile JKN*
+                     Download Aplikasi JKN Mobile dengan klik link di bawah ini.https://play.google.com/store/apps/details?id=app.bpjs.mobile
+                     Terima kasih
+                     Hormat kami,
+                     RST dr.SOEPRAOEN',
+            ];
+    
+            $jsonData = json_encode($requested_data);
+                
+            $header = [
+                'Accept: application/json',
+                'Content-Type: application/json',
+            ];
+    
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+    
+            $res = curl_exec($ch);
+            $data['response'] = json_decode($res, true);
+            $data['requested_data'] = $jsonData;
+            curl_close($ch);
+
+
+            //kirim file
+            $client = new Client();
+            
+            $url = config('app.url_api_wa').'/api/messages/send-media';
+            try{
+                $response = $client->request('POST', $url, [
+                    'multipart' => [
+                        [
+                            'name' => 'file',
+                            'contents' => Psr7\Utils::tryFopen(storage_path('app/rekam-medis/') . $fileName, 'r'),
+                            'filename' => $fileName,
+                            'headers'  => [
+                                'Content-Type' => 'application/pdf',
+                            ]
+                        ],
+                        [
+                            'name' => 'number',
+                            'contents' => $number
+                        ],
+                        [
+                            'name' => 'caption',
+                            'contents' => 'Surat_'.$namaPasien
+                        ]
+                    ],
+                ]);
+                // dd($response);
+                $statusCode = $response->getStatusCode();
+                $reason = $response->getReasonPhrase(); 
+                if($statusCode == '200'){
+                    $response_ = json_decode($response->getBody(),true);
+                    // dd($response_);
+                    return response()->json(['msg' => $response_['status']], 200);
+                    // return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+                }
+            } catch (Exception $e) {
+                // dd($e);
+                return response()->json(['msg' => $e->getMessage()], 400);
+            }
+
+        } else {
+            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
         }
     }
 
