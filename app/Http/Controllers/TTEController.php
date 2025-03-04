@@ -403,7 +403,7 @@ class TTEController extends Controller
                        Nama         : '.$namaPasien.'
                      Untuk pendaftaran online, unduh aplikasi Halo Soepraoen/ JKN Mobile.
                      Pendaftaran pasien BPJS Rumah Sakit Tk.II dr.Soepraoen per tanggal 03 September 2024 *Wajib Melakukan Pendaftaran Melalui Mobile JKN*
-                     Download Aplikasi JKN Mobile dengan klik link di bawah ini.https://play.google.com/store/apps/details?id=app.bpjs.mobile
+                     Download Aplikasi JKN Mobile dengan klik link di bawah ini. https://play.google.com/store/apps/details?id=app.bpjs.mobile
                      Terima kasih
                      Hormat kami,
                      RST dr.SOEPRAOEN',
