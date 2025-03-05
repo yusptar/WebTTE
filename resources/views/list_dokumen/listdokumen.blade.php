@@ -107,12 +107,12 @@ $(document).ready(function() {
         // ); 
         // var el = $(".download-trigger-clicked"); 
         // var row = el.closest("tr");
+        // var namaFile = $(this).attr("value");
 
         // get the data
         // var namaFile = row.children(".nama_file").text();
         // var namaFile = row.find("td:eq(6)").text();
         const namaFile = $(this).data('id');
-        // var namaFile = $(this).attr("value");
         // console.log(namaFile);
         $.ajax({
             url: "{{ route('downloadRM') }}",
