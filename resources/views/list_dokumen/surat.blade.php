@@ -88,6 +88,7 @@ $(function () {
     
 $(document).on('click', '#kirim_wa', function() {
     const namaFile = $(this).data('id');
+    $('#loading-spinner').show();
     console.log(namaFile);
     $.ajax({
         url: "{{ route('kirim-wa') }}",

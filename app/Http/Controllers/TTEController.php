@@ -206,7 +206,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getDetailRMRanap();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
+                $data = $data->whereBetween('tgl_registrasi', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
             }
   
             return Datatables::of($data)
@@ -230,7 +230,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getDetailRMRalan();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
+                $data = $data->whereBetween('tgl_registrasi', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
             }
   
             return Datatables::of($data)
@@ -253,7 +253,7 @@ class TTEController extends Controller
         $data = $this->manajemenTTESurat->getDetailFileSurat();
 
         if ($request->filled('from_date') && $request->filled('to_date')) {
-            $data = $data->whereBetween('tanggal_upload', [$request->from_date, $request->to_date]);
+            $data = $data->whereBetween('tanggal_upload', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
         }
 
         return Datatables::of($data)
@@ -281,7 +281,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getPasienRalan();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+                $data = $data->whereBetween('tanggal', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
             }
   
             return Datatables::of($data)
@@ -301,7 +301,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getPasienRanap();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+                $data = $data->whereBetween('tanggal', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
             }
   
             return Datatables::of($data)
