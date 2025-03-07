@@ -33,8 +33,14 @@
                                     <tr>
                                         <th>No Surat</th>
                                         <th>Nama File</th>
+                                        <th>No RM</th>
+                                        <th>Nama Pasien</th>
+                                        <th>Jenis RM</th>
+                                        <th>Tgl Registrasi</th>
+                                        <th>Jenis Bayar</th>
+                                        <th>Petugas</th>
                                         <th>Status TTE</th>
-                                        <th>Action1</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,8 +80,14 @@ $(function () {
             }
         },
         columns: [
-            {data: 'no_rawat', name: 'no_rawat'},
+            {data: 'no_rawat', name: 'no_rawat'},            
             {data: 'path', name: 'path'},
+            {data: 'no_rkm_medis', name: 'no_rkm_medis'},
+            {data: 'nm_pasien', name: 'nm_pasien'},
+            {data: 'jenis_rm', name: 'jenis_rm'},
+            {data: 'tgl_registrasi', name: 'tgl_registrasi'},
+            {data: 'png_jawab', name: 'png_jawab'},
+            {data: 'nama', name: 'nama'},
             {data: 'status', name: 'status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]

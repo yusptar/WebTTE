@@ -206,7 +206,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getDetailRMRanap();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tgl_registrasi', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
+                $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
             }
   
             return Datatables::of($data)
@@ -230,7 +230,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getDetailRMRalan();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tgl_registrasi', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
+                $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
             }
   
             return Datatables::of($data)
@@ -255,7 +255,7 @@ class TTEController extends Controller
         if ($request->filled('from_date') && $request->filled('to_date')) {
             $data = $data->whereBetween('tanggal_upload', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
         }
-
+        
         return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('status', function($row){
@@ -264,8 +264,8 @@ class TTEController extends Controller
                 ->addColumn('action', function($row){
                     return ($row->signed_status == 'SUDAH') ? 
                     '<div class="btn-group" role="group">
-                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '"><i class="fas fa-download"></i></button>
-                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '"><i class="fas fa-share"></i></button>
+                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
+                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
                     </div>' : 'No Action';
                     // '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button> &nbsp <button class="btn btn-primary btn-sm cetak-btn" id="download1" type="button" value="'.$row->path.'">KIRIM</button>' 
                     // : 'No Action';
@@ -281,7 +281,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getPasienRalan();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tanggal', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
             }
   
             return Datatables::of($data)
@@ -301,7 +301,7 @@ class TTEController extends Controller
             $data = $this->manajemenTTE->getPasienRanap();
   
             if ($request->filled('from_date') && $request->filled('to_date')) {
-                $data = $data->whereBetween('tanggal', [$request->from_date.' 00:00:00', $request->to_date.' 23:59:59']);
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
             }
   
             return Datatables::of($data)
