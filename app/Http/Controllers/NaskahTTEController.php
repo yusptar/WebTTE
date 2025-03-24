@@ -19,7 +19,7 @@ class NaskahTTEController extends Controller
         if (empty($_id)) {
             abort(404, 'Invalid or malformed ID');
         }
-        dd($_id);
+        // dd($_id);
         $decoded_id = $_id[0] . $_id[1] ;
         $ket_tte = KeteranganTTE::find($decoded_id);
         if (!$ket_tte) {
