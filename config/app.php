@@ -243,5 +243,6 @@ return [
     */
     'baseurl_api' => env('BASEURL_API',''),
     'url_api_wa' => env('URL_API_WA',''),
+    'url_api_wa_oca' => env('URL_API_WA_OCA',''),
 
 ];

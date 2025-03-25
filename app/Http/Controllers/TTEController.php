@@ -331,6 +331,7 @@ class TTEController extends Controller
     {
         // dd($request->namaFile);
         $fileName = $request->namaFile;
+        
         if (Storage::disk('myRM')->exists($fileName)) {
             return Storage::disk('myRM')->download($fileName);
         } else {
@@ -467,6 +468,117 @@ class TTEController extends Controller
                 return response()->json(['msg' => $e->getMessage()], 400);
             }
 
+        } else {
+            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
+        }
+    }
+
+    public function kirimWAOCA(Request $request)
+    {
+        $fileName = $request->namaFile;
+        if (Storage::disk('myRM')->exists($fileName)) {
+
+            //copy file
+            $content = Storage::disk('myRM')->get($fileName);
+            Storage::put('public/'.$fileName, $content);
+
+            $url = config('app.url_api_wa').'/api/v2/push/message';
+
+            $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
+            // dd($dataPasien);
+            // $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
+            $nomorTelp = '85755554151';
+            $number = '62'.$nomorTelp;
+            $namaPasien = $dataPasien[0]->nm_pasien;
+            $noRM = $dataPasien[0]->no_rkm_medis;
+
+            $jenisDokumen = DB::table('manajemen_rm_tte as m')
+                ->join('master_berkas_digital as d', 'd.kode', '=', 'm.jenis_rm')
+                ->select(DB::raw('d.nama'))
+                ->where('m.path', $fileName)
+                ->first();
+
+            $templateID = DB::table('daftar_api_internal')
+                ->select('url')
+                ->where('jenis', 'id_template_document_oca')
+                ->first();
+                
+            $postfield = '{
+                "phone_number": "'.$number.'",
+                "message": {
+                    "type": "template",
+                    "template": {
+                        "template_code_id": "'.$templateID->url.'",
+                        "payload": [
+                            {
+                                "position": "header",
+                                "parameters": [
+                                    {
+                                        "type": "document",
+                                        "document": {
+                                            "url": "https://rssoepraoen.com/tte/storage/'.$fileName.'"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "position": "body",
+                                "parameters": [
+                                    {
+                                        "type": "text",
+                                        "text": "'.$namaPasien.'"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "'.$jenisDokumen->nama.'"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "'.$noRM.'"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "'.$namaPasien.'"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }';
+
+            $curl = curl_init();
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => $url,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => '',
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_HEADER => true,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => 'POST',
+              CURLOPT_POSTFIELDS => $postfield,
+              CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbiI6IjY3ZDhmYTU2OTY3ZThmMDAxMmEyOTIyZiIsImlhdCI6MTc0MjI3Njg1N30.PMgFwFHhKoHczwVlcdn0z1eak3Mix5VWQpG9etGUurYJZ9vvyVCAZMn3kZ4gHd0XXrfLp-_sLvE1Q8pm2DtlXfk13bDLeO7NgKDUKTCijGYMXF4GA1dfBDfDP8bUMpvn8cQi2H0fxcIxRZn594afoJnD_Sk0xv_LU7yUSmbTDxEaYSFTElGzvOno7pMqhNjdg7cbRBCiBKxzjZYWLb-c811YUxZ86WWTABImkrYyDT2DRcI-vajBC6s9de-UmvNrgGc-XojM1N_avAuzJXOvc9F6QBSePD73onotKg4k-EbgB0H2Bq4kUbDjPP5AZoH-F3pq3AZkyQYWyHHkmxAYbA'
+              ),
+            ));
+            
+            $response = curl_exec($curl);
+            $info = curl_getinfo($curl);
+            $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+            curl_close($curl);
+
+            $header = substr($response, 0, $header_size);
+            $body = substr($response, $header_size);
+
+            if($info['http_code']=='200'){
+                // return response()->json(['msg' => 'Proses pengiriman berhasil..!!'], 200);
+                return response()->json(['msg' => $postfield], 200);
+            }else{
+                return response()->json(['msg' => $body], 400);
+            }
         } else {
             return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
         }

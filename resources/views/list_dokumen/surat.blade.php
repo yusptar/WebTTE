@@ -87,7 +87,7 @@ $(function () {
             {data: 'jenis_rm', name: 'jenis_rm'},
             {data: 'tgl_registrasi', name: 'tgl_registrasi'},
             {data: 'png_jawab', name: 'png_jawab'},
-            {data: 'petugas', name: 'petugas'},
+            {data: 'nama', name: 'nama'},
             {data: 'status', name: 'status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
