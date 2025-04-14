@@ -577,7 +577,7 @@ class TTEController extends Controller
                 // return response()->json(['msg' => 'Proses pengiriman berhasil..!!'], 200);
                 return response()->json(['msg' => $postfield], 200);
             }else{
-                return response()->json(['msg' => $body], 400);
+                return response()->json(['msg' => 'Error : ' . $info['http_code'] . '; ' . $body], 400);
             }
         } else {
             return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
