@@ -534,11 +534,11 @@ class TTEController extends Controller
                                     },
                                     {
                                         "type": "text",
-                                        "text": "'.$noRM.'"
+                                        "text": "'.$namaPasien.'"
                                     },
                                     {
                                         "type": "text",
-                                        "text": "'.$namaPasien.'"
+                                        "text": "'.$noRM.'"
                                     }
                                 ]
                             }
