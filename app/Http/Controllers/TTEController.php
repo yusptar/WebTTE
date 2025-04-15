@@ -569,7 +569,7 @@ class TTEController extends Controller
             $info = curl_getinfo($curl);
             $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
             curl_close($curl);
-
+            dd($response);
             $header = substr($response, 0, $header_size);
             $body = substr($response, $header_size);
 
