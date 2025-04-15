@@ -560,8 +560,7 @@ class TTEController extends Controller
               CURLOPT_CUSTOMREQUEST => 'POST',
               CURLOPT_POSTFIELDS => $postfield,
               CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                'Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBsaWNhdGlvbiI6IjY3ZDhmYTU2OTY3ZThmMDAxMmEyOTIyZiIsImlhdCI6MTc0MjI3Njg1N30.PMgFwFHhKoHczwVlcdn0z1eak3Mix5VWQpG9etGUurYJZ9vvyVCAZMn3kZ4gHd0XXrfLp-_sLvE1Q8pm2DtlXfk13bDLeO7NgKDUKTCijGYMXF4GA1dfBDfDP8bUMpvn8cQi2H0fxcIxRZn594afoJnD_Sk0xv_LU7yUSmbTDxEaYSFTElGzvOno7pMqhNjdg7cbRBCiBKxzjZYWLb-c811YUxZ86WWTABImkrYyDT2DRcI-vajBC6s9de-UmvNrgGc-XojM1N_avAuzJXOvc9F6QBSePD73onotKg4k-EbgB0H2Bq4kUbDjPP5AZoH-F3pq3AZkyQYWyHHkmxAYbA'
+                'Content-Type: application/json'
               ),
             ));
             
