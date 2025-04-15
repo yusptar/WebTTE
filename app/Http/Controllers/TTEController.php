@@ -486,8 +486,8 @@ class TTEController extends Controller
 
             $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
             // dd($dataPasien);
-            // $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
-            $nomorTelp = '85755554151';
+            $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
+            // $nomorTelp = '85755554151';
             $number = '62'.$nomorTelp;
             $namaPasien = $dataPasien[0]->nm_pasien;
             $noRM = $dataPasien[0]->no_rkm_medis;
