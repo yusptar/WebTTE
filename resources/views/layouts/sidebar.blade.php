@@ -226,7 +226,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>            
+                </li>
+                @if(Auth::user()->username != '11111111')            
                 <li class="nav-item {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ (request()->routeIs('list-dokumen-ri') || request()->routeIs('list-dokumen-rj') || request()->routeIs('list-dokumen-surat')) || (request()->routeIs('view-dok-surat')) ? 'active' : '' }}"> 
@@ -254,6 +255,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
                 @endcan
                 <!-- END PPA ACCESS -->
 
