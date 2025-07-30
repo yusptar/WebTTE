@@ -56,7 +56,7 @@ class UploadRMController extends Controller
         $f_no_rawat = str_replace('/', '', $no_rawat);
         // $pdf_name = $request->file->getClientOriginalName();
         // $pdf_name = 'RM'. $jenis_rm . '_' . $f_no_rawat . '.pdf';
-        if($jenis_rm=="012") {
+        if($jenis_rm=="012") {  //hasil lab
             $pdf_name = $request->file->getClientOriginalName();
         }else{
             $pdf_name = 'RM'. $jenis_rm . '_' . $f_no_rawat . '.pdf';

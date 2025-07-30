@@ -99,6 +99,39 @@ $(function () {
     });
 });
 
+$(document).on('click', '#kirim_wa', function() {
+    const namaFile = $(this).data('id');
+    $('#loading-spinner').show();
+    console.log(namaFile);
+    $.ajax({
+        url: "{{ route('kirim-wa') }}",
+        type: "POST",
+        data: {
+            _token : "{{ csrf_token() }}",
+            namaFile : namaFile
+        },
+        success: function(data) {
+            $('#loading-spinner').hide();
+            Swal.fire({
+                title: "Berhasil!",
+                text: data.msg,
+                icon: "success",
+                buttons: false,
+                timer: 3000,
+            });
+        },
+        error: function(data) {
+            $('#loading-spinner').hide();
+            Swal.fire({
+                title: "Gagal!",
+                text: data.responseJSON.msg,
+                icon: "error",
+                buttons: false,
+                // timer: 3000,
+            });
+        }
+    });
+});
 
 $(document).ready(function() {
     $(document).on('click', "#download", function() {
