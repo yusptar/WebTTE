@@ -16,6 +16,8 @@ class StatusTTEPPA extends Model
     protected $fillable = [
         'no_rawat',
         'nip',
+        'tanggal_upload',
+        'tanggal_signed',
         'status',
         'jenis_rm'
     ];

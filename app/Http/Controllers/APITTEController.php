@@ -92,7 +92,7 @@ class APITTEController extends Controller
         /*
         Check apakah file ada di dalam storage
         */ 
-        if(!file_exists($this->storage_location . $nama_file)){
+        if(!file_exists($this->storage_location . '/' . $request->jenis_rm . '/' . $nama_file)){
             return response()->json(['msg' => $request->no_rawat . ', ' . 'File tidak ditemukan..!!'], 400);
         }
 
@@ -105,14 +105,14 @@ class APITTEController extends Controller
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         // ];
-        $resource = fopen($this->storage_location . $target_file, 'w');
+        $resource = fopen($this->storage_location . '/' . $request->jenis_rm . '/' . $target_file, 'w');
 
         try{
             $response = $this->client->request('POST', $url, [
                 'multipart' => [
                     [
                         'name' => 'file',
-                        'contents' => Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r'),
+                        'contents' => Psr7\Utils::tryFopen($this->storage_location . '/' . $request->jenis_rm . '/' . $nama_file, 'r'),
                         'filename' => $nama_file,
                         'headers'  => [
                             'Content-Type' => 'application/pdf',
@@ -165,13 +165,20 @@ class APITTEController extends Controller
 
             }else if($headers['Content-Type'][0] == 'application/pdf'){
                 // Storing pdf contents to a file
-                Storage::disk('rekam-medis')->put($target_file, $response->getBody()->getContents());
+                Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
+
+                //hapus file lama
+                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
+
+                $tgl_upload = ManajemenTTE::pluck('tgl_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
 
                 $status_tte = StatusTTEPPA::where([
                     'no_rawat' => $request->no_rawat,
                     'jenis_rm' => $request->jenis_rm,
+                    'tgl_upload' => $tgl_upload,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
+                        'tgl_signed' => $dateTime,
                         'status' => 'SUDAH',
                     ]);
                     
@@ -213,6 +220,7 @@ class APITTEController extends Controller
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
                         'jenis_rm' => $request->jenis_rm,
+                        'tgl_upload' => $tgl_upload,
                         'nip' => Auth::user()->username,
                         ])->update([
                             'status' => 'BELUM',
@@ -227,7 +235,7 @@ class APITTEController extends Controller
 
                 
                 /* remove file RM yang sebelumnya untuk menghemat storage */
-                // unlink(storage_path('app/rekam-medis/' . $nama_file));
+                // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
                 return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
             }
         }catch(RequestException $err){
@@ -241,205 +249,205 @@ class APITTEController extends Controller
                 'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
                 'message' => 'Pengiriman data gagal..!!' . $err,
             ]);
-            unlink(storage_path('app/rekam-medis/' . $target_file));
+            unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' .  $target_file));
             return response()->json(['msg' => $request->no_rawat . ', ' . 'Pengiriman data gagal..!!'], 400);
         }
     }
 
-    public function signCoordinate(Request $request){
+    // public function signCoordinate(Request $request){
         
-        $nik = Auth::user()->pegawai->no_ktp;
-        $passphrase = $request->passphrase;
+    //     $nik = Auth::user()->pegawai->no_ktp;
+    //     $passphrase = $request->passphrase;
 
-        // Validasi Passphrase
-        if (!preg_match('/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()-_+=])[A-Za-z0-9!@#$%^&*()-_+=]{8,}$/', $passphrase)) {
-            return response()->json(['msg' => 'Passphrase harus memenuhi kriteria: minimal 8 karakter, 1 huruf kapital, 1 angka, dan 1 simbol.'], 400);
-        }
-        $location = '1';
-        $nama_file = $request->nama_file;
-        $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
+    //     // Validasi Passphrase
+    //     if (!preg_match('/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()-_+=])[A-Za-z0-9!@#$%^&*()-_+=]{8,}$/', $passphrase)) {
+    //         return response()->json(['msg' => 'Passphrase harus memenuhi kriteria: minimal 8 karakter, 1 huruf kapital, 1 angka, dan 1 simbol.'], 400);
+    //     }
+    //     $location = '1';
+    //     $nama_file = $request->nama_file;
+    //     $target_file = Str::substr($nama_file , 0 , Str::of($nama_file)->length()-4) . '_.pdf';
         
-        $nama_qr = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->id . '.png';
-        $tag = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->tag;
+    //     $nama_qr = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->id . '.png';
+    //     $tag = KeteranganTTE::where('no_rawat', $request->no_rawat)->where('jenis_rm', $request->jenis_rm)->where('nip', Auth::user()->pegawai->nik)->first()->tag;
 
-        /*
-        Check apakah file ada di dalam storage
-        */ 
-        if(!file_exists($this->storage_location . $nama_file)){
-            return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
-        }
+    //     /*
+    //     Check apakah file ada di dalam storage
+    //     */ 
+    //     if(!file_exists($this->storage_location . $nama_file)){
+    //         return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
+    //     }
 
-        if(!file_exists($this->qr_location . $nama_qr)){
-            return response()->json(['msg' => 'QR tidak ditemukan..!!'], 400);
-        }
+    //     if(!file_exists($this->qr_location . $nama_qr)){
+    //         return response()->json(['msg' => 'QR tidak ditemukan..!!'], 400);
+    //     }
 
-        if($request->nama_file==""){
-            return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
-        }
+    //     if($request->nama_file==""){
+    //         return response()->json(['msg' => 'Nama File tidak ditemukan..!!'], 400);
+    //     }
 
-        $url = $this->baseurl_api . '/api/sign/pdf';
+    //     $url = $this->baseurl_api . '/api/sign/pdf';
 
-        // $headers = [
-        //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
-        // ];
-        $resource = fopen($this->storage_location . $target_file, 'w');
+    //     // $headers = [
+    //     //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
+    //     // ];
+    //     $resource = fopen($this->storage_location . $target_file, 'w');
 
-        try{
-            $response = $this->client->request('POST', $url, [
-                'multipart' => [
-                    [
-                        'name' => 'file',
-                        'contents' => Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r'),
-                        'filename' => $nama_file,
-                        'headers'  => [
-                            'Content-Type' => 'application/pdf',
-                        ]
-                    ],
-                    [
-                        'name' => 'imageTTD',
-                        'contents' => Psr7\Utils::tryFopen($this->qr_location . $nama_qr, 'r'),
-                        'filename' => $nama_qr,
-                        'headers'  => [
-                            'Content-Type' => 'application/png',
-                        ]
-                    ],
-                    [
-                        'name' => 'nik',
-                        'contents' => $nik
-                    ],
-                    [
-                        'name' => 'passphrase',
-                        'contents' => $passphrase
-                    ],
-                    [
-                        'name' => 'tampilan',
-                        'contents' => 'visible'
-                    ],
-                    [
-                        'name' => 'image',
-                        'contents' => 'true'
-                    ],
-                    [
-                        'name' => 'width',
-                        'contents' => '75'
-                    ],
-                    [
-                        'name' => 'height',
-                        'contents' => '75'
-                    ],
-                    [
-                        'name' => 'tag_koordinat',
-                        'contents' => $tag
-                    ]
-                ],
-                'auth' => [
-                    'esign', 
-                    'qwerty'
-                ],
-                // 'headers' => $headers,
-                'stream' => true,
-                'verify'  => true,
-                'http_errors' => true,
-                // 'sink' => $resource,
-            ]);
+    //     try{
+    //         $response = $this->client->request('POST', $url, [
+    //             'multipart' => [
+    //                 [
+    //                     'name' => 'file',
+    //                     'contents' => Psr7\Utils::tryFopen($this->storage_location . $nama_file, 'r'),
+    //                     'filename' => $nama_file,
+    //                     'headers'  => [
+    //                         'Content-Type' => 'application/pdf',
+    //                     ]
+    //                 ],
+    //                 [
+    //                     'name' => 'imageTTD',
+    //                     'contents' => Psr7\Utils::tryFopen($this->qr_location . $nama_qr, 'r'),
+    //                     'filename' => $nama_qr,
+    //                     'headers'  => [
+    //                         'Content-Type' => 'application/png',
+    //                     ]
+    //                 ],
+    //                 [
+    //                     'name' => 'nik',
+    //                     'contents' => $nik
+    //                 ],
+    //                 [
+    //                     'name' => 'passphrase',
+    //                     'contents' => $passphrase
+    //                 ],
+    //                 [
+    //                     'name' => 'tampilan',
+    //                     'contents' => 'visible'
+    //                 ],
+    //                 [
+    //                     'name' => 'image',
+    //                     'contents' => 'true'
+    //                 ],
+    //                 [
+    //                     'name' => 'width',
+    //                     'contents' => '75'
+    //                 ],
+    //                 [
+    //                     'name' => 'height',
+    //                     'contents' => '75'
+    //                 ],
+    //                 [
+    //                     'name' => 'tag_koordinat',
+    //                     'contents' => $tag
+    //                 ]
+    //             ],
+    //             'auth' => [
+    //                 'esign', 
+    //                 'qwerty'
+    //             ],
+    //             // 'headers' => $headers,
+    //             'stream' => true,
+    //             'verify'  => true,
+    //             'http_errors' => true,
+    //             // 'sink' => $resource,
+    //         ]);
             
-            $headers = $response->getHeaders();
-            if($headers['Content-Type'][0] == 'application/json'){
-                $response_ = json_decode($response->getBody(),true);
-                // dd($response_);
+    //         $headers = $response->getHeaders();
+    //         if($headers['Content-Type'][0] == 'application/json'){
+    //             $response_ = json_decode($response->getBody(),true);
+    //             // dd($response_);
                 
-                $tte_log = TTELog::create([
-                    'user' => Auth::user()->pegawai->nik,
-                    'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                    'message' => $response_['error'],
-                ]);
-                return response()->json(['msg' => $response_['error']], 400);
+    //             $tte_log = TTELog::create([
+    //                 'user' => Auth::user()->pegawai->nik,
+    //                 'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                 'message' => $response_['error'],
+    //             ]);
+    //             return response()->json(['msg' => $response_['error']], 400);
 
-            }else if($headers['Content-Type'][0] == 'application/pdf'){
-                // Storing pdf contents to a file
-                Storage::disk('rekam-medis')->put($target_file, $response->getBody()->getContents());
+    //         }else if($headers['Content-Type'][0] == 'application/pdf'){
+    //             // Storing pdf contents to a file
+    //             Storage::disk('rekam-medis')->put($target_file, $response->getBody()->getContents());
 
-                $status_tte = StatusTTEPPA::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->update([
-                        'status' => 'SUDAH',
-                    ]);
+    //             $status_tte = StatusTTEPPA::where([
+    //                 'no_rawat' => $request->no_rawat,
+    //                 'jenis_rm' => $request->jenis_rm,
+    //                 'nip' => Auth::user()->pegawai->nik,
+    //                 ])->update([
+    //                     'status' => 'SUDAH',
+    //                 ]);
 
-                $status_ket_tte = KeteranganTTE::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->update([
-                        'tgl_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-                    ]);
-                //hapus QR
-                unlink(storage_path('app/qr-code/' . $nama_qr));
+    //             $status_ket_tte = KeteranganTTE::where([
+    //                 'no_rawat' => $request->no_rawat,
+    //                 'jenis_rm' => $request->jenis_rm,
+    //                 'nip' => Auth::user()->pegawai->nik,
+    //                 ])->update([
+    //                     'tgl_signed' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                 ]);
+    //             //hapus QR
+    //             unlink(storage_path('app/qr-code/' . $nama_qr));
 
-                try{
-                    //cek apakah semua PPA sudah melakukan tanda tangan 
-                    $signed_status = 'BELUM';
-                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
-                        $signed_status = 'SUDAH';
-                    }
-                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
-                    if($jumlahFileRM->count()>0){
-                        $tte = ManajemenTTE::where([
-                            'no_rawat' => $request->no_rawat,
-                            'path' => $nama_file,
-                            ])->update([
-                                'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-                                'path' => $target_file,
-                                'signed_status' => $signed_status,
-                            ]);
-                    } else {
-                        $tte = ManajemenSurat::where([
-                            'no_rawat' => $request->no_rawat,
-                            'path' => $nama_file,
-                            ])->update([
-                                'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
-                                'path' => $target_file,
-                                'signed_status' => $signed_status,
-                            ]);
-                    }
-                }catch(Exception $e){
-                    $status_tte = StatusTTEPPA::where([
-                        'no_rawat' => $request->no_rawat,
-                        'jenis_rm' => $request->jenis_rm,
-                        'nip' => Auth::user()->username,
-                        ])->update([
-                            'status' => 'BELUM',
-                        ]);
-                    $tte_log = TTELog::create([
-                                        'user' => Auth::user()->pegawai->nik,
-                                        'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                                        'message' => 'Update Database Gagal..!!',
-                                    ]);
-                    return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
-                }
+    //             try{
+    //                 //cek apakah semua PPA sudah melakukan tanda tangan 
+    //                 $signed_status = 'BELUM';
+    //                 if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
+    //                     $signed_status = 'SUDAH';
+    //                 }
+    //                 $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
+    //                 if($jumlahFileRM->count()>0){
+    //                     $tte = ManajemenTTE::where([
+    //                         'no_rawat' => $request->no_rawat,
+    //                         'path' => $nama_file,
+    //                         ])->update([
+    //                             'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                             'path' => $target_file,
+    //                             'signed_status' => $signed_status,
+    //                         ]);
+    //                 } else {
+    //                     $tte = ManajemenSurat::where([
+    //                         'no_rawat' => $request->no_rawat,
+    //                         'path' => $nama_file,
+    //                         ])->update([
+    //                             'tanggal_signed' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                             'path' => $target_file,
+    //                             'signed_status' => $signed_status,
+    //                         ]);
+    //                 }
+    //             }catch(Exception $e){
+    //                 $status_tte = StatusTTEPPA::where([
+    //                     'no_rawat' => $request->no_rawat,
+    //                     'jenis_rm' => $request->jenis_rm,
+    //                     'nip' => Auth::user()->username,
+    //                     ])->update([
+    //                         'status' => 'BELUM',
+    //                     ]);
+    //                 $tte_log = TTELog::create([
+    //                                     'user' => Auth::user()->pegawai->nik,
+    //                                     'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
+    //                                     'message' => 'Update Database Gagal..!!',
+    //                                 ]);
+    //                 return response()->json(['msg' => 'Update Database Gagal..!! '.$e], 400);
+    //             }
 
                 
-                /* remove file RM yang sebelumnya untuk menghemat storage */
-                unlink(storage_path('app/rekam-medis/' . $nama_file));
-                return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
-            }
+    //             /* remove file RM yang sebelumnya untuk menghemat storage */
+    //             unlink(storage_path('app/rekam-medis/' . $nama_file));
+    //             return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+    //         }
                 
-        }catch(RequestException $err){
-            $errMsg="Error: " . $err->getMessage();
-            if ($err->hasResponse()) {
-                dd( $err->getResponse()->getStatusCode());
-                echo "\nHTTP Status Code: " . $err->getResponse()->getStatusCode();
-            }
-            $tte_log = TTELog::create([
-                'user' => Auth::user()->pegawai->nik,
-                'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
-                'message' => 'Pengiriman data gagal..!!' . $err,
-            ]);
-            unlink(storage_path('app/rekam-medis/' . $target_file));
-            return response()->json(['msg' => 'Pengiriman data gagal..!!'], 400);
-        }
-    }
+    //     }catch(RequestException $err){
+    //         $errMsg="Error: " . $err->getMessage();
+    //         if ($err->hasResponse()) {
+    //             dd( $err->getResponse()->getStatusCode());
+    //             echo "\nHTTP Status Code: " . $err->getResponse()->getStatusCode();
+    //         }
+    //         $tte_log = TTELog::create([
+    //             'user' => Auth::user()->pegawai->nik,
+    //             'created_at' => Carbon::now()->format('Y/m/d H:i:s'),
+    //             'message' => 'Pengiriman data gagal..!!' . $err,
+    //         ]);
+    //         unlink(storage_path('app/rekam-medis/' . $target_file));
+    //         return response()->json(['msg' => 'Pengiriman data gagal..!!'], 400);
+    //     }
+    // }
 
     public function manageBerkas(Request $request){
 
@@ -449,7 +457,7 @@ class APITTEController extends Controller
             $nama_file = $request->nama_file;
             $jenis_rm = $request->jenis_rm;
     
-            if(!file_exists($this->storage_location . $nama_file)){
+            if(!file_exists($this->storage_location . '/' . $request->jenis_rm . '/' . $nama_file)){
                 return response()->json(['msg' => 'File tidak ditemukan..!!'], 400);
             }
     

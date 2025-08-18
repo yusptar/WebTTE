@@ -101,6 +101,7 @@ $(function () {
 
 $(document).on('click', '#kirim_wa', function() {
     const namaFile = $(this).data('id');
+    const jenisRM = $(this).data('jenisrm');
     $('#loading-spinner').show();
     console.log(namaFile);
     $.ajax({
@@ -108,7 +109,8 @@ $(document).on('click', '#kirim_wa', function() {
         type: "POST",
         data: {
             _token : "{{ csrf_token() }}",
-            namaFile : namaFile
+            namaFile : namaFile,
+            jenisRM : jenisRM
         },
         success: function(data) {
             $('#loading-spinner').hide();
@@ -146,13 +148,15 @@ $(document).ready(function() {
         // var namaFile = row.children(".nama_file").text();
         // var namaFile = row.find("td:eq(6)").text();
         const namaFile = $(this).data('id');
+        const jenisRM = $(this).data('jenisrm');
         // console.log(namaFile);
         $.ajax({
             url: "{{ route('downloadRM') }}",
             type: "POST",
             data: {
                 _token : "{{ csrf_token() }}",
-                namaFile : namaFile
+                namaFile : namaFile,
+                jenisRM : jenisRM
             },
             xhrFields: {
                 responseType: 'blob'

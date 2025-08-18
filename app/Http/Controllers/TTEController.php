@@ -218,8 +218,8 @@ class TTEController extends Controller
                         // return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" data-id="'.$row->path.'">Download</button>' : 'No Action';
                         return ($row->signed_status == 'SUDAH') ? 
                         '<div class="btn-group" role="group">
-                            <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
-                            <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
+                            <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
+                            <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
                         </div>' : 'No Action';
                     })
                     ->rawColumns(['status','action'])
@@ -247,8 +247,8 @@ class TTEController extends Controller
                         // return ($row->signed_status == 'SUDAH') ? '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" data-id="'.$row->path.'">Download</button>' : 'No Action';
                         return ($row->signed_status == 'SUDAH') ? 
                         '<div class="btn-group" role="group">
-                            <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
-                            <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
+                            <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '"  data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
+                            <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '"  data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
                         </div>' : 'No Action';
                     })
                     ->rawColumns(['status','action'])
@@ -341,9 +341,10 @@ class TTEController extends Controller
     {
         // dd($request->namaFile);
         $fileName = $request->namaFile;
+        $jenisRM = $request->jenisRM;
         
-        if (Storage::disk('myRM')->exists($fileName)) {
-            return Storage::disk('myRM')->download($fileName);
+        if (Storage::disk('myRM')->exists('/' . $jenisRM . '/' . $fileName)) {
+            return Storage::disk('myRM')->download('/' . $jenisRM . '/' . $fileName);
         } else {
             return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
         }
@@ -384,8 +385,8 @@ class TTEController extends Controller
                 break;
         }
         $fileName = $this->manajemenTTE->getFileName($noRawat,$kodeJenisRM)['path'];
-        if (Storage::disk('myRM')->exists($fileName)) {
-            return Storage::disk('myRM')->download($fileName);
+        if (Storage::disk('myRM')->exists('/' . $jenisRM . '/' . $fileName)) {
+            return Storage::disk('myRM')->download('/' . $jenisRM . '/' . $fileName);
         } else {
             return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '.$fileName.' | '.$kodeJenisRM], 400);
         }
@@ -393,103 +394,107 @@ class TTEController extends Controller
 
     public function kirimWA(Request $request)
     {
-        $fileName = $request->namaFile;
-        if (Storage::disk('myRM')->exists($fileName)) {
+        // $fileName = $request->namaFile;
+        // $jenisRM = $request->jenisRM;
 
-            $url = config('app.url_api_wa').'/api/messages/send';
+        // if (Storage::disk('myRM')->exists('/' . $jenisRM . '/' . $fileName)) {
 
-            $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
-            // dd($dataPasien);
-            $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
+        //     $url = config('app.url_api_wa').'/api/messages/send';
+
+        //     $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
+        //     // dd($dataPasien);
+        //     $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
             
-            $number = '62'.$nomorTelp.'@s.whatsapp.net';
-            $namaPasien = $dataPasien[0]->nm_pasien;
-            $noRM = $dataPasien[0]->no_rkm_medis;
+        //     $number = '62'.$nomorTelp.'@s.whatsapp.net';
+        //     $namaPasien = $dataPasien[0]->nm_pasien;
+        //     $noRM = $dataPasien[0]->no_rkm_medis;
 
-            $requested_data = [
-                'number' => $number,
-                'message' => 'Terimakasih atas kepercayaan yg telah diberikan kepada RS Tk. II dr. Soepraoen
-                     Yth. Bpk/Ibu '.$namaPasien.'
-                     Dengan ini kami kirimkan surat keterangan buta warna.
-                       Nomor RM     : '.$noRM.'
-                       Nama         : '.$namaPasien.'
-                     Untuk pendaftaran online, unduh aplikasi Halo Soepraoen/ JKN Mobile.
-                     Pendaftaran pasien BPJS Rumah Sakit Tk.II dr.Soepraoen per tanggal 03 September 2024 *Wajib Melakukan Pendaftaran Melalui Mobile JKN*
-                     Download Aplikasi JKN Mobile dengan klik link di bawah ini. https://play.google.com/store/apps/details?id=app.bpjs.mobile
-                     Terima kasih
-                     Hormat kami,
-                     RST dr.SOEPRAOEN',
-            ];
+        //     $requested_data = [
+        //         'number' => $number,
+        //         'message' => 'Terimakasih atas kepercayaan yg telah diberikan kepada RS Tk. II dr. Soepraoen
+        //              Yth. Bpk/Ibu '.$namaPasien.'
+        //              Dengan ini kami kirimkan surat keterangan buta warna.
+        //                Nomor RM     : '.$noRM.'
+        //                Nama         : '.$namaPasien.'
+        //              Untuk pendaftaran online, unduh aplikasi Halo Soepraoen/ JKN Mobile.
+        //              Pendaftaran pasien BPJS Rumah Sakit Tk.II dr.Soepraoen per tanggal 03 September 2024 *Wajib Melakukan Pendaftaran Melalui Mobile JKN*
+        //              Download Aplikasi JKN Mobile dengan klik link di bawah ini. https://play.google.com/store/apps/details?id=app.bpjs.mobile
+        //              Terima kasih
+        //              Hormat kami,
+        //              RST dr.SOEPRAOEN',
+        //     ];
     
-            $jsonData = json_encode($requested_data);
+        //     $jsonData = json_encode($requested_data);
                 
-            $header = [
-                'Accept: application/json',
-                'Content-Type: application/json',
-            ];
+        //     $header = [
+        //         'Accept: application/json',
+        //         'Content-Type: application/json',
+        //     ];
     
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        //     $ch = curl_init($url);
+        //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //     curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        //     curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
     
-            $res = curl_exec($ch);
-            $data['response'] = json_decode($res, true);
-            $data['requested_data'] = $jsonData;
-            curl_close($ch);
+        //     $res = curl_exec($ch);
+        //     $data['response'] = json_decode($res, true);
+        //     $data['requested_data'] = $jsonData;
+        //     curl_close($ch);
 
 
-            //kirim file
-            $client = new Client();
+        //     //kirim file
+        //     $client = new Client();
             
-            $url = config('app.url_api_wa').'/api/messages/send-media';
-            try{
-                $response = $client->request('POST', $url, [
-                    'multipart' => [
-                        [
-                            'name' => 'file',
-                            'contents' => Psr7\Utils::tryFopen(storage_path('app/rekam-medis/') . $fileName, 'r'),
-                            'filename' => $fileName,
-                            'headers'  => [
-                                'Content-Type' => 'application/pdf',
-                            ]
-                        ],
-                        [
-                            'name' => 'number',
-                            'contents' => $number
-                        ],
-                        [
-                            'name' => 'caption',
-                            'contents' => 'Surat_'.$namaPasien
-                        ]
-                    ],
-                ]);
-                // dd($response);
-                $statusCode = $response->getStatusCode();
-                $reason = $response->getReasonPhrase(); 
-                if($statusCode == '200'){
-                    $response_ = json_decode($response->getBody(),true);
-                    // dd($response_);
-                    return response()->json(['msg' => $response_['status']], 200);
-                    // return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
-                }
-            } catch (Exception $e) {
-                // dd($e);
-                return response()->json(['msg' => $e->getMessage()], 400);
-            }
+        //     $url = config('app.url_api_wa').'/api/messages/send-media';
+        //     try{
+        //         $response = $client->request('POST', $url, [
+        //             'multipart' => [
+        //                 [
+        //                     'name' => 'file',
+        //                     'contents' => Psr7\Utils::tryFopen(storage_path('app/rekam-medis/') . '/' . $jenisRM . '/' . $fileName, 'r'),
+        //                     'filename' => $fileName,
+        //                     'headers'  => [
+        //                         'Content-Type' => 'application/pdf',
+        //                     ]
+        //                 ],
+        //                 [
+        //                     'name' => 'number',
+        //                     'contents' => $number
+        //                 ],
+        //                 [
+        //                     'name' => 'caption',
+        //                     'contents' => 'Surat_'.$namaPasien
+        //                 ]
+        //             ],
+        //         ]);
+        //         // dd($response);
+        //         $statusCode = $response->getStatusCode();
+        //         $reason = $response->getReasonPhrase(); 
+        //         if($statusCode == '200'){
+        //             $response_ = json_decode($response->getBody(),true);
+        //             // dd($response_);
+        //             return response()->json(['msg' => $response_['status']], 200);
+        //             // return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+        //         }
+        //     } catch (Exception $e) {
+        //         // dd($e);
+        //         return response()->json(['msg' => $e->getMessage()], 400);
+        //     }
 
-        } else {
-            return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
-        }
+        // } else {
+        //     return response()->json(['msg' => 'Dokumen tidak ditemukan, silahkan hubungi Adminstrator..!! '], 400);
+        // }
     }
 
     public function kirimWAOCA(Request $request)
     {
         $fileName = $request->namaFile;
-        if (Storage::disk('myRM')->exists($fileName)) {
+        $jenisRM = $request->jenisRM;
+
+        if (Storage::disk('myRM')->exists('/' . $jenisRM . '/' . $fileName)) {
 
             //copy file
-            $content = Storage::disk('myRM')->get($fileName);
+            $content = Storage::disk('myRM')->get('/' . $jenisRM . '/' . $fileName);
             Storage::put('public/'.$fileName, $content);
 
             $url = config('app.url_api_wa').'/api/v2/push/message';
@@ -497,7 +502,7 @@ class TTEController extends Controller
             $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
             // dd($dataPasien);
             $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
-            // $nomorTelp = '85755554151';
+            $nomorTelp = '85755554151';
             $number = '62'.$nomorTelp;
             $namaPasien = $dataPasien[0]->nm_pasien;
             $noRM = $dataPasien[0]->no_rkm_medis;
@@ -526,7 +531,7 @@ class TTEController extends Controller
                                     {
                                         "type": "document",
                                         "document": {
-                                            "url": "https://rssoepraoen.com/tte/storage/'.$fileName.'"
+                                            "url": "https://rssoepraoen.com/tte/storage/'. $jenisRM . '/' .$fileName.'"
                                         }
                                     }
                                 ]
@@ -633,6 +638,8 @@ class TTEController extends Controller
 
             $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
+                'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                'tanggal_signed' => '0000-00-00 00:00:00',
                 'nip' => $request->nip,
                 'jenis_rm' => '999',
                 'status' => 'BELUM',
@@ -680,6 +687,8 @@ class TTEController extends Controller
 
             $status_tte_ppa = StatusTTEPPA::create([
                 'no_rawat' => $request->no_rawat,
+                'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                'tanggal_signed' => '0000-00-00 00:00:00',
                 'nip' => $request->nip,
                 'jenis_rm' => $request->jenis_rm,
                 'status' => 'BELUM',

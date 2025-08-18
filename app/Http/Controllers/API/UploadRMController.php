@@ -78,7 +78,7 @@ class UploadRMController extends Controller
         }
         
         try {
-            $pdf_upload = $request->file('file')->storeAs('rekam-medis', $pdf_name);
+            $pdf_upload = $request->file('file')->storeAs('rekam-medis/'. $jenis_rm, $pdf_name);
             
             if($edit){
                 ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->delete();
