@@ -174,22 +174,32 @@ class APITTEController extends Controller
 
                 $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
 
-                $status_tte_query = StatusTTEPPA::where([
-                    'no_rawat' => $no_rawat,
-                    'jenis_rm' => $jenis_rm,
-                    'tgl_upload' => $tgl_upload,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->toSql();
+                $status_tte_query = StatusTTEPPA::
+                    where('no_rawat' , '=', $no_rawat)
+                    ->where('jenis_rm' , '=', $jenis_rm)
+                    ->where('tgl_upload' , '=', $tgl_upload)
+                    ->where('nip' , '=', Auth::user()->pegawai->nik)
+                    ->toSql();
 
-                $status_tte = StatusTTEPPA::where([
-                    'no_rawat' => $no_rawat,
-                    'jenis_rm' => $jenis_rm,
-                    'tgl_upload' => $tgl_upload,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->update([
+                $status_tte = StatusTTEPPA::
+                    where('no_rawat' , '=', $no_rawat)
+                    ->where('jenis_rm' , '=', $jenis_rm)
+                    ->where('tgl_upload' , '=', $tgl_upload)
+                    ->where('nip' , '=', Auth::user()->pegawai->nik)
+                    ->update([
                         'tgl_signed' => $dateTime,
                         'status' => 'SUDAH',
                     ]);
+
+                // $status_tte = StatusTTEPPA::where([
+                //     'no_rawat' => $no_rawat,
+                //     'jenis_rm' => $jenis_rm,
+                //     'tgl_upload' => $tgl_upload,
+                //     'nip' => Auth::user()->pegawai->nik,
+                //     ])->update([
+                //         'tgl_signed' => $dateTime,
+                //         'status' => 'SUDAH',
+                //     ]);
                 
                 $status_ket_tte = KeteranganTTE::where([
                     'no_rawat' => $no_rawat,
