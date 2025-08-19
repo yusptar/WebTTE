@@ -175,6 +175,13 @@ class APITTEController extends Controller
                 try{
                     
 
+                    $status_tte_query = StatusTTEPPA::where([
+                        'no_rawat' => $request->no_rawat,
+                        'jenis_rm' => $request->jenis_rm,
+                        'tgl_upload' => $tgl_upload,
+                        'nip' => Auth::user()->pegawai->nik,
+                        ])->toSql();
+
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
                         'jenis_rm' => $request->jenis_rm,
@@ -183,7 +190,7 @@ class APITTEController extends Controller
                         ])->update([
                             'tgl_signed' => $dateTime,
                             'status' => 'SUDAH',
-                        ])->toSql();
+                        ]);
                     
                     $status_ket_tte = KeteranganTTE::where([
                         'no_rawat' => $request->no_rawat,
@@ -193,7 +200,7 @@ class APITTEController extends Controller
                             'tgl_signed' => $dateTime,
                         ]);
 
-                    return response()->json(['msg' => 'Update status_tte qeuery..!! '.$status_tte], 400);
+                    return response()->json(['msg' => $status_tte_query. ' | Update status_tte qeuery..!! '.$status_tte], 400);
                         
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
