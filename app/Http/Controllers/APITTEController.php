@@ -185,7 +185,6 @@ class APITTEController extends Controller
                             'status' => 'SUDAH',
                         ])->toSql();
                     
-                    dd($status_tte);
                     $status_ket_tte = KeteranganTTE::where([
                         'no_rawat' => $request->no_rawat,
                         'jenis_rm' => $request->jenis_rm,
@@ -193,6 +192,8 @@ class APITTEController extends Controller
                         ])->update([
                             'tgl_signed' => $dateTime,
                         ]);
+
+                    return response()->json(['msg' => 'Update status_tte qeuery..!! '.$status_tte], 400);
                         
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
