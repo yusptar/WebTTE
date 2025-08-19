@@ -170,9 +170,10 @@ class APITTEController extends Controller
                 //hapus file lama
                 unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
+                $tgl_upload = ManajemenTTE::pluck('tgl_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
+
                 try{
                     
-                    $tgl_upload = ManajemenTTE::pluck('tgl_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
 
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
@@ -231,7 +232,7 @@ class APITTEController extends Controller
                                         'created_at' => $dateTime,
                                         'message' => 'Update Database Gagal..!!',
                                     ]);
-                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! '.$e], 400);
+                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! TglUppload '.$tgl_upload.'  '.$e], 400);
                 }
 
                 
