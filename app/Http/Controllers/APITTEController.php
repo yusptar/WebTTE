@@ -104,6 +104,8 @@ class APITTEController extends Controller
 
         $url = $this->baseurl_api . '/api/sign/pdf';
 
+        $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
+
         // $headers = [
         //     'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         // ];
@@ -172,11 +174,11 @@ class APITTEController extends Controller
                 //hapus file lama
                 // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
-                $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
 
                 $status_tte = StatusTTEPPA::where([
                     'no_rawat' => $no_rawat,
                     'jenis_rm' => $jenis_rm,
+                    'tgl_upload' => $tgl_upload,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
                         'tgl_signed' => $dateTime,
