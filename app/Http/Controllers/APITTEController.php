@@ -174,8 +174,13 @@ class APITTEController extends Controller
 
                 $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
 
-                $status_tte = StatusTTEPPA::
-                    where('no_rawat' , '=', $no_rawat)
+                $status_tte_query = StatusTTEPPA::where('no_rawat' , '=', $no_rawat)
+                    ->where('jenis_rm' , '=', $jenis_rm)
+                    ->where('tgl_upload' , '=', $tgl_upload)
+                    ->where('nip' , '=', Auth::user()->pegawai->nik)
+                    ->toSql();
+                    
+                $status_tte = StatusTTEPPA::where('no_rawat' , '=', $no_rawat)
                     ->where('jenis_rm' , '=', $jenis_rm)
                     ->where('tgl_upload' , '=', $tgl_upload)
                     ->where('nip' , '=', Auth::user()->pegawai->nik)
@@ -202,7 +207,7 @@ class APITTEController extends Controller
                         'tgl_signed' => $dateTime,
                     ]);
 
-                return response()->json(['msg' => $no_rawat. ' | '.$jenis_rm.' | '.$tgl_upload.' | Update status_tte qeuery..!! '.$status_tte], 400);
+                return response()->json(['msg' => $fullSql. ' | '.$no_rawat. ' | '.$jenis_rm.' | '.$tgl_upload.' | Update status_tte qeuery..!! '.$status_tte], 400);
 
                 try{
                                         
