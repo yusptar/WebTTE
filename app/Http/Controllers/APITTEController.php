@@ -195,7 +195,7 @@ class APITTEController extends Controller
                         
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
-                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
+                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm,$tgl_upload) == 0){
                         $signed_status = 'SUDAH';
                     }
                     $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
@@ -218,6 +218,8 @@ class APITTEController extends Controller
                                 'signed_status' => $signed_status,
                             ]);
                     }
+
+                    return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
                 }catch(Exception $e){
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
@@ -238,7 +240,6 @@ class APITTEController extends Controller
                 
                 /* remove file RM yang sebelumnya untuk menghemat storage */
                 // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
-                return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
             }
         }catch(RequestException $err){
             $errMsg="Error: " . $err->getMessage();
