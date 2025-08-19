@@ -178,7 +178,7 @@ class APITTEController extends Controller
                 $status_tte = StatusTTEPPA::where([
                     'no_rawat' => $no_rawat,
                     'jenis_rm' => $jenis_rm,
-                    'tgl_upload' => $request->tgl_upload,
+                    'tgl_upload' => $tgl_upload,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
                         'tgl_signed' => $dateTime,
