@@ -113,7 +113,7 @@ class TTEController extends Controller
                 })
                 ->addColumn('action', function($row){
                     // return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button> &nbsp; <button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>' : '<button class="btn btn-danger btn-sm cetak-btn" id="hapus" type="button">Hapus</button>';
-                    return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal" type="button">Sign Now..!!</button>' : 'No Action';
+                    return ($row->status_ppa == 'BELUM') ? '<button class="btn btn-primary btn-sm cetak-btn" id="open-modal"  data-tanggal_upload="' . $row->tanggal_upload . '" type="button">Sign Now..!!</button>' : 'No Action';
                 })
                 ->rawColumns(['signed_status','action'])
                 ->make(true);

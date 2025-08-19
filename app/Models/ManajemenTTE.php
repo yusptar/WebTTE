@@ -169,6 +169,7 @@ class ManajemenTTE extends Model
                     ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
                     ->selectRaw('`status_tte_ppa`.`status` as status_ppa')
                     ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('`manajemen_rm_tte`.`tanggal_upload` as tanggal_upload')
                     ->get();
                     
         return $result;

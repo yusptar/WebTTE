@@ -60,6 +60,7 @@
                                                 @csrf
                                                 <div class="form-group">
                                                     <input type="hidden" name="_token" value="{{ env('TOKEN') }}" />
+                                                    <input type="text" class="form-control" name="modal_tanggalUpload" id="modal_tanggalUpload" > 
                                                     <input type="text" class="form-control" name="modal_type" id="modal_type" hidden> 
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden> 
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
@@ -199,6 +200,7 @@
                 formData.append('no_rawat', $('input[name=modal_no_rawat]').val());
                 formData.append('nama_file', $('input[name=modal_nama_file]').val());
                 formData.append('jenis_rm', $('input[name=modal_jenis_rm]').val());
+                formData.append('tgl_upload', $('input[name=modal_tanggalUpload]').val());
                 formData.append('passphrase', $('input[name=passphrase]').val());
                 formData.append('_token', $('input[name=_token]').val());
                 $.ajax({
@@ -241,10 +243,13 @@
 
     $(document).ready(function() {
         var type = "";
+        var tanggalUpload = "";
         $(document).on('click', "#open-modal", function() {
             $(this).addClass(
                 'open-modal-trigger-clicked'
             ); 
+            console.log($(this).data('tanggal_upload'));
+            tanggalUpload = $(this).data('tanggal_upload');
 
             type = "single";
 
@@ -285,6 +290,7 @@
             $("#modal_nama_file").val(nama_file);
             $("#modal_jenis_rm").val(jenis_rm);
             $("#modal_type").val(type);
+            $("#modal_tanggalUpload").val(tanggalUpload);
             
 
         })
