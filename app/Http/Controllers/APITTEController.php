@@ -178,6 +178,7 @@ class APITTEController extends Controller
                     ->where('jenis_rm' , '=', $jenis_rm)
                     ->where('tgl_upload' , '=', $tgl_upload)
                     ->where('nip' , '=', Auth::user()->pegawai->nik)
+                    ->get()
                     ->toSql();
                     
                 $status_tte = StatusTTEPPA::where('no_rawat' , '=', $no_rawat)
