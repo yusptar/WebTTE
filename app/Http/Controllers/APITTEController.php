@@ -169,10 +169,10 @@ class APITTEController extends Controller
 
             }else if($headers['Content-Type'][0] == 'application/pdf'){
                 // Storing pdf contents to a file
-                // Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
+                Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
 
                 //hapus file lama
-                // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
+                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
 
                 $status_tte = StatusTTEPPA::where([
@@ -223,7 +223,7 @@ class APITTEController extends Controller
                             ]);
                     }
 
-                    return response()->json(['msg' => 'Proses Berhasil..!!! TglUppload '.$tgl_upload, ], 200);
+                    return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
                 }catch(Exception $e){
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $no_rawat,
