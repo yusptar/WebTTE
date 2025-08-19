@@ -531,7 +531,7 @@ class TTEController extends Controller
                                     {
                                         "type": "document",
                                         "document": {
-                                            "url": "https://rssoepraoen.com/tte/storage/'. $jenisRM . '/' .$fileName.'"
+                                            "url": "https://rssoepraoen.com/tte/storage/'. $fileName.'"
                                         }
                                     }
                                 ]
