@@ -70,6 +70,8 @@ class APITTEController extends Controller
         // $nik = '0803202100007062';
         $nik = Auth::user()->pegawai->no_ktp;
         $passphrase = $request->passphrase;
+        $no_rawat = $request->no_rawat;
+        $jenis_rm = $request->jenis_rm;
         // $passphrase ='Hantek1234.!';
 
         // Validasi Passphrase
@@ -170,18 +172,18 @@ class APITTEController extends Controller
                 //hapus file lama
                 // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
-                $tgl_upload = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
+                $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
 
                 $status_tte_query = StatusTTEPPA::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
+                    'no_rawat' => $no_rawat,
+                    'jenis_rm' => $jenis_rm,
                     'tgl_upload' => $tgl_upload,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->toSql();
 
                 $status_tte = StatusTTEPPA::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
+                    'no_rawat' => $no_rawat,
+                    'jenis_rm' => $jenis_rm,
                     'tgl_upload' => $tgl_upload,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
@@ -190,8 +192,8 @@ class APITTEController extends Controller
                     ]);
                 
                 $status_ket_tte = KeteranganTTE::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
+                    'no_rawat' => $no_rawat,
+                    'jenis_rm' => $jenis_rm,
                     'nip' => Auth::user()->pegawai->nik,
                     ])->update([
                         'tgl_signed' => $dateTime,
@@ -203,13 +205,13 @@ class APITTEController extends Controller
                                         
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
-                    if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm,$tgl_upload) == 0){
+                    if($this->statusTTE->countStatusBelum($no_rawat,$jenis_rm,$tgl_upload) == 0){
                         $signed_status = 'SUDAH';
                     }
-                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('jenis_rm', '=', $request->jenis_rm)->get();
+                    $jumlahFileRM = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->get();
                     if($jumlahFileRM->count()>0){
                         $tte = ManajemenTTE::where([
-                            'no_rawat' => $request->no_rawat,
+                            'no_rawat' => $no_rawat,
                             'path' => $nama_file,
                             ])->update([
                                 'tanggal_signed' => $dateTime,
@@ -218,7 +220,7 @@ class APITTEController extends Controller
                             ]);
                     } else {
                         $tte = ManajemenSurat::where([
-                            'no_rawat' => $request->no_rawat,
+                            'no_rawat' => $no_rawat,
                             'path' => $nama_file,
                             ])->update([
                                 'tanggal_signed' => $dateTime,
@@ -230,8 +232,8 @@ class APITTEController extends Controller
                     return response()->json(['msg' => 'Proses Berhasil..!!! TglUppload '.$tgl_upload, ], 200);
                 }catch(Exception $e){
                     $status_tte = StatusTTEPPA::where([
-                        'no_rawat' => $request->no_rawat,
-                        'jenis_rm' => $request->jenis_rm,
+                        'no_rawat' => $no_rawat,
+                        'jenis_rm' => $jenis_rm,
                         'tgl_upload' => $tgl_upload,
                         'nip' => Auth::user()->username,
                         ])->update([
@@ -242,7 +244,7 @@ class APITTEController extends Controller
                                         'created_at' => $dateTime,
                                         'message' => 'Update Database Gagal..!!',
                                     ]);
-                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! '.$e], 400);
+                    return response()->json(['msg' => $no_rawat . ', ' . 'Update Database Gagal..!! '.$e], 400);
                 }
 
                 
