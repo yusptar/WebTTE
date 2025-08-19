@@ -92,7 +92,7 @@ class UploadRMController extends Controller
             $data = ManajemenTTE::create([
                 'no_rawat' => $request->no_rawat,
                 'jenis_rm' => $jenis_rm,
-                'tanggal_upload' => Carbon::now()->format('Y-m-d H:i:s'),
+                'tanggal_upload' => $request->date_now,
                 'tanggal_signed' => '0000-00-00 00:00:00',
                 'path' => $pdf_name,
                 'signed_status' => 'BELUM',
