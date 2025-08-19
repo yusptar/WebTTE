@@ -209,7 +209,7 @@ class APITTEController extends Controller
                         'tgl_signed' => $dateTime,
                     ]);
 
-                return response()->json(['msg' => $status_tte_query. ' | Update status_tte qeuery..!! '.$status_tte], 400);
+                return response()->json(['msg' => $status_tte_query. ' | '.$no_rawat. ' | '.$jenis_rm.' | '.$tgl_upload.' | Update status_tte qeuery..!! '.$status_tte], 400);
 
                 try{
                                         
