@@ -274,8 +274,8 @@ class TTEController extends Controller
                 ->addColumn('action', function($row){
                     return ($row->signed_status == 'SUDAH') ? 
                     '<div class="btn-group" role="group">
-                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
-                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
+                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" data-jenisrm="' . $row->jenis_rm . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
+                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" data-jenisrm="' . $row->jenis_rm . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
                     </div>' : 'No Action';
                     // '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button> &nbsp <button class="btn btn-primary btn-sm cetak-btn" id="download1" type="button" value="'.$row->path.'">KIRIM</button>' 
                     // : 'No Action';
