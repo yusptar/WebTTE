@@ -157,7 +157,7 @@
                         },
                         error: function(data) {
                             if(data.status == 400){
-                                // console.log(data.responseJSON.msg);
+                                console.log(data.responseJSON.msg);
                                 errorMsg += data.responseJSON.msg + ".\n";
                             }
                         }
