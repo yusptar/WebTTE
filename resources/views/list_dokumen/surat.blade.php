@@ -134,12 +134,14 @@ $(document).on('click', '#kirim_wa', function() {
 
 $(document).on('click', '#download', function() {
     const namaFile = $(this).data('id');
+    const jenisRM = $(this).data('jenisrm');
     $.ajax({
         url: "{{ route('downloadRM') }}",
         type: "POST",
         data: {
             _token : "{{ csrf_token() }}",
-            namaFile : namaFile
+            namaFile : namaFile,
+            jenisRM : jenisRM
         },
         xhrFields: {
             responseType: 'blob'
@@ -164,7 +166,7 @@ $(document).on('click', '#download', function() {
         error: function(data) {
             Swal.fire({
                 title: "Gagal!",
-                text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
+                text: data.responseJSON.msg,// . "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
                 icon: "error",
                 buttons: false,
                 timer: 3000,

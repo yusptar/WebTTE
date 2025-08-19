@@ -181,7 +181,7 @@ $(document).ready(function() {
             error: function(data) {
                 Swal.fire({
                     title: "Gagal!",
-                    text: "Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
+                    text: data.responseJSON.msg,// . " | Oops, terjadi kesalahan. Silahkan Hubungi Administrator..!",
                     icon: "error",
                     buttons: false,
                     timer: 3000,
