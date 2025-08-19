@@ -168,29 +168,30 @@ class APITTEController extends Controller
                 Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
 
                 //hapus file lama
-                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
-
-                $tgl_upload = ManajemenTTE::pluck('tgl_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
-
-                $status_tte = StatusTTEPPA::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
-                    'tgl_upload' => $tgl_upload,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->update([
-                        'tgl_signed' => $dateTime,
-                        'status' => 'SUDAH',
-                    ]);
-                    
-                $status_ket_tte = KeteranganTTE::where([
-                    'no_rawat' => $request->no_rawat,
-                    'jenis_rm' => $request->jenis_rm,
-                    'nip' => Auth::user()->pegawai->nik,
-                    ])->update([
-                        'tgl_signed' => $dateTime,
-                    ]);
+                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file))
 
                 try{
+                    
+                    $tgl_upload = ManajemenTTE::pluck('tgl_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
+
+                    $status_tte = StatusTTEPPA::where([
+                        'no_rawat' => $request->no_rawat,
+                        'jenis_rm' => $request->jenis_rm,
+                        'tgl_upload' => $tgl_upload,
+                        'nip' => Auth::user()->pegawai->nik,
+                        ])->update([
+                            'tgl_signed' => $dateTime,
+                            'status' => 'SUDAH',
+                        ]);
+                        
+                    $status_ket_tte = KeteranganTTE::where([
+                        'no_rawat' => $request->no_rawat,
+                        'jenis_rm' => $request->jenis_rm,
+                        'nip' => Auth::user()->pegawai->nik,
+                        ])->update([
+                            'tgl_signed' => $dateTime,
+                        ]);
+                        
                     //cek apakah semua PPA sudah melakukan tanda tangan 
                     $signed_status = 'BELUM';
                     if($this->statusTTE->countStatusBelum($request->no_rawat,$request->jenis_rm) == 0){
