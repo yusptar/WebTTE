@@ -168,7 +168,7 @@ class APITTEController extends Controller
                 Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
 
                 //hapus file lama
-                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file))
+                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
                 try{
                     
