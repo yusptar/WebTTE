@@ -219,7 +219,7 @@ class APITTEController extends Controller
                             ]);
                     }
 
-                    return response()->json(['msg' => 'Proses Berhasil..!!!', ], 200);
+                    return response()->json(['msg' => 'Proses Berhasil..!!! TglUppload '.$tgl_upload, ], 200);
                 }catch(Exception $e){
                     $status_tte = StatusTTEPPA::where([
                         'no_rawat' => $request->no_rawat,
