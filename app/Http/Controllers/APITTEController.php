@@ -165,12 +165,13 @@ class APITTEController extends Controller
 
             }else if($headers['Content-Type'][0] == 'application/pdf'){
                 // Storing pdf contents to a file
-                Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
+                // Storage::disk('rekam-medis')->put('/' . $request->jenis_rm . '/' . $target_file, $response->getBody()->getContents());
 
                 //hapus file lama
-                unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
+                // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
                 $tgl_upload = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
+
                 try{
                     
 
@@ -182,8 +183,9 @@ class APITTEController extends Controller
                         ])->update([
                             'tgl_signed' => $dateTime,
                             'status' => 'SUDAH',
-                        ]);
-                        
+                        ])->toSql();
+                    
+                    dd($status_tte);
                     $status_ket_tte = KeteranganTTE::where([
                         'no_rawat' => $request->no_rawat,
                         'jenis_rm' => $request->jenis_rm,
@@ -233,7 +235,7 @@ class APITTEController extends Controller
                                         'created_at' => $dateTime,
                                         'message' => 'Update Database Gagal..!!',
                                     ]);
-                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! TglUppload '.$tgl_upload.'  '.$e], 400);
+                    return response()->json(['msg' => $request->no_rawat . ', ' . 'Update Database Gagal..!! '.$e], 400);
                 }
 
                 
