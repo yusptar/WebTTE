@@ -173,7 +173,7 @@ class APITTEController extends Controller
                 // unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
                 $tgl_upload = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
-                $dataStatusTTE = StatusTTEPPA::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('tgl_upload', '=', $tgl_upload)->where('nip', '=', Auth::user()->pegawai->nik)->get();
+                $dataStatusTTE = StatusTTEPPA::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->where('nip', '=', Auth::user()->pegawai->nik)->get();
                 var_dump($dataStatusTTE);
                 $status_tte = StatusTTEPPA::where([
                     'no_rawat' => $no_rawat,
