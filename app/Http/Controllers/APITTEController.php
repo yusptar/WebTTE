@@ -170,8 +170,7 @@ class APITTEController extends Controller
                 //hapus file lama
                 unlink(storage_path('app/rekam-medis/' . $request->jenis_rm . '/' . $nama_file));
 
-                $tgl_upload = ManajemenTTE::pluck('tanggal_upload')->where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->first();
-
+                $tgl_upload = ManajemenTTE::where('no_rawat', '=', $request->no_rawat)->where('path', '=', $nama_file)->select('tanggal_upload')->get()->first()['tanggal_upload'];
                 try{
                     
 
