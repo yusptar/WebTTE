@@ -100,6 +100,7 @@ $(function () {
     
 $(document).on('click', '#kirim_wa', function() {
     const namaFile = $(this).data('id');
+    const jenisRM = $(this).data('jenisrm');
     $('#loading-spinner').show();
     console.log(namaFile);
     $.ajax({
@@ -107,7 +108,8 @@ $(document).on('click', '#kirim_wa', function() {
         type: "POST",
         data: {
             _token : "{{ csrf_token() }}",
-            namaFile : namaFile
+            namaFile : namaFile,
+            jenisRM : jenisRM
         },
         success: function(data) {
             $('#loading-spinner').hide();

@@ -274,8 +274,8 @@ class TTEController extends Controller
                 ->addColumn('action', function($row){
                     return ($row->signed_status == 'SUDAH') ? 
                     '<div class="btn-group" role="group">
-                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
-                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
+                        <button id="download" type="button" class="btn btn-outline-primary" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Download File"><i class="fas fa-download"></i></button>
+                        <button id="kirim_wa"  type="button" class="btn btn-outline-success" data-id="' . $row->path . '" data-jenisrm="' . $row->kd_jenis_rm . '" style="cursor:pointer;"title="Kirim Whatsapp"><i class="fas fa-paper-plane"></i></button>
                     </div>' : 'No Action';
                     // '<button class="btn btn-primary btn-sm cetak-btn" id="download" type="button" value="'.$row->path.'">Download</button> &nbsp <button class="btn btn-primary btn-sm cetak-btn" id="download1" type="button" value="'.$row->path.'">KIRIM</button>' 
                     // : 'No Action';
@@ -502,7 +502,7 @@ class TTEController extends Controller
             $dataPasien = $this->manajemenTTESurat->getDataPasien($fileName);
             // dd($dataPasien);
             $nomorTelp = substr($dataPasien[0]->no_tlp,1,strlen($dataPasien[0]->no_tlp));
-            // $nomorTelp = '85755554151';
+            $nomorTelp = '85755554151';
             $number = '62'.$nomorTelp;
             $namaPasien = $dataPasien[0]->nm_pasien;
             $noRM = $dataPasien[0]->no_rkm_medis;
