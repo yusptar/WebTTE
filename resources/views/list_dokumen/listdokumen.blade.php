@@ -46,6 +46,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                        </div>
                         <div class="card-footer text-right">
                             <nav class="d-inline-block">
                             </nav>
