@@ -80,6 +80,7 @@ class ManajemenTTE extends Model
                     ->selectRaw('`manajemen_rm_tte`.`path` as path')
                     ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
                     ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('`manajemen_rm_tte`.`jenis_rm` as kd_jenis_rm')
                     ->selectRaw('GROUP_CONCAT(pegawai.nama,\' (\',status_tte_ppa.status, \'); \') as petugas')
                     ->get();
         return $result;
@@ -169,6 +170,7 @@ class ManajemenTTE extends Model
                     ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
                     ->selectRaw('`status_tte_ppa`.`status` as status_ppa')
                     ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm')
+                    ->selectRaw('`manajemen_rm_tte`.`jenis_rm` as kd_jenis_rm')
                     ->selectRaw('`manajemen_rm_tte`.`tanggal_upload` as tanggal_upload')
                     ->get();
                     
@@ -207,6 +209,7 @@ class ManajemenTTE extends Model
             ->selectRaw('`penjab`.`png_jawab` as png_jawab')
             ->selectRaw('`manajemen_rm_tte`.`signed_status` as signed_status')
             ->selectRaw('`status_tte_ppa`.`status` as status_ppa')
+            ->selectRaw('`manajemen_rm_tte`.`jenis_rm` as kd_jenis_rm')
             ->selectRaw('`master_berkas_digital`.`nama` as jenis_rm');
     }
 
