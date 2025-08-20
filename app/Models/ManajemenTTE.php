@@ -134,8 +134,8 @@ class ManajemenTTE extends Model
                     ->selectRaw('`manajemen_rm_tte`.`jenis_rm` as kd_jenis_rm')
                     ->selectRaw('GROUP_CONCAT(pegawai.nama,\' (\',status_tte_ppa.status, \'); \') as petugas')
                 // ->toSql();
-                ->limit(100)
-                    ->get();
+                ->simplePaginate(10);
+                    // ->get();
                     // dd($result);
         return $result;
     }
