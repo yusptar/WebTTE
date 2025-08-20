@@ -90,7 +90,7 @@ class ManajemenTTE extends Model
         $result = DB::table('manajemen_rm_tte')
                     ->join('reg_periksa', function ($join) {
                         $join->on('manajemen_rm_tte.no_rawat', '=', 'reg_periksa.no_rawat')
-                        ;//->where('reg_periksa.status_lanjut', '=', 'Ralan');
+                        ->where('reg_periksa.status_lanjut', '=', 'Ralan');
                     })
                     ->join('pasien', function ($join) {
                         $join->on('reg_periksa.no_rkm_medis', '=', 'pasien.no_rkm_medis');

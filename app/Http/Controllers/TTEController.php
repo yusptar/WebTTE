@@ -232,7 +232,8 @@ class TTEController extends Controller
     public function index_list_dokumen_rj(Request $request)
     {
         if ($request->ajax()) {
-            $data = $this->manajemenTTE->getDetailRMRalan();
+            $data = $this->manajemenTTE->getDetailRMRanap();
+            // $data = $this->manajemenTTE->getDetailRMRalan();
             
             if ($request->filled('from_date') && $request->filled('to_date')) {
                 $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
