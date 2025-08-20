@@ -233,11 +233,11 @@ class TTEController extends Controller
     {
         if ($request->ajax()) {
             $data = $this->manajemenTTE->getDetailRMRalan();
-  
+            
             if ($request->filled('from_date') && $request->filled('to_date')) {
                 $data = $data->whereBetween('tgl_registrasi', [$request->from_date, $request->to_date]);
             }
-  
+            dd($data);
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('status', function($row){
