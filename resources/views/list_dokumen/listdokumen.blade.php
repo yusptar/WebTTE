@@ -68,6 +68,7 @@ $(function () {
         endDate: moment()
     });
         
+    console.log("{{ (request()->routeIs('list-dokumen-ri')) ? route('list-dokumen-ri') : route('list-dokumen-rj') }}");
     var table = $('#table-rm').DataTable({
         responsive: true,
         lengthChange: true,
