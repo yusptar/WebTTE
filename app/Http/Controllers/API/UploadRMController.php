@@ -99,7 +99,7 @@ class UploadRMController extends Controller
             ]);
         } catch (Exception $errmsg) {
             // return ApiFormatter::createAPI(400, 'Failed' . $errmsg);
-            return response()->json(['code' => '400','message' => $errmsg], 400);
+            return response()->json(['code' => '400','message' => 'Error Exception : '. $errmsg], 400);
         }
         return response()->json(['code' => '200','message' => 'Berhasil upload dengan nama file '.$pdf_name], 200);
         // return ApiFormatter::createAPI(200, 'Success', $data);
