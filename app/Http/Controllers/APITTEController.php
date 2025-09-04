@@ -62,15 +62,40 @@ class APITTEController extends Controller
             'verify'  => false,
             'body' => $body,
         ]);
+         try{
+            $response = $this->client->request('POST', $url, [
+                'multipart' => [
+                    [
+                        'name' => 'nik',
+                        'contents' => '3573050104690006'
+                    ]
+                ],
+                'auth' => [
+                    'esign', 
+                    'qwerty'
+                ],
+                // 'headers' => $headers,
+                'stream' => true,
+                'verify'  => true,
+                'http_errors' => true,
+                // 'sink' => $resource,
+            ]);
+            
+            $responseBody = json_decode($response->getBody());
 
-
-        $responseBody = json_decode($response->getBody());
-
-        if($responseBody->status == 'sukses'){
-            return response()->json(['success' => $responseBody->message, ], 200);
-        } elseif($responseBody->status == 'gagal') {
-            return response()->json(['error' => $responseBody->message], 400);
-        }
+            if($responseBody->status == 'sukses'){
+                return response()->json(['success' => $responseBody->message, ], 200);
+            } elseif($responseBody->status == 'gagal') {
+                return response()->json(['error' => $responseBody->message], 400);
+            }
+        }catch(RequestException $err){
+            $errMsg="Error: " . $err->getMessage();
+            if ($err->hasResponse()) {
+                dd( $err->getResponse()->getStatusCode());
+                echo "\nHTTP Status Code: " . $err->getResponse()->getStatusCode();
+            }
+            return response()->json(['msg' => $errMsg . ', ' . 'Pengiriman data gagal..!!'], 400);
+        }       
     }
 
     public function signInvisible(Request $request)
