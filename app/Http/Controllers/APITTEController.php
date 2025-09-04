@@ -44,7 +44,7 @@ class APITTEController extends Controller
         ];
 
         // baru
-        $url = $this->baseurl_api . '/account/api/user/status/0803202100007062';
+        $url = $this->baseurl_api . '/account/api/user/status/3573050104690006';
         
         $params = [
             //If you have any Params Pass here
