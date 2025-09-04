@@ -40,15 +40,13 @@ class APITTEController extends Controller
     public function getStatusUser()
     {
         $headers = [
-            'auth' => [
-                    'esign', 
-                    'qwerty'
-            ]
+            'Authorization' => 'Basic ZXNpZ246cXdlcnR5'
             // 'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         ];
 
         // baru
         $url = $this->baseurl_api . '/account/api/user/status/3573050104690006';
+        // $url = $this->baseurl_api . '/api/v2/user/check/status';
         
         $params = [
             //If you have any Params Pass here
