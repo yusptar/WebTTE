@@ -45,18 +45,24 @@ class APITTEController extends Controller
         ];
 
         // baru
-        $url = $this->baseurl_api . '/account/api/user/status/3573050104690006';
-        // $url = $this->baseurl_api . '/api/v2/user/check/status';
+        // $url = $this->baseurl_api . '/account/api/user/status/3573050104690006';
+        $url = $this->baseurl_api . '/api/v2/user/check/status';
         
         $params = [
             //If you have any Params Pass here
         ];
+        
+        $body = [
+            'nik' => '3573050104690006'
+        ];
 
-        $response = $this->client->request('GET', $url, [
+        $response = $this->client->request('POST', $url, [
             // 'json' => $params,
             'headers' => $headers,
             'verify'  => false,
+            'body' => $body,
         ]);
+
 
         $responseBody = json_decode($response->getBody());
 
