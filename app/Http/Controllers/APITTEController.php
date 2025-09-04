@@ -40,7 +40,11 @@ class APITTEController extends Controller
     public function getStatusUser()
     {
         $headers = [
-            'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
+            'auth' => [
+                    'esign', 
+                    'qwerty'
+            ]
+            // 'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHR0ZS5jb20iLCJuaWsiOiIwODAzMjAyMTAwMDA3MDYyIiwiZXhwIjoxNzI5OTgyMjczfQ.ZFCzzT4DP_d6OodzysZlUOt_VLX-ZOt2Y860yZBpJlw'
         ];
 
         // baru
