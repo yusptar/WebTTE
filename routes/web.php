@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');
     // Lainnya
     Route::get('users', [App\Http\Controllers\UserController::class, 'index'])->name('users');
+    Route::get('profil', [App\Http\Controllers\UserController::class, 'profile'])->name('profil');
     Route::get('user-list', [App\Http\Controllers\UserController::class, 'user_list'])->name('user-list');
     Route::post('user-detail', [App\Http\Controllers\UserController::class, 'user_detail'])->name('user.detail');
     Route::post('users-store', [App\Http\Controllers\UserController::class, 'store'])->name('user-store');

@@ -26,6 +26,11 @@ class UserController extends Controller
         return view('settings.users');
     }
 
+    public function profile()
+    {
+        return view('settings.profile');
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
