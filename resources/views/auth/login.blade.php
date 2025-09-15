@@ -4,13 +4,17 @@
 <section class="ftco-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12 text-center mb-5">
-                <img class="" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" style="max-width: 100%; height: auto;">
+            <div class="col-12 text-center mb-5">
+                <img src="{{ asset('img/logo-panjang-rst.png') }}" 
+                    alt="BIOS Webservice" 
+                    class="img-fluid"
+                    style="max-width: 100%; height: auto;">
                 <h3 class="mb-4 text-center" style="font-weight:bold;">Tanda Tangan Elektronik (TTE)</h3>
                 <p class="text-center" style="font-weight:bold;color:black;">Rumah Sakit Tk.II dr.Soepraoen</p>
             </div>
+
             @if (session('error'))
-                <div class="alert alert-danger" id="error-message">
+                <div class="alert alert-danger col-12 col-md-8" id="error-message">
                     {{ session('error') }}
                 </div>
             @endif

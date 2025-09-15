@@ -37,7 +37,7 @@
                         <i class='fas fa-user-circle'></i>
                         <strong>&nbsp;Profil</strong>
                     </a>
-                    <!-- <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();" class="nav-link">
                         <form id="logout-form" action="{{ route('logout') }}" method="POST">
                             @csrf
@@ -45,14 +45,14 @@
                         
                         <i class='fas fa-sign-out-alt'></i>
                         <strong>&nbsp;Log Out</strong>
-                    </a> -->
-                    <a href="#" id="btn-logout" class="nav-link">
+                    </a>
+                    <!-- <a href="#" id="btn-logout" class="nav-link">
                         <i class='fas fa-sign-out-alt'></i> 
                         <strong>&nbsp;Log Out</strong>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf
-                    </form>
+                    </form> -->
                 </li>
             </ul>
         </li>
@@ -60,7 +60,7 @@
 </nav>
 <!-- /.navbar -->
 @section('script')
-<script>
+<!-- <script>
     $(document).on('click', '#btn-logout', function(e) {
     e.preventDefault();
 
@@ -79,5 +79,5 @@
         }
     });
 });
-</script>
+</script> -->
 @endsection

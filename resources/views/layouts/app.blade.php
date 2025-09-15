@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('auth/css/style.css') }}">
 </head>
 
-<body class="img js-fullheight" style="background-image: url(auth/images/background.jpg); background-size: 100% auto;">
+<body class="img js-fullheight" style="background-image: url(auth/images/bg.png); background-size: 100% auto;">
     @yield('content')
     <script src="{{ asset('auth/js/jquery.min.js') }}"></script>
     <script src="{{ asset('auth/js/popper.js') }}"></script>

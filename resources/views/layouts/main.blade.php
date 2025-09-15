@@ -42,7 +42,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="" src="{{ asset('img/logorst-panjang.png') }}" alt="BIOS Webservice" height="200" width="600">
+            <img class="" src="{{ asset('img/logo-panjang-rst.png') }}" alt="BIOS Webservice" height="200" width="1000">
             <br>
         </div>
         <!-- include navbar -->
