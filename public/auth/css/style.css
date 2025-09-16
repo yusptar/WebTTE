@@ -8142,14 +8142,15 @@ body {
   z-index: 0;
   padding: 0; }
   body:after {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     content: '';
-    background: #000;
-    opacity: .3;
+    background: #000f;
+    background-size: cover;
+    opacity: .2;
     z-index: -1; }
 
 a {
@@ -8228,7 +8229,7 @@ h1, h2, h3, h4, h5,
   border: none;
   height: 50px;
   color: white !important;
-  border: 1px solid #fff;
+  border: 1px solid black;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 40px;
   padding-left: 20px;
@@ -8328,23 +8329,22 @@ textarea.form-control {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   font-size: 15px;
-  font-weight: bold;
-  text-transform: uppercase; }
+  font-weight: bold; }
   .btn:hover, .btn:active, .btn:focus {
     outline: none; }
   .btn.btn-primary {
     background: transparent !important;
-    border: 1px solid #fff !important;
-    color: #fff !important; }
+    border: 1px solid black !important;
+    color: black !important; }
     .btn.btn-primary:hover {
-      border: 1px solid #fff;
-      background: #fff;
-      color: #fff; }
+      border: 200px solid black;
+      background: black;
+      color: black; }
     .btn.btn-primary.btn-outline-primary {
       border: 1px solid transparent;
       background: transparent;
-      color: #fff; }
+      color: black; }
       .btn.btn-primary.btn-outline-primary:hover {
-        border: 1px solid #fff;
-        background: #fff;
-        color: #fff; }
+        border: 1px solid black;
+        background: black;
+        color: black; }
