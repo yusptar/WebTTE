@@ -70,7 +70,12 @@ class UploadRMController extends Controller
         //         $edit = true;
         //     }
         // }
-        
+        if($jenis_rm!="012") {
+            if($this->statusRM->countRMUpload($no_rawat,$jenis_rm) > 0){
+                return response()->json(['code' => '400','message' => 'RM sudah terupload, tidak bisa upload ulang.'], 400);
+            }
+        }
+
         if($this->statusRM->countStatusSudah($no_rawat,$jenis_rm) > 0){
             return response()->json(['code' => '400','message' => 'RM sudah tertandatangani secara elektronik, tidak bisa upload ulang.'], 400);
         } else {

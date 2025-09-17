@@ -379,4 +379,10 @@ class ManajemenTTE extends Model
         
         return $result;
     }
+
+    public function countRMUpload($no_rawat,$jenis_rm){
+        $result = ManajemenTTE::where('no_rawat', '=', $no_rawat)->where('jenis_rm', '=', $jenis_rm)->count();
+        
+        return $result;
+    }
 }
