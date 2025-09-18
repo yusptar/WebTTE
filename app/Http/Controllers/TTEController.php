@@ -622,7 +622,7 @@ class TTEController extends Controller
             }
 
             if ($request->hasFile('path')) {
-                $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
+                $pdf_upload = $request->file('path')->storeAs('rekam-medis/999', $pdf_name);
             } else {
                 $pdf_upload = true;
             }
@@ -671,7 +671,7 @@ class TTEController extends Controller
             }
 
             if ($request->hasFile('path')) {
-                 $pdf_upload = $request->file('path')->storeAs('rekam-medis', $pdf_name);
+                 $pdf_upload = $request->file('path')->storeAs('rekam-medis/'. $request->jenis_rm, $pdf_name);
             } else {
                  $pdf_upload = true;
             }
