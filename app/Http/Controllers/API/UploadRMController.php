@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Validator;
 class UploadRMController extends Controller
 {
     protected $statusRM;
+    private $storage_location;
     
     public function __construct()
     {
       $this->statusRM = new ManajemenTTE();
+      $this->storage_location = storage_path('app/rekam-medis/');//'../storage/app/rekam-medis/';
     }
 
     public function index()
@@ -72,7 +74,9 @@ class UploadRMController extends Controller
         // }
         if($jenis_rm!="012") {
             if($this->statusRM->countRMUpload($no_rawat,$jenis_rm) > 0){
-                return response()->json(['code' => '400','message' => 'RM sudah terupload, tidak bisa upload ulang.'], 400);
+                if(file_exists($this->storage_location . '/' . $jenis_rm . '/' . $pdf_name)){
+                    return response()->json(['code' => '400','message' => 'RM sudah terupload, tidak bisa upload ulang.'], 400);
+                }
             }
         }
 
