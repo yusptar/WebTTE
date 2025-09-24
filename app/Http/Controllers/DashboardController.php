@@ -29,6 +29,17 @@ class DashboardController extends Controller
     //     return view('dashboard.index', compact('jumlah_tte'));
     // }
 
+//     SELECT left(m.tanggal_upload,7) AS bulan, s.nip, p.nama,
+// SUM(case when s.status = 'SUDAH' then 1 ELSE 0 END) AS jml_sudah,
+// SUM(case when s.status = 'BELUM' then 1 ELSE 0 END) AS jml_belum,
+// count(s.status) AS total
+// FROM status_tte_ppa s
+// INNER JOIN manajemen_rm_tte m ON m.no_rawat = s.no_rawat AND m.jenis_rm = s.jenis_rm
+// INNER JOIN pegawai p ON p.nik = s.nip
+// GROUP BY s.nip,left(m.tanggal_upload,7);
+
+    
+
     public function index()
     {
         $user_name = Auth::user()->pegawai->nama;
@@ -49,6 +60,8 @@ class DashboardController extends Controller
                 ->groupBy(DB::raw('MONTH(r.tanggal_upload)'))
                 ->orderBy(DB::raw('MONTH(r.tanggal_upload)'))
                 ->get();
+
+            
         
             $months = [];
             $belum = [];
@@ -66,43 +79,51 @@ class DashboardController extends Controller
             ];
         }
         
-        $jumlah_tte = DB::table('pegawai as p')
-            ->join('status_tte_ppa as s', 'p.nik', '=', 's.nip')
-            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
-            ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
+        $jumlah_tte = DB::table('status_tte_ppa as s')
+            ->join('manajemen_rm_tte as m', function ($join) {
+                $join->on('m.no_rawat', '=', 's.no_rawat')
+                    ->on('m.jenis_rm', '=', 's.jenis_rm');
+            })
+            ->join('pegawai as p', 'p.nik', '=', 's.nip')
             ->select(
-                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
-                DB::raw('SUM(CASE WHEN s.status = "BELUM" THEN 1 ELSE 0 END) as belum'),
-                DB::raw('SUM(CASE WHEN s.status = "SUDAH" THEN 1 ELSE 0 END) as sudah')
+                's.nip',
+                'p.nama',
+                DB::raw('SUM(CASE WHEN s.status = "SUDAH" THEN 1 ELSE 0 END) AS sudah'),
+                DB::raw('SUM(CASE WHEN s.status = "BELUM" THEN 1 ELSE 0 END) AS belum'),
+                DB::raw('COUNT(s.status) AS total')
+            )
+            ->where('p.nama', $user_name)
+            ->groupBy('s.nip', 'p.nama')
+            ->first();
+
+        $jumlah_dokumen =  DB::table('status_tte_ppa as s')
+            ->join('manajemen_rm_tte as mj', function ($join) {
+                $join->on('mj.no_rawat', '=', 's.no_rawat')
+                    ->on('mj.jenis_rm', '=', 's.jenis_rm');
+            })
+            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
+            ->join('pegawai as p', 'p.nik', '=', 's.nip')
+            ->select(
+                DB::raw('
+                    GROUP_CONCAT(CASE WHEN s.status = "SUDAH" THEN m.nama END SEPARATOR ", ") AS dokumen_sudah,
+                    GROUP_CONCAT(CASE WHEN s.status = "BELUM" THEN m.nama END SEPARATOR ", ") AS dokumen_belum
+                ')
             )
             ->where('p.nama', $user_name)
             ->first();
-
-        $jumlah_dokumen_sudah = DB::table('pegawai as p')
-            ->join('status_tte_ppa as s', 'p.nik', '=', 's.nip')
-            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
-            ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
-            ->select(
-                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
-            )
-            ->where('p.nama', $user_name)
-            ->where('s.status', 'SUDAH')
-            ->first();
-
-        $jumlah_dokumen_belum = DB::table('pegawai as p')
-            ->join('status_tte_ppa as s', 'p.nik', '=', 's.nip')
-            ->join('master_berkas_digital as m', 's.jenis_rm', '=', 'm.kode')
-            ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
-            ->select(
-                DB::raw('GROUP_CONCAT(m.nama SEPARATOR ", ") AS dokumen'),
-            )
-            ->where('p.nama', $user_name)
-            ->where('s.status', 'BELUM')
-            ->first();
-
-        $jumlah_dokumen_sudah->dokumen_list = explode(', ', $jumlah_dokumen_sudah->dokumen);
-        $jumlah_dokumen_belum->dokumen_list = explode(', ', $jumlah_dokumen_belum->dokumen);
+    
+        $jumlah_dokumen_sudah = (object) [
+            'dokumen_list' => $jumlah_dokumen->dokumen_sudah 
+                ? explode(', ', $jumlah_dokumen->dokumen_sudah) 
+                : [],
+        ];
         $jumlah_dokumen_sudah->dokumen_count = array_count_values($jumlah_dokumen_sudah->dokumen_list);
+
+        $jumlah_dokumen_belum = (object) [
+            'dokumen_list' => $jumlah_dokumen->dokumen_belum 
+                ? explode(', ', $jumlah_dokumen->dokumen_belum) 
+                : [],
+        ];
         $jumlah_dokumen_belum->dokumen_count = array_count_values($jumlah_dokumen_belum->dokumen_list);
 
         return view('dashboard.index', compact('tte_data', 'jumlah_dokumen_belum', 'jumlah_dokumen_sudah', 'jumlah_tte'));
