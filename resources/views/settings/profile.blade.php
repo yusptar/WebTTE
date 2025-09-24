@@ -24,13 +24,16 @@
                             <div class="mb-3"> 
                                 @php
                                     $path = Auth::user()->pegawai->photo ?? null;
-                                    $url_photo = $path 
-                                        ? env('URL_IMAGE') . $path 
-                                        : asset('img/bsre.png');
+
+                                    // cek apakah path kosong atau hanya "pages/pegawai/photo/"
+                                    if (!$path || $path === 'pages/pegawai/photo/') {
+                                        $url_photo = asset('img/bsre.png');
+                                    } else {
+                                        $url_photo = env('URL_IMAGE') . $path;
+                                    }
                                 @endphp
                                 <img src="{{ $url_photo }}"  class="rounded-circle border" width="300" height="300" alt="User Avatar">
                             </div>
-                            
                             
                             <h4 class="font-weight-bold mb-1">{{ Auth::user()->pegawai->nama }}</h4>
                             <p class="text-muted mb-3">{{ Auth::user()->username }}</p>
