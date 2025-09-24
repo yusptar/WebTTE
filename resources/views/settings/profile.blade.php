@@ -24,8 +24,6 @@
                             <div class="mb-3"> 
                                 @php
                                     $path = Auth::user()->pegawai->photo ?? null;
-
-                                    // cek apakah path kosong atau hanya "pages/pegawai/photo/"
                                     if (!$path || $path === 'pages/pegawai/photo/') {
                                         $url_photo = asset('img/bsre.png');
                                     } else {

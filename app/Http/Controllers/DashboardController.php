@@ -29,27 +29,20 @@ class DashboardController extends Controller
     //     return view('dashboard.index', compact('jumlah_tte'));
     // }
 
-//     SELECT left(m.tanggal_upload,7) AS bulan, s.nip, p.nama,
-// SUM(case when s.status = 'SUDAH' then 1 ELSE 0 END) AS jml_sudah,
-// SUM(case when s.status = 'BELUM' then 1 ELSE 0 END) AS jml_belum,
-// count(s.status) AS total
-// FROM status_tte_ppa s
-// INNER JOIN manajemen_rm_tte m ON m.no_rawat = s.no_rawat AND m.jenis_rm = s.jenis_rm
-// INNER JOIN pegawai p ON p.nik = s.nip
-// GROUP BY s.nip,left(m.tanggal_upload,7);
-
-    
 
     public function index()
     {
         $user_name = Auth::user()->pegawai->nama;
-        $years = [2025, 2024]; // Tahun terbaru diletakkan pertama
+        $years = [2025, 2024]; 
         $tte_data = [];
         
         foreach ($years as $year) {
             $tte_per_month = DB::table('status_tte_ppa as s')
-                ->join('pegawai as p', 's.nip', '=', 'p.nik')
-                ->join('manajemen_rm_tte as r', 'r.no_rawat', '=', 's.no_rawat')
+                ->join('manajemen_rm_tte as r', function ($join) {
+                    $join->on('r.no_rawat', '=', 's.no_rawat')
+                        ->on('r.jenis_rm', '=', 's.jenis_rm');
+                })
+                ->join('pegawai as p', 'p.nik', '=', 's.nip')
                 ->select(
                     DB::raw('MONTH(r.tanggal_upload) as month'),
                     DB::raw('SUM(CASE WHEN s.status = "BELUM" THEN 1 ELSE 0 END) as belum'),
