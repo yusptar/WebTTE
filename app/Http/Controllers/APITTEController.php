@@ -102,42 +102,39 @@ class APITTEController extends Controller
     public function loopStatusUser(Request $request)
     {
         $listPegawai = DB::table('pegawai')
-            ->join('users_tte', 'users_tte.username', '=', 'pegawai.nik')
+            ->join('users_tte', 'users_tte.useranem', '=', 'pegawai.nik')
             ->select('pegawai.no_ktp', 'pegawai.nama')
             ->whereNotNull('pegawai.no_ktp')
-            ->pluck('no_ktp');
+            ->get();
 
         $hasil = [];
 
         foreach ($listPegawai as $pegawai) {
-            $nik  = $pegawai->no_ktp;
-            $nama = $pegawai->nama;
+            if (!$pegawai->no_ktp) {
+                continue;
+            }
 
-            $url = $this->baseurl_api . '/api/user/status/' . $nik;
+            $url = $this->baseurl_api . '/api/user/status/' . $pegawai->no_ktp;
 
             try {
                 $response = $this->client->request('GET', $url, [
-                    'auth' => ['esign', 'qwerty'],
-                    'verify' => true,
-                    'timeout' => 10,
+                    'auth' => ['esign', 'qwerty']
                 ]);
 
                 $body = json_decode($response->getBody(), true);
 
                 $hasil[] = [
-                    'nik'    => $nik,
-                    'nama'   => $nama,
-                    'status' => $body['status'] ?? null,
-                    'data'   => $body,
+                    'nik'  => $pegawai->no_ktp,
+                    'nama' => $pegawai->nama,
+                    'status' => $body['status'] ?? null
                 ];
 
             } catch (\Exception $e) {
-
                 $hasil[] = [
-                    'nik'    => $nik,
-                    'nama'   => $nama,
+                    'nik'  => $pegawai->no_ktp,
+                    'nama' => $pegawai->nama,
                     'status' => 'error',
-                    'message'=> $e->getMessage(),
+                    'message' => $e->getMessage()
                 ];
             }
         }
