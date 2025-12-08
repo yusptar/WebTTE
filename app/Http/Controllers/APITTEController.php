@@ -102,7 +102,7 @@ class APITTEController extends Controller
     public function loopStatusUser(Request $request)
     {
         $listPegawai = DB::table('pegawai')
-            ->join('users_tte', 'users_tte.useranem', '=', 'pegawai.nik')
+            ->join('users_tte', 'users_tte.username', '=', 'pegawai.nik')
             ->select('pegawai.no_ktp', 'pegawai.nama')
             ->whereNotNull('pegawai.no_ktp')
             ->get();
