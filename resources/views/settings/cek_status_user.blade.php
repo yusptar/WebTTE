@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0 font-weight-bold">Cek Status TTE User</h1>
+            <h1 class="m-0 font-weight-bold">Status TTE</h1>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
                     <button id="btn-cek-status"
                             class="btn btn-primary btn-lg">
                         <i class="fas fa-search"></i>
-                        Cek Status TTE Saya
+                        Cek Status TTE Seluruh User
                     </button>
 
                     <div class="mt-4">
@@ -34,11 +34,8 @@
 @section('script')
 <script>
 $(document).ready(function () {
-
     $('#btn-cek-status').on('click', function () {
-
         $('#result-status').hide().html('');
-
         $.ajax({
             url: "{{ route('loop-status-user') }}",
             type: "GET",
@@ -63,7 +60,6 @@ $(document).ready(function () {
                     .html('<i class="fas fa-search"></i> Cek Status TTE Saya');
             }
         });
-
     });
 
 });
