@@ -17,7 +17,8 @@ use Config;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use \App\Models\KeteranganTTE;
-
+use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Exception\RequestException;
 
 
 class APITTEController extends Controller
