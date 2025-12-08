@@ -108,8 +108,8 @@ class APITTEController extends Controller
         try {
             $response = $this->client->request('GET', $url, [
                 'auth' => [
-                    $nik,   // username basic auth
-                    'Enik123#'   // password basic auth
+                    $nik,   
+                    'Enik123#'  
                 ],
                 'verify' => true,
                 'http_errors' => true,
@@ -119,13 +119,13 @@ class APITTEController extends Controller
 
             if ($responseBody['status'] === 'sukses') {
                 return response()->json([
-                    'success' => $responseBody['message'],
+                    'success' => $responseBody,
                     'nik' => $nik
                 ], 200);
             }
 
             return response()->json([
-                'error' => $responseBody['message'],
+                'error' => $responseBody,
                 'nik' => $nik
             ], 400);
 
