@@ -100,30 +100,51 @@ class APITTEController extends Controller
 
     public function loopStatusUser(Request $request)
     {
-        $nik = '3514090907940002';
-        $url = $this->baseurl_api . '/api/user/status/' . $nik;
+        $listNik = DB::table('pegawai')
+            ->join('users_tte', 'users_tte.username', '=', 'pegawai.nik')
+            ->select('pegawai.no_ktp', 'pegawai.nama')
+            ->whereNotNull('pegawai.no_ktp')
+            ->pluck('no_ktp');
 
-        try {
-            $response = $this->client->request('GET', $url, [
-                'auth' => [
-                    'esign', 
-                    'qwerty'
-                ],
-                'verify' => true,
-                'timeout' => 10,
-            ]);
+        $hasil = [];
 
-            $body = json_decode($response->getBody(), true);
+        foreach ($listPegawai as $pegawai) {
+            $nik  = $pegawai->no_ktp;
+            $nama = $pegawai->nama;
 
-            return response()->json($body, 200);
+            $url = $this->baseurl_api . '/api/user/status/' . $nik;
 
-        } catch (RequestException $e) {
+            try {
+                $response = $this->client->request('GET', $url, [
+                    'auth' => ['esign', 'qwerty'],
+                    'verify' => true,
+                    'timeout' => 10,
+                ]);
 
-            return response()->json([
-                'status'  => 'gagal',
-                'message' => $e->getMessage()
-            ], 500);
+                $body = json_decode($response->getBody(), true);
+
+                $hasil[] = [
+                    'nik'    => $nik,
+                    'nama'   => $nama,
+                    'status' => $body['status'] ?? null,
+                    'data'   => $body,
+                ];
+
+            } catch (\Exception $e) {
+
+                $hasil[] = [
+                    'nik'    => $nik,
+                    'nama'   => $nama,
+                    'status' => 'error',
+                    'message'=> $e->getMessage(),
+                ];
+            }
         }
+
+        return response()->json([
+            'total' => count($hasil),
+            'data'  => $hasil
+        ], 200);
     }
 
     public function signInvisible(Request $request)
