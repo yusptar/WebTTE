@@ -100,17 +100,18 @@ class APITTEController extends Controller
 
     public function loopStatusUser(Request $request)
     {
-        // $nik = Auth::user()->pegawai->no_ktp;
-
         $nik = '3507236606740002';
         $url = $this->baseurl_api . '/api/user/status/' . $nik;
 
-        $username = $nik;
-        $password = 'Enik123#';
+        // $username = $nik;
+        // $password = 'Enik123#';
 
         try {
             $response = $this->client->request('GET', $url, [
-                'auth' => [$username, $password], // ✅ BASIC AUTH
+                'auth' => [
+                    'esign', 
+                    'qwerty'
+                ],
                 'verify' => true,
                 'timeout' => 10,
             ]);
