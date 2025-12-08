@@ -158,6 +158,14 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{ route('status-tte') }}"
+                                class="nav-link {{ (request()->routeIs('status-tte'))  ? 'active' : '' }}">
+                                <p>Cek Status TTE Users</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
                             <a href="{{ route('view-berkas-tte') }}"
                                 class="nav-link {{ (request()->routeIs('view-berkas-tte')) ? 'active' : '' }}">
                                 <p>Hapus Data Corrupted</p>

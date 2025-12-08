@@ -98,6 +98,49 @@ class APITTEController extends Controller
         }       
     }
 
+    public function loopStatusUser(Request $request)
+    {
+        // $nik = Auth::user()->pegawai->no_ktp;
+
+        $nik = '3507236606740002';
+        $url = $this->baseurl_api . '/api/user/status/' . $nik;
+
+        try {
+            $response = $this->client->request('GET', $url, [
+                'auth' => [
+                    $nik,   // username basic auth
+                    'Enik123#'   // password basic auth
+                ],
+                'verify' => true,
+                'http_errors' => true,
+            ]);
+
+            $responseBody = json_decode($response->getBody(), true);
+
+            if ($responseBody['status'] === 'sukses') {
+                return response()->json([
+                    'success' => $responseBody['message'],
+                    'nik' => $nik
+                ], 200);
+            }
+
+            return response()->json([
+                'error' => $responseBody['message'],
+                'nik' => $nik
+            ], 400);
+
+        } catch (RequestException $err) {
+
+            return response()->json([
+                'error' => 'Gagal mengambil status user',
+                'detail' => $err->getMessage()
+            ], $err->hasResponse() 
+                ? $err->getResponse()->getStatusCode() 
+                : 500
+            );
+        }
+    }
+
     public function signInvisible(Request $request)
     {
         // $nik = '0803202100007062';

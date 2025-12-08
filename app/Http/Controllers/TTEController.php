@@ -92,6 +92,10 @@ class TTEController extends Controller
         return view('settings.cek_tte');
     }
 
+    public function view_status_tte(){
+        return view('settings.cek_status_user');
+    }
+
     // DATATABLE 
     public function index_pembubuhan_rm(Request $request)
     {
