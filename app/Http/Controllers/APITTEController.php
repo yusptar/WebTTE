@@ -105,39 +105,26 @@ class APITTEController extends Controller
         $nik = '3507236606740002';
         $url = $this->baseurl_api . '/api/user/status/' . $nik;
 
+        $username = $nik;
+        $password = 'Enik123#';
+
         try {
             $response = $this->client->request('GET', $url, [
-                'auth' => [
-                    $nik,   
-                    'Enik123#'  
-                ],
+                'auth' => [$username, $password], // ✅ BASIC AUTH
                 'verify' => true,
-                'http_errors' => true,
+                'timeout' => 10,
             ]);
 
-            $responseBody = json_decode($response->getBody(), true);
+            $body = json_decode($response->getBody(), true);
 
-            if ($responseBody['status'] === 'sukses') {
-                return response()->json([
-                    'success' => $responseBody,
-                    'nik' => $nik
-                ], 200);
-            }
+            return response()->json($body, 200);
+
+        } catch (RequestException $e) {
 
             return response()->json([
-                'error' => $responseBody,
-                'nik' => $nik
-            ], 400);
-
-        } catch (RequestException $err) {
-
-            return response()->json([
-                'error' => 'Gagal mengambil status user',
-                'detail' => $err->getMessage()
-            ], $err->hasResponse() 
-                ? $err->getResponse()->getStatusCode() 
-                : 500
-            );
+                'status'  => 'gagal',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 
