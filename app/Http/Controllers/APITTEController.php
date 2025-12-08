@@ -100,11 +100,8 @@ class APITTEController extends Controller
 
     public function loopStatusUser(Request $request)
     {
-        $nik = '3507236606740002';
+        $nik = '3514090907940002';
         $url = $this->baseurl_api . '/api/user/status/' . $nik;
-
-        // $username = $nik;
-        // $password = 'Enik123#';
 
         try {
             $response = $this->client->request('GET', $url, [
