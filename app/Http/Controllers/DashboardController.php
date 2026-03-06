@@ -33,7 +33,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user_name = Auth::user()->pegawai->nama;
-        $years = [2025, 2024]; 
+        $years = [2026, 2025, 2024]; 
         $tte_data = [];
         
         foreach ($years as $year) {
