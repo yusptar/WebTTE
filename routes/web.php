@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('users-update', [App\Http\Controllers\UserController::class, 'update'])->name('user-update');
     Route::post('users-delete', [App\Http\Controllers\UserController::class, 'destroy'])->name('user-delete');
     Route::get('/status-user-tte', [App\Http\Controllers\APITTEController::class, 'getStatusUser'])->name('getStatusUserTTE');
+    Route::get('/loop-status-user', [App\Http\Controllers\APITTEController::class, 'loopStatusUser'])->name('loop-status-user');
     Route::post('/sign-invisible', [App\Http\Controllers\APITTEController::class, 'signInvisible'])->name('signInvisibleTTE');
     Route::post('/download', [\App\Http\Controllers\TTEController::class, 'download'])->name('downloadRM');
     Route::post('/downloadberkas', [\App\Http\Controllers\TTEController::class, 'downloadberkas'])->name('downloadberkas');
@@ -78,6 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('view-berkas-tte', [App\Http\Controllers\TTEController::class, 'view_berkas_tte'])->name('view-berkas-tte');
     Route::get('cek-berkas-tte', [App\Http\Controllers\TTEController::class, 'index_cek_tte'])->name('cek-tte');
+    Route::get('status-tte', [\App\Http\Controllers\TTEController::class, 'view_status_tte'])->name('status-tte');
     Route::post('delete-berkas', [App\Http\Controllers\TTEController::class, 'delete_berkas'])->name('delete-berkas');
 
     Route::post('/kirim-wa', [\App\Http\Controllers\TTEController::class, 'kirimWAOCA'])->name('kirim-wa');

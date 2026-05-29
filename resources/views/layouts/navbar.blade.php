@@ -18,10 +18,12 @@
         <li class="nav-item">
             <a href="#" class="dropdown-toggle d-flex align-items-center" data-toggle="dropdown" style="color:black; font-weight:bold; font-size:16px">
                 @php
-                    $photoPath = Auth::user()->pegawai->photo ?? null;
-                    $photoUrl = $photoPath 
-                        ? env('URL_IMAGE') . $photoPath 
-                        : asset('img/bsre.png');
+                    $path = Auth::user()->pegawai->photo ?? null;
+                    if (!$path || $path === 'pages/pegawai/photo/') {
+                        $photoUrl = asset('img/bsre.png');
+                    } else {
+                        $photoUrl = env('URL_IMAGE') . $path;
+                    }
                 @endphp
                 <img src="{{ $photoUrl }}" 
                     alt="fotomu" 

@@ -17,7 +17,8 @@ use Config;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use \App\Models\KeteranganTTE;
-
+use Illuminate\Support\Facades\DB;
+use GuzzleHttp\Exception\RequestException;
 
 
 class APITTEController extends Controller
@@ -96,6 +97,52 @@ class APITTEController extends Controller
             }
             return response()->json(['msg' => $errMsg . ', ' . 'Pengiriman data gagal..!!'], 400);
         }       
+    }
+
+    public function loopStatusUser(Request $request)
+    {
+        $listPegawai = DB::table('pegawai')
+            ->join('users_tte', 'users_tte.username', '=', 'pegawai.nik')
+            ->select('pegawai.no_ktp', 'pegawai.nama')
+            ->whereNotNull('pegawai.no_ktp')
+            ->get();
+
+        $hasil = [];
+
+        foreach ($listPegawai as $pegawai) {
+            if (!$pegawai->no_ktp) {
+                continue;
+            }
+
+            $url = $this->baseurl_api . '/api/user/status/' . $pegawai->no_ktp;
+
+            try {
+                $response = $this->client->request('GET', $url, [
+                    'auth' => ['esign', 'qwerty']
+                ]);
+
+                $body = json_decode($response->getBody(), true);
+
+                $hasil[] = [
+                    'nik'  => $pegawai->no_ktp,
+                    'nama' => $pegawai->nama,
+                    'status' => $body['status'] ?? null
+                ];
+
+            } catch (\Exception $e) {
+                $hasil[] = [
+                    'nik'  => $pegawai->no_ktp,
+                    'nama' => $pegawai->nama,
+                    'status' => 'error',
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+
+        return response()->json([
+            'total' => count($hasil),
+            'data'  => $hasil
+        ], 200);
     }
 
     public function signInvisible(Request $request)
