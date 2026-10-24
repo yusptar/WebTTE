@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class VerificationController extends Controller
+class VerificationController extends Controller implements HasMiddleware
 {
     /*
     |--------------------------------------------------------------------------
     | Email Verification Controller
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling email verification for any
-    | user that recently registered with the application. Emails may also
-    | be re-sent if the user didn't receive the original email message.
+    | Route verifikasi email dinonaktifkan di routes/web.php ('verify' => false).
     |
     */
 
@@ -23,20 +22,21 @@ class VerificationController extends Controller
 
     /**
      * Where to redirect users after verification.
+     * (Dulu RouteServiceProvider::HOME)
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Get the middleware that should be assigned to the controller.
      */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
+        return [
+            'auth',
+            new Middleware('signed', only: ['verify']),
+            new Middleware('throttle:6,1', only: ['verify', 'resend']),
+        ];
     }
 }

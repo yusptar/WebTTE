@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ConfirmsPasswords;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class ConfirmPasswordController extends Controller
+class ConfirmPasswordController extends Controller implements HasMiddleware
 {
     /*
     |--------------------------------------------------------------------------
@@ -23,18 +23,17 @@ class ConfirmPasswordController extends Controller
 
     /**
      * Where to redirect users when the intended url fails.
+     * (Dulu RouteServiceProvider::HOME)
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Get the middleware that should be assigned to the controller.
      */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return ['auth'];
     }
 }

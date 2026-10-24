@@ -1,32 +1,33 @@
 {
+    "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Aplikasi Tanda Tangan Elektronik (TTE) - Rumah Sakit Tk.II dr. Soepraoen.",
+    "keywords": [
+        "laravel",
+        "framework",
+        "tte"
+    ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "barryvdh/laravel-dompdf": "^2.0",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^8.75",
-        "laravel/sanctum": "^2.15",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4",
-        "realrashid/sweet-alert": "^7.1",
-        "soarecostin/file-vault": "^1.2",
+        "php": "^8.3",
+        "barryvdh/laravel-dompdf": "^3.1",
+        "guzzlehttp/guzzle": "^7.9",
+        "hashids/hashids": "^5.0",
+        "laravel/framework": "^13.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^3.0",
+        "laravel/ui": "^4.6",
+        "realrashid/sweet-alert": "^8.0",
         "tinymce/tinymce": "^6.3",
-        "vinkla/hashids": "^9.1",
-        "yajra/laravel-datatables": "^1.5",
-        "yajra/laravel-datatables-oracle": "^9.21"
+        "yajra/laravel-datatables-oracle": "^13.0"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "fakerphp/faker": "^1.23",
+        "laravel/sail": "^1.41",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {
@@ -46,13 +47,17 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan vendor:publish --tag=sweetalert-asset --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ]
     },
     "extra": {
@@ -63,8 +68,12 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

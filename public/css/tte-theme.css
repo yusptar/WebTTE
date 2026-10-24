@@ -1,0 +1,956 @@
+/*
+ * TTE RST dr. Soepraoen - tema tampilan
+ * Lapisan di atas AdminLTE 3 (Bootstrap 4). Tidak mengubah struktur/ID,
+ * hanya tampilan, sehingga semua JavaScript lama tetap bekerja.
+ *
+ * Arah desain: "tinta dan stempel" - biru tinta resmi untuk struktur,
+ * hijau stempel untuk dokumen yang sudah ditandatangani, kuning untuk
+ * yang masih menunggu. Status ditampilkan seperti cap stempel.
+ */
+
+:root {
+    --tte-ink: #14284b;          /* biru tinta: sidebar, judul */
+    --tte-ink-soft: #1d3866;
+    --tte-seal: #1f7a5c;         /* hijau stempel: aksi utama, SUDAH */
+    --tte-seal-dark: #17614a;
+    --tte-pending: #a8690f;      /* kuning tunggu: BELUM */
+    --tte-danger: #b4232f;
+    --tte-paper: #f4f6f9;        /* latar halaman */
+    --tte-surface: #ffffff;
+    --tte-line: #dde2ea;
+    --tte-text: #1e2633;
+    --tte-muted: #5f6b7a;
+    --tte-focus: rgba(31, 122, 92, .28);
+    --tte-radius: 10px;
+    --tte-radius-sm: 7px;
+    --tte-font: "Public Sans", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+}
+
+/* ---------- Dasar ---------- */
+
+body,
+.main-sidebar,
+.btn,
+.form-control,
+.modal,
+.dropdown-menu,
+.swal2-popup {
+    font-family: var(--tte-font);
+}
+
+body {
+    color: var(--tte-text);
+    font-size: .9375rem;
+    -webkit-font-smoothing: antialiased;
+}
+
+.content-wrapper {
+    background: var(--tte-paper);
+}
+
+a {
+    color: var(--tte-ink-soft);
+}
+
+:focus-visible {
+    outline: 2px solid var(--tte-seal);
+    outline-offset: 2px;
+}
+
+/* ---------- Preloader: singkat dan ringan ---------- */
+
+.preloader {
+    background: var(--tte-paper) !important;
+}
+
+.preloader img {
+    width: min(360px, 70vw) !important;
+    height: auto !important;
+    animation: tte-breathe 1.4s ease-in-out infinite;
+}
+
+@keyframes tte-breathe {
+    0%, 100% { opacity: .55; }
+    50% { opacity: 1; }
+}
+
+/* ---------- Navbar ---------- */
+
+.main-header.navbar {
+    background: var(--tte-surface);
+    border-bottom: 1px solid var(--tte-line) !important;
+    min-height: 60px;
+}
+
+.main-header .nav-link {
+    color: var(--tte-muted);
+}
+
+.tte-user-toggle {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .35rem .6rem .35rem .35rem;
+    border-radius: 999px;
+    color: var(--tte-text) !important;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: background-color .15s ease;
+}
+
+.tte-user-toggle:hover,
+.tte-user-toggle[aria-expanded="true"] {
+    background: var(--tte-paper);
+    text-decoration: none;
+}
+
+.tte-user-toggle img {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--tte-line);
+}
+
+.tte-user-meta {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
+
+.tte-user-meta small {
+    color: var(--tte-muted);
+    font-weight: 400;
+    font-size: .75rem;
+}
+
+.dropdown-menu {
+    border: 1px solid var(--tte-line);
+    border-radius: var(--tte-radius);
+    box-shadow: 0 12px 28px rgba(20, 40, 75, .12);
+    padding: .4rem;
+    min-width: 13rem;
+}
+
+.dropdown-menu .dropdown-item {
+    border-radius: var(--tte-radius-sm);
+    padding: .55rem .75rem;
+    font-size: .9rem;
+    color: var(--tte-text);
+}
+
+.dropdown-menu .dropdown-item i {
+    width: 1.25rem;
+    color: var(--tte-muted);
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background: var(--tte-paper);
+}
+
+.dropdown-menu .dropdown-item.text-danger i {
+    color: var(--tte-danger);
+}
+
+/* ---------- Sidebar ---------- */
+
+/* Navbar dan logo sidebar sama tinggi supaya garis bawahnya sejajar */
+.main-header.navbar {
+    height: 60px;
+}
+
+.main-sidebar,
+.main-sidebar::before {
+    background: var(--tte-ink) !important;
+}
+
+/* Logo + nama aplikasi */
+.main-sidebar .brand-link {
+    display: flex !important;
+    align-items: center;
+    gap: .7rem;
+    height: 60px;
+    padding: 0 1rem !important;
+    background: var(--tte-ink) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, .1) !important;
+    color: #fff !important;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: padding .3s ease-in-out;
+}
+
+.main-sidebar .brand-link:hover {
+    background: rgba(255, 255, 255, .04) !important;
+}
+
+.main-sidebar .brand-mark {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 9px;
+    padding: 3px;
+}
+
+.main-sidebar .brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* menimpa gaya img bawaan AdminLTE pada .brand-link */
+    float: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+.main-sidebar .brand-text,
+.sidebar-mini.sidebar-collapse .main-sidebar:hover .brand-text {
+    display: flex !important;
+    flex-direction: column;
+    line-height: 1.15;
+    font-weight: 400 !important;
+    min-width: 0;
+}
+
+.main-sidebar .brand-text strong {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+}
+
+.main-sidebar .brand-text small {
+    font-size: .72rem;
+    color: rgba(255, 255, 255, .62);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Area menu */
+.main-sidebar .sidebar {
+    padding: .25rem .6rem 1.5rem;
+}
+
+.nav-sidebar .nav-header {
+    color: rgba(255, 255, 255, .45);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    padding: 1.1rem .75rem .4rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-sidebar .nav-link {
+    display: flex !important;
+    align-items: center;
+    border-radius: var(--tte-radius-sm);
+    color: rgba(255, 255, 255, .78) !important;
+    margin-bottom: 2px;
+    padding: .55rem .75rem;
+    transition: background-color .15s ease, color .15s ease;
+}
+
+.nav-sidebar .nav-link > .nav-icon {
+    flex: 0 0 1.6rem;
+    width: 1.6rem !important;
+    margin-right: .55rem !important;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.nav-sidebar .nav-link > p {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: static;
+}
+
+/* panah submenu */
+.nav-sidebar .nav-link > p > .right {
+    position: absolute;
+    right: .9rem;
+    top: 50%;
+    margin-top: -.5em;
+    transition: transform .2s ease-in-out;
+}
+
+.nav-sidebar .nav-link {
+    position: relative;
+}
+
+.nav-sidebar .nav-link > p {
+    padding-right: 1.25rem;
+}
+
+.nav-sidebar .menu-open > .nav-link > p > .right {
+    transform: rotate(-90deg);
+}
+
+.nav-sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, .07) !important;
+    color: #fff !important;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-dark-primary .nav-sidebar > .nav-item.menu-open > .nav-link {
+    background: rgba(255, 255, 255, .1) !important;
+    color: #fff !important;
+    box-shadow: none !important;
+}
+
+/* Submenu: sedikit menjorok, ikon lebih kecil */
+.nav-treeview {
+    padding-left: .55rem;
+}
+
+.nav-treeview > .nav-item > .nav-link {
+    font-size: .875rem;
+    padding: .45rem .75rem;
+}
+
+.nav-treeview > .nav-item > .nav-link > .nav-icon {
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .55);
+}
+
+.nav-treeview > .nav-item > .nav-link.active,
+.sidebar-dark-primary .nav-treeview > .nav-item > .nav-link.active {
+    background: var(--tte-seal) !important;
+    color: #fff !important;
+}
+
+.nav-treeview > .nav-item > .nav-link.active > .nav-icon {
+    color: #fff;
+}
+
+/* Sidebar diciutkan (desktop): hanya ikon, rata tengah */
+@media (min-width: 992px) {
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .brand-link {
+        justify-content: center;
+        padding: 0 !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .brand-text {
+        display: none !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .sidebar {
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .nav-sidebar .nav-link {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .nav-sidebar .nav-link > .nav-icon {
+        margin-right: 0 !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .nav-sidebar .nav-link > p {
+        display: none;
+    }
+
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .nav-sidebar .nav-header {
+        height: 1px;
+        padding: 0 !important;
+        margin: .6rem .5rem;
+        background: rgba(255, 255, 255, .12);
+        font-size: 0;
+    }
+
+    /* submenu disembunyikan saat diciutkan; menu induk tetap ditandai aktif */
+    .sidebar-mini.sidebar-collapse .main-sidebar:not(:hover) .nav-treeview {
+        display: none !important;
+    }
+}
+
+/* Layar kecil: sidebar muncul di atas konten dengan latar gelap */
+#sidebar-overlay {
+    background: rgba(20, 40, 75, .45) !important;
+    transition: opacity .25s ease;
+}
+
+@media (max-width: 991.98px) {
+    .main-sidebar {
+        box-shadow: 0 0 40px rgba(20, 40, 75, .35) !important;
+    }
+}
+
+/* ---------- Judul halaman ---------- */
+
+.content-header {
+    padding: 1.6rem 1.25rem .6rem;
+}
+
+.content-header h1 {
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+    color: var(--tte-ink);
+    letter-spacing: -.01em;
+}
+
+.content-header h6 {
+    color: var(--tte-muted);
+    font-weight: 400 !important;
+    margin-top: .35rem !important;
+}
+
+/* ---------- Kartu ---------- */
+
+.card {
+    border: 1px solid var(--tte-line);
+    border-radius: var(--tte-radius);
+    box-shadow: none;
+    margin-bottom: 1.25rem;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--tte-line);
+    padding: .95rem 1.25rem;
+}
+
+.card-title {
+    font-weight: 600 !important;
+    font-size: 1rem;
+    color: var(--tte-ink);
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.card-footer {
+    background: #fafbfc;
+    border-top: 1px solid var(--tte-line);
+    border-radius: 0 0 var(--tte-radius) var(--tte-radius) !important;
+    padding: .9rem 1.25rem;
+}
+
+/* ---------- Tombol ---------- */
+
+.btn {
+    border-radius: var(--tte-radius-sm);
+    font-weight: 600;
+    font-size: .9rem;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.btn-sm {
+    font-size: .8125rem;
+    padding: .3rem .7rem;
+}
+
+.btn-primary {
+    background: var(--tte-seal);
+    border-color: var(--tte-seal);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:not(:disabled):not(.disabled):active {
+    background: var(--tte-seal-dark);
+    border-color: var(--tte-seal-dark);
+}
+
+.btn-primary:focus,
+.btn-success:focus,
+.btn:focus {
+    box-shadow: 0 0 0 .2rem var(--tte-focus);
+}
+
+.btn-success {
+    background: var(--tte-seal);
+    border-color: var(--tte-seal);
+}
+
+.btn-success:hover {
+    background: var(--tte-seal-dark);
+    border-color: var(--tte-seal-dark);
+}
+
+.btn-info {
+    background: var(--tte-ink-soft);
+    border-color: var(--tte-ink-soft);
+}
+
+.btn-info:hover {
+    background: var(--tte-ink);
+    border-color: var(--tte-ink);
+}
+
+.btn-danger {
+    background: var(--tte-danger);
+    border-color: var(--tte-danger);
+}
+
+.btn-secondary {
+    background: #fff;
+    border-color: var(--tte-line);
+    color: var(--tte-text);
+}
+
+.btn-secondary:hover {
+    background: var(--tte-paper);
+    border-color: #c9d0db;
+    color: var(--tte-text);
+}
+
+.btn-outline-primary {
+    color: var(--tte-ink-soft);
+    border-color: var(--tte-line);
+}
+
+.btn-outline-primary:hover {
+    background: var(--tte-ink-soft);
+    border-color: var(--tte-ink-soft);
+}
+
+.btn-outline-success {
+    color: var(--tte-seal);
+    border-color: var(--tte-line);
+}
+
+.btn-outline-success:hover {
+    background: var(--tte-seal);
+    border-color: var(--tte-seal);
+}
+
+.btn-outline-danger {
+    color: var(--tte-danger);
+    border-color: var(--tte-line);
+}
+
+.btn-group > .btn {
+    padding: .35rem .65rem;
+}
+
+/* ---------- Form ---------- */
+
+.form-group label {
+    font-weight: 600;
+    font-size: .875rem;
+    color: var(--tte-text);
+    margin-bottom: .4rem;
+}
+
+.form-control {
+    border: 1px solid #cfd6e0;
+    border-radius: var(--tte-radius-sm);
+    min-height: calc(2.35rem + 2px);
+    color: var(--tte-text);
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.form-control:focus {
+    border-color: var(--tte-seal);
+    box-shadow: 0 0 0 .2rem var(--tte-focus);
+}
+
+input[type="file"] {
+    font-size: .875rem;
+    color: var(--tte-muted);
+}
+
+input[type="file"]::file-selector-button {
+    border: 1px solid var(--tte-line);
+    background: #fff;
+    border-radius: var(--tte-radius-sm);
+    padding: .45rem .9rem;
+    margin-right: .75rem;
+    font-weight: 600;
+    color: var(--tte-ink);
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background: var(--tte-paper);
+}
+
+.custom-switch .custom-control-label {
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    background: var(--tte-pending);
+    border-color: var(--tte-pending);
+}
+
+/* ---------- Tabel & DataTables ---------- */
+
+.table {
+    color: var(--tte-text);
+    font-size: .875rem;
+}
+
+.table-bordered,
+.table-bordered td,
+.table-bordered th {
+    border-color: var(--tte-line);
+}
+
+.table thead th {
+    background: #f7f9fb;
+    color: var(--tte-muted);
+    font-weight: 600;
+    font-size: .8125rem;
+    border-bottom: 1px solid var(--tte-line) !important;
+    white-space: nowrap;
+}
+
+.table td {
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+}
+
+.table-hover tbody tr:hover {
+    background: #f3f7f5;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #cfd6e0;
+    border-radius: var(--tte-radius-sm);
+    padding: .3rem .6rem;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    outline: none;
+    border-color: var(--tte-seal);
+    box-shadow: 0 0 0 .2rem var(--tte-focus);
+}
+
+.dataTables_wrapper .dataTables_info {
+    color: var(--tte-muted);
+    font-size: .8125rem;
+}
+
+.page-item .page-link {
+    border-color: var(--tte-line);
+    color: var(--tte-ink-soft);
+    font-size: .8125rem;
+}
+
+.page-item.active .page-link {
+    background: var(--tte-ink);
+    border-color: var(--tte-ink);
+}
+
+.page-item:first-child .page-link {
+    border-radius: var(--tte-radius-sm) 0 0 var(--tte-radius-sm);
+}
+
+.page-item:last-child .page-link {
+    border-radius: 0 var(--tte-radius-sm) var(--tte-radius-sm) 0;
+}
+
+div.dataTables_processing {
+    border: 1px solid var(--tte-line) !important;
+    border-radius: var(--tte-radius) !important;
+    box-shadow: 0 8px 24px rgba(20, 40, 75, .1) !important;
+    color: var(--tte-ink) !important;
+    font-weight: 600;
+}
+
+/* ---------- Status TTE sebagai cap stempel ---------- */
+/* Badge ini dibuat di controller: bg-secondary = BELUM, bg-success = SUDAH */
+
+.badge.rounded-pill {
+    display: inline-block;
+    border-radius: 4px !important;
+    padding: .28rem .55rem .24rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    background: transparent !important;
+    border: 1.5px solid currentColor;
+    transform: rotate(-2deg);
+}
+
+.badge.rounded-pill.bg-success {
+    color: var(--tte-seal) !important;
+}
+
+.badge.rounded-pill.bg-secondary {
+    color: var(--tte-pending) !important;
+    border-style: dashed;
+}
+
+/* ---------- Modal ---------- */
+
+.modal-content {
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(20, 40, 75, .25);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--tte-line);
+    padding: 1.1rem 1.4rem;
+}
+
+.modal-title {
+    font-weight: 700;
+    color: var(--tte-ink);
+}
+
+.modal-body {
+    padding: 1.4rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--tte-line);
+    padding: .9rem 1.4rem;
+}
+
+.modal-backdrop.show {
+    opacity: .45;
+    background: var(--tte-ink);
+}
+
+/* ---------- Daftar & lain-lain ---------- */
+
+.list-group-item {
+    border-color: var(--tte-line);
+    font-size: .875rem;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: var(--tte-radius-sm);
+    border-top-right-radius: var(--tte-radius-sm);
+}
+
+.list-group-item:last-child {
+    border-bottom-left-radius: var(--tte-radius-sm);
+    border-bottom-right-radius: var(--tte-radius-sm);
+}
+
+.daterangepicker {
+    border-color: var(--tte-line);
+    border-radius: var(--tte-radius);
+    font-family: var(--tte-font);
+}
+
+.daterangepicker td.active,
+.daterangepicker td.active:hover {
+    background: var(--tte-seal);
+}
+
+.swal2-popup {
+    border-radius: 14px !important;
+}
+
+.swal2-styled.swal2-confirm {
+    background: var(--tte-seal) !important;
+    border-radius: var(--tte-radius-sm) !important;
+}
+
+/* Bar tipis di atas layar selama permintaan AJAX berjalan */
+#tte-ajax-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--tte-seal);
+    z-index: 2000;
+    opacity: 0;
+    transition: width .4s ease, opacity .3s ease;
+}
+
+#tte-ajax-bar.is-loading {
+    width: 70%;
+    opacity: 1;
+    transition: width 8s cubic-bezier(.1, .7, .2, 1), opacity .2s ease;
+}
+
+#tte-ajax-bar.is-done {
+    width: 100%;
+    opacity: 0;
+}
+
+/* ---------- Footer ---------- */
+
+.main-footer {
+    background: var(--tte-surface);
+    border-top: 1px solid var(--tte-line);
+    color: var(--tte-muted);
+    font-size: .8125rem;
+    padding: .8rem 1.25rem;
+}
+
+.tte-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tte-footer-logos {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tte-footer-logos img {
+    height: 26px;
+    width: auto;
+}
+
+.main-footer a {
+    color: var(--tte-ink-soft);
+    font-weight: 600;
+}
+
+/* Kontrol tabel: dropdown jumlah baris & filter tanggal */
+.dataTables_wrapper .dataTables_length select {
+    width: auto !important;
+    min-width: 4.75rem;
+    display: inline-block;
+    margin: 0 .35rem;
+    padding-right: 1.6rem;
+}
+
+.dataTables_wrapper > .row:first-child {
+    margin-bottom: .5rem;
+}
+
+.card-body > .custom-switch {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+
+input[name="daterange"] {
+    border: 1px solid #cfd6e0;
+    border-radius: var(--tte-radius-sm);
+    padding: .4rem .75rem;
+    min-width: 15rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--tte-text);
+    margin: 0 .35rem;
+}
+
+input[name="daterange"]:focus {
+    outline: none;
+    border-color: var(--tte-seal);
+    box-shadow: 0 0 0 .2rem var(--tte-focus);
+}
+
+/* ---------- Dashboard ---------- */
+
+.tte-stat {
+    position: relative;
+    background: var(--tte-surface);
+    border: 1px solid var(--tte-line);
+    border-radius: var(--tte-radius);
+    padding: 1.25rem 1.35rem 1rem;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+}
+
+.tte-stat::after {
+    /* jejak cap di pojok kartu */
+    content: "";
+    position: absolute;
+    right: -26px;
+    top: -26px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 10px solid currentColor;
+    opacity: .07;
+}
+
+.tte-stat--sudah { color: var(--tte-seal); }
+.tte-stat--belum { color: var(--tte-pending); }
+
+.tte-stat-label {
+    color: var(--tte-muted);
+    font-size: .875rem;
+    margin: 0;
+}
+
+.tte-stat-value {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: .35rem 0 .2rem;
+    font-variant-numeric: tabular-nums;
+    color: currentColor;
+}
+
+.tte-stat-value small {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--tte-muted);
+    margin-left: .25rem;
+}
+
+.tte-stat .btn {
+    margin-top: .75rem;
+    background: transparent;
+    border: 1px solid var(--tte-line);
+    color: var(--tte-text);
+    font-weight: 600;
+}
+
+.tte-stat .btn:hover {
+    background: var(--tte-paper);
+}
+
+.tte-stat .list-group {
+    margin-top: .85rem;
+}
+
+.tte-doc-count {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.tte-chart-head::after {
+    display: none;
+}
+
+.tte-chart-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tte-chart-head select {
+    width: auto;
+    min-height: 0;
+    padding: .3rem 2rem .3rem .7rem;
+}
+
+/* ---------- Layar kecil ---------- */
+
+@media (max-width: 767.98px) {
+    .content-header h1 { font-size: 1.35rem !important; }
+    .tte-user-meta { display: none; }
+    .tte-footer { justify-content: center; text-align: center; }
+    .card-body { padding: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

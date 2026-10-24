@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\User;
 use App\Models\Pegawai; 
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class LoginController extends Controller
+class LoginController extends Controller implements HasMiddleware
 {
     use AuthenticatesUsers;
 
@@ -80,8 +81,14 @@ class LoginController extends Controller
         }
     }
 
-    public function __construct()
+    /**
+     * Get the middleware that should be assigned to the controller.
+     * (Dulu $this->middleware('guest')->except('logout') di constructor)
+     */
+    public static function middleware(): array
     {
-        $this->middleware('guest')->except('logout');
+        return [
+            new Middleware('guest', except: ['logout']),
+        ];
     }
 }

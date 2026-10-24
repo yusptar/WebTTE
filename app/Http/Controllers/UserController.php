@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Pegawai;
 use Exception;
@@ -11,14 +10,23 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Yajra\DataTables\Facades\DataTables;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
     protected $user;
+    /**
+     * Semua halaman di controller ini wajib login.
+     * (Dulu $this->middleware('auth') di constructor)
+     */
+    public static function middleware(): array
+    {
+        return ['auth'];
+    }
+
     public function __construct()
     {
-        $this->middleware('auth');
         $this->user = new User();
     }
     public function index()

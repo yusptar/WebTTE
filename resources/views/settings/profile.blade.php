@@ -27,7 +27,7 @@
                                     if (!$path || $path === 'pages/pegawai/photo/') {
                                         $url_photo = asset('img/bsre.png');
                                     } else {
-                                        $url_photo = env('URL_IMAGE') . $path;
+                                        $url_photo = config('app.url_image') . $path;
                                     }
                                 @endphp
                                 <img src="{{ $url_photo }}"  class="rounded-circle border" width="300" height="300" alt="User Avatar">

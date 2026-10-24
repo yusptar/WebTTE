@@ -33,6 +33,14 @@ class Pegawai extends Model implements Authenticatable
         return $this->password; // Replace with the actual password column name
     }
 
+    /**
+     * Wajib sejak Laravel 11 (method baru di kontrak Authenticatable).
+     */
+    public function getAuthPasswordName()
+    {
+        return 'password';
+    }
+
     public function getRememberToken()
     {
         return $this->remember_token; // Replace with the actual remember token column name

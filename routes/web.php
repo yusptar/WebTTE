@@ -2,16 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Hashids\Hashids;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Route web aplikasi TTE. File ini dimuat dari bootstrap/app.php
+| (withRouting) dengan middleware group "web".
 |
 */
 Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
@@ -19,7 +17,10 @@ Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
 Auth::routes([ // Registration Routes...
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
-    'reigster' => false,
+    // Dulu tertulis 'reigster' (salah ketik), sehingga POST /register tetap
+    // terbuka dan siapa pun bisa membuat akun. Halaman register sudah
+    // disembunyikan (menampilkan 404), jadi pendaftaran memang tidak dipakai.
+    'register' => false,
 ]);
 
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -58,7 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('rm-detail', [App\Http\Controllers\TTEController::class, 'rm_detail'])->name('rm.detail');
 
     // NASKAH KET TTE
-    Route::get('/naskah-tte/{id}', [\App\Http\Controllers\TTEController::class, 'index_ket_tte'])->name('naskah-tte');
+    // Route '/naskah-tte/{id}' yang dulu ada di sini tertimpa oleh route publik
+    // di bagian bawah file (nama & URL sama), sehingga tidak pernah dipakai.
+    // Dihapus agar tidak dobel; perilakunya tetap sama seperti sebelumnya.
 
 
     // Route::post('/kirim-tte', [App\Http\Controllers\TTEController::class, 'kirimTTE'])->name('kirimTTE');

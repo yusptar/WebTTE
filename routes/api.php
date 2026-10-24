@@ -9,9 +9,8 @@ use App\Http\Controllers\APITTEController;
 | API Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
+| Route API aplikasi TTE. File ini dimuat dari bootstrap/app.php
+| (withRouting) dengan prefix /api dan middleware group "api".
 |
 */
 

@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Token API WhatsApp OCA (dulu ditulis langsung di TTEController::kirimWAOCA).
+    'oca' => [
+        'token' => env('OCA_API_TOKEN'),
+    ],
+
 ];

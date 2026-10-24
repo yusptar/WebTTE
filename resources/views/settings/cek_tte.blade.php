@@ -66,12 +66,12 @@
                                             <form id="form-send-tte">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <input type="hidden" name="_token" value="{{ env('TOKEN') }}" />
+                                                    <input type="hidden" name="_token" value="{{ config('app.token') }}" />
                                                     <input type="text" class="form-control" name="modal_type" id="modal_type" hidden> 
                                                     <input type="text" class="form-control" name="modal_no_rawat" id="modal_no_rawat" hidden> 
                                                     <input type="text" class="form-control" name="modal_nama_file" id="modal_nama_file" hidden>
                                                     <input type="text" class="form-control" name="modal_jenis_rm" id="modal_jenis_rm" hidden>
-                                                    <input type="text" class="form-control" name="passphrase" id="passphrase" autocomplete="off" required>
+                                                    <input type="password" class="form-control" name="passphrase" id="passphrase" autocomplete="new-password" placeholder="Passphrase sertifikat elektronik" required>
                                                 </div>
                                             </form>
                                         </div>

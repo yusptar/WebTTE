@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use App\Models\Pegawai; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 
-class DashboardController extends Controller
+class DashboardController extends Controller implements HasMiddleware
 {
     // public function index()
     // {
@@ -60,7 +61,8 @@ class DashboardController extends Controller
             $belum = [];
             $sudah = [];
             foreach ($tte_per_month as $data) {
-                $months[] = Carbon::create()->month($data->month)->format('F');
+                // Carbon 3: tanggal acuan tetap tgl 1 agar nama bulan tidak meleset di tgl 29-31.
+                $months[] = Carbon::createFromDate(2000, (int) $data->month, 1)->locale('id')->translatedFormat('F');
                 $belum[] = $data->belum;
                 $sudah[] = $data->sudah;
             }
@@ -124,8 +126,13 @@ class DashboardController extends Controller
 
 
 
-    public function __construct()
+    /**
+     * Semua halaman di controller ini wajib login.
+     * (Dulu $this->middleware('auth') di constructor)
+     */
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return ['auth'];
     }
+
 }
