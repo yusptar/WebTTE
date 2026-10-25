@@ -152,13 +152,26 @@ class TTEController extends Controller implements HasMiddleware
     {
         try {
             if ($request->type === 'hapus_semua') {
-                DB::table('manajemen_rm_tte')->delete();
-                DB::table('status_tte_ppa')->delete();
-                DB::table('keterangan_tte_ppa')->delete();
+                // DB::table('manajemen_rm_tte')->delete();
+                // DB::table('status_tte_ppa')->delete();
+                // DB::table('keterangan_tte_ppa')->delete();
     
-                return response()->json([
-                    'msg' => 'Semua data berhasil dihapus.',
-                ]);
+                // return response()->json([
+                //     'msg' => 'Semua data berhasil dihapus.',
+                // ]);
+            }else if ($request->type === 'hapus_file_tidak_ditemukan') {
+                $listData = DB::table('manajemen_rm_tte')
+                    ->select('no_rawat')
+                    ->select('jenis_rm')
+                    ->select('path')
+                    ->where('signed_status', 'BELUM')
+                    ->get();
+
+                foreach ($listData as $data) {
+                    if(!file_exists($this->storage_location . '/' . $data->jenis_rm . '/' . $data->path)){
+                        continue;
+                    }
+                }
             } else {
                 $noRawat = $request->no_rawat;
                 $namaFile = $request->nama_file;

@@ -193,7 +193,8 @@
                 if (result.isConfirmed) {
                     const csrfToken = $('meta[name="csrf-token"]').attr('content');
                     var formData = new FormData();
-                    formData.append('type', 'hapus_semua'); // Indikasi penghapusan semua
+                    formData.append('type', 'hapus_file_tidak_ditemukan'); // Indikasi penghapusan semua
+                    //formData.append('type', 'hapus_semua'); // Indikasi penghapusan semua
                     formData.append('_token', csrfToken);
 
                     $.ajax({
