@@ -207,29 +207,24 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function(data) {
+                    dataType: 'json',
+                    success: function (data) {
                         $('#loading-spinner').hide();
                         Swal.fire({
                             title: "Berhasil!",
-                            text: data.msg,
+                            text: data.msg ?? 'TTE berhasil',
                             icon: "success",
-                            buttons: false,
                             timer: 3000,
-                        }).then(function() {
-                            window.location.href = "{{ route('view-pemb-rm') }}"
-                        });
+                        }).then(() => window.location.href = "{{ route('view-pemb-rm') }}");
                     },
-                    error: function(data) {
+                    error: function (xhr) {
                         $('#loading-spinner').hide();
+                        console.log(xhr.status, xhr.responseText); // untuk debug
                         Swal.fire({
                             title: "Gagal!",
-                            text: data.responseJSON.msg,
+                            text: xhr.responseJSON?.msg ?? 'Terjadi kesalahan (' + xhr.status + ')',
                             icon: "error",
-                            buttons: false,
-                            // timer: 3000,
-                        }).then(function() {
-                            window.location.href = "{{ route('view-pemb-rm') }}"
-                        });
+                        }).then(() => window.location.href = "{{ route('view-pemb-rm') }}");
                     }
                 });
             }
