@@ -103,6 +103,7 @@
 @endsection
 
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
 <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}"></script>
 <script>
     Chart.defaults.font.family = '"Public Sans", "Segoe UI", system-ui, sans-serif';
